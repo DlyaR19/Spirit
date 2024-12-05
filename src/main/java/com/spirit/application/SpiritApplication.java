@@ -14,9 +14,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @Theme(value = "spirit")
-public class Application implements AppShellConfigurator {
+public class SpiritApplication implements AppShellConfigurator {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(SpiritApplication.class, args);
     }
 }
