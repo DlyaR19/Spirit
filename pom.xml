@@ -8,7 +8,8 @@
     <artifactId>spirit</artifactId>
     <name>spirit</name>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+<!--    <packaging>jar</packaging>-->
+    <packaging>war</packaging>
 
     <properties>
         <java.version>23</java.version>

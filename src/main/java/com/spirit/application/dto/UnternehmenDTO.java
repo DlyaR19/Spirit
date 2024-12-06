@@ -6,6 +6,7 @@ import com.spirit.application.entitiy.User;
 import lombok.Getter;
 import lombok.Setter;
 
+// Diese Klasse repräsentiert ein UnternehmenDTO-Objekt, das als Datenübertragungsobjekt für die Unternehmen-Entität dient.
 @Setter
 @Getter
 public class UnternehmenDTO extends UserDTO {

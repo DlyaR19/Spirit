@@ -2,6 +2,7 @@ package com.spirit.application.views.main;
 
 
 import com.spirit.application.util.Globals;
+import com.spirit.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -17,11 +18,13 @@ import jakarta.annotation.security.PermitAll;
 
 
 @PageTitle("About Spirit")
-@Route(value = Globals.Pages.ABOUTUS)
+@Route(value = Globals.Pages.ABOUTUS, layout = MainLayout.class)
 @Menu(order = 3)
 @AnonymousAllowed
 @PermitAll
 public class AboutUsView extends VerticalLayout {
+
+    // TODO Besser gestalten (erst nach dem einloggen wird das Logo angezeigt FIX!!)
 
     public AboutUsView() {
         setSpacing(true);
@@ -55,12 +58,10 @@ public class AboutUsView extends VerticalLayout {
                 "                        menschlichen Ansatz zu kombinieren, um Unternehmen und Individuen gleichermaßen zu helfen, ihre Ziele zu erreichen.\n");
 
 
-        //TODO 1: Image cant be found
-
         //Logo
         H2 logoTitle = new H2("Unser Logo");
         logoTitle.getElement().getStyle().set("text-align", "center");
-        Image logo = new Image("/icons/spirit_logo.png", "Spirit Logo");
+        Image logo = new Image("/images/spirit_logo.png", "Spirit Logo");
         logo.setWidth("300px");
 
         //Werte

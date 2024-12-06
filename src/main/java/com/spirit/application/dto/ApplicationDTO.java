@@ -7,6 +7,8 @@ import com.spirit.application.entitiy.JobPost;
 import lombok.Getter;
 import lombok.Setter;
 
+
+// Diese Klasse repräsentiert ein ApplicationDTO-Objekt, das als Datenübertragungsobjekt für die Application-Entität dient.
 @Setter
 @Getter
 public class ApplicationDTO {

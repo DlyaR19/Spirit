@@ -5,6 +5,8 @@ import com.spirit.application.entitiy.Student;
 import lombok.Getter;
 import lombok.Setter;
 
+
+// Diese Klasse repräsentiert ein FirstNameDTO-Objekt, das als Datenübertragungsobjekt für die FirstName-Entität dient.
 @Setter
 @Getter
 public class FirstNameDTO {

@@ -6,12 +6,14 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Objects;
 
+
+// Diese Klasse repräsentiert ein BaseID-Objekt, das als Basisklasse für die ID-Entitäten dient.
 @Setter
 @Getter
 public abstract class BaseID implements Serializable {
 
 
-    private int serialNumber;
+    private int serialNumber; //laufende Nummer
 
     @Override
     public int hashCode() {

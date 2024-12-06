@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.sql.Date;
 
+
+// Diese Klasse repräsentiert ein JobPostDTO-Objekt, das als Datenübertragungsobjekt für die JobPost-Entität dient.
 @Setter
 @Getter
 public class JobPostDTO {

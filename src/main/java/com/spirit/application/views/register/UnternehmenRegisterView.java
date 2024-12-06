@@ -21,6 +21,7 @@ public class UnternehmenRegisterView extends BaseRegisterView {
         setupUnternehmenForm();
     }
 
+    // TODO andere Felder hinzufügen wie z.B. Branche, Kontaktperson, etc.
     private void setupUnternehmenForm() {
         companyNameField = new TextField("Name des Unternehmens");
 

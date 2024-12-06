@@ -17,7 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
     public MainView(){
-        // TODO add a copy of available vacances
+        // TODO eine Dashboard View hinzufügen mit Stellenausschreibungen
 
     }
 

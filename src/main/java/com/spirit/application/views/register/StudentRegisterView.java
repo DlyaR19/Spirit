@@ -21,7 +21,7 @@ public class StudentRegisterView extends BaseRegisterView {
         super(registerService);
         setupStudentForm();
     }
-
+    // TODO andere Felder hinzufügen wie z.B. Studiengang, Geburtsdatum (date picker), etc.
     private void setupStudentForm() {
         firstNameTextField = new TextField("Vornamen");
         lastNameTextField = new TextField("Nachnamen");

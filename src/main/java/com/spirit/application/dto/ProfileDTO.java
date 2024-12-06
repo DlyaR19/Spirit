@@ -5,6 +5,8 @@ import com.spirit.application.entitiy.Profile;
 import lombok.Getter;
 import lombok.Setter;
 
+
+// Diese Klasse repräsentiert ein ProfileDTO-Objekt, das als Datenübertragungsobjekt für die Profile-Entität dient.
 @Setter
 @Getter
 public class ProfileDTO {

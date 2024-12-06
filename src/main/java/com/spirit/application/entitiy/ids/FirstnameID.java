@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Objects;
 
+
+// Diese Klasse repräsentiert ein FirstnameID-Objekt, das als ID-Entität für die FirstName-Entität dient.
 @Setter
 @Getter
 public class FirstnameID extends BaseID implements Serializable {

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import com.spirit.application.entitiy.Profile;
 
+
+// Diese Klasse repräsentiert ein UserDTO-Objekt, das als Datenübertragungsobjekt für die User-Entität dient.
 @Setter
 @Getter
 public class UserDTO {

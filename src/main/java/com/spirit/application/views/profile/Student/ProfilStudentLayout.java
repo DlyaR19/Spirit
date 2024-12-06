@@ -1,7 +1,6 @@
 package com.spirit.application.views.profile.Student;
 
 
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -10,10 +9,9 @@ import lombok.Getter;
 /*
     Dialog View Layout
  */
-
+// TODO Studenten Profil
 
 @Getter
-//@CssImport("./styles/index.css")
 public class ProfilStudentLayout extends VerticalLayout {
 
     private final TextField tfVorname = new TextField("Vorname:");

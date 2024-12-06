@@ -19,13 +19,14 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @PageTitle("Login")
 @Route(Globals.Pages.LOGIN)
-//@CssImport("./styles/index.css")
 @Menu(order = 1)
 @AnonymousAllowed
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm loginForm;
     private final transient LoginService loginService;
+
+    // TODO Passwort vergessen Funktionalität hinzufügen (wenn nötig)
 
     public LoginView(LoginService loginService) {
         loginForm = setUpUI();

@@ -16,13 +16,12 @@ import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H4;
-import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
@@ -39,7 +38,6 @@ import java.util.List;
 
 @Route(value = Globals.Pages.SHOW_APPLICATION, layout = AppView.class)
 @PageTitle("Show Applications")
-//@CssImport("./styles/index.css")
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
 public class ShowApplicationView extends Composite<VerticalLayout> implements AfterNavigationObserver {
 
@@ -95,8 +93,22 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
 
         Button showProfileButton = new Button("Profil anzeigen");
         showProfileButton.addClickListener(e -> {
-            // Hier Profil anzeigen vom Studenten!
-            // TODO: Implementieren
+            Dialog profileDialog = new Dialog();
+            profileDialog.setWidth("600px");
+            VerticalLayout profileLayout = new VerticalLayout();
+            Avatar studentAvatarDialog = new Avatar();
+            studentAvatarDialog.setImage(
+                    "data:image/jpeg;base64," + application.getStudent().getUser().getProfile().getAvatar()
+            );
+            H6 profileName = new H6(applicationService.getFirstName(application.getStudent()) + " " + application.getStudent().getLastName());
+            // TODO get Interessen und co from profilStudentLayout
+            TextArea profileDescriptionDialog = new TextArea("Profilbeschreibung");
+            profileDescriptionDialog.setValue(application.getStudent().getUser().getProfile().getProfileDescription());
+            profileDescriptionDialog.setReadOnly(true);
+            profileLayout.add(studentAvatarDialog, profileName, profileDescriptionDialog);
+            profileDialog.add(profileLayout);
+            profileDialog.open();
+
 
         });
 
@@ -116,13 +128,13 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
     }
 
     private @NotNull Button getDownloadCoverLetterButton(ApplicationDTO application) {
-        Button downloadCoverLetterButton = new Button("Download Anschreiben");
+        Button downloadCoverLetterButton = new Button("Download Bewerbung");
         downloadCoverLetterButton.addClickListener(e -> {
             String base64coverLetter = applicationService.getCoverLetter(application.getApplicationID());
             if (base64coverLetter != null && !base64coverLetter.isEmpty()) {
 
                 byte[] pdfBytes = Base64.getDecoder().decode(base64coverLetter);
-                StreamResource resource = new StreamResource("anschreiben.pdf", () -> new ByteArrayInputStream(pdfBytes));
+                StreamResource resource = new StreamResource("Bewerbung.pdf", () -> new ByteArrayInputStream(pdfBytes));
                 resource.setContentType("application/pdf");
 
                 Anchor downloadLink = new Anchor(resource, "Download");
@@ -132,9 +144,9 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
 
                 downloadLink.getElement().executeJs("this.click();");
 
-                Notification.show("Anschreiben-Download gestartet.");
+                Notification.show("Bewerbung-Download gestartet.");
             } else {
-                Notification.show("Kein Anschreiben gefunden.");
+                Notification.show("Keine Bewerbung gefunden.");
                 downloadCoverLetterButton.setEnabled(false);
             }
         });
