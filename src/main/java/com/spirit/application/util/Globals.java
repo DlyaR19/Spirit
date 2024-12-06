@@ -18,7 +18,6 @@ public class Globals {
 
         public static final String MAIN = "";
         public static final String APP = "main/";
-        public static final String REMINDER = "reminder";
         public static final String LOGIN = "login";
         public static final String FORGOT_PASSWORD = "forgot/password";
         public static final String RESET_PASSWORD = "reset/password";

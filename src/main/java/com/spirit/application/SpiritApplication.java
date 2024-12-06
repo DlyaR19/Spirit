@@ -23,14 +23,4 @@ public class SpiritApplication implements AppShellConfigurator {
     public static void main(String[] args) {
         SpringApplication.run(SpiritApplication.class, args);
     }
-
-//    @Bean
-//    public WebMvcConfigurer webMvcConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addResourceHandlers(@NotNull ResourceHandlerRegistry registry) {
-//                registry.addResourceHandler("/images/**").addResourceLocations("classpath:/META-INF/resources/images/");
-//            }
-//        };
-//    }
 }

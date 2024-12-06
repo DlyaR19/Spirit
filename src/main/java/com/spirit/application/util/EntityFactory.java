@@ -56,20 +56,6 @@ public class EntityFactory {
         return jobPost;
     }
 
-//    public Requirements createRequirements(JobPost vacancy, String requirementsName) {
-//        Requirements requirements = new Requirements();
-//        requirements.setJobPost(vacancy);
-//        requirements.setRequirementsName(requirementsName);
-//        return requirements;
-//    }
-//
-//    public Responsibilities createResponsibilities(JobPost vacancy, String responsibilitiesName) {
-//        Responsibilities responsibilities = new Responsibilities();
-//        responsibilities.setJobPost(vacancy);
-//        responsibilities.setResponsibilitiesName(responsibilitiesName);
-//        return responsibilities;
-//    }
-
     public Application createApplication(JobPost jobPost, Student student, String base64Letter) {
         Application application = new Application();
         application.setJobPost(jobPost);

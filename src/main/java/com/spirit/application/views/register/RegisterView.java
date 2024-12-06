@@ -12,7 +12,6 @@ import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Register")
 @Route(value = Globals.Pages.SIGNUP)
-//@CssImport("./styles/index.css")
 @AnonymousAllowed
 @Menu(order = 2)
 public class RegisterView extends FormLayout {

@@ -13,19 +13,7 @@ import java.util.List;
 public class JobPostService {
 
     private final JobPostRepository jobPostRepository;
-    //private final ResponsibilitiesRepository responsibilitiesRepository;
-    //private final RequirementsRepository requirementsRepository;
     private final ApplicationRepository applicationRepository;
-
-//    public JobPostService(JobPostRepository vacancyRepository,
-//                          ResponsibilitiesRepository responsibilitiesRepository,
-//                          RequirementsRepository requirementsRepository,
-//                          ApplicationRepository applicationRepository) {
-//        this.vacancyRepository = vacancyRepository;
-//        this.responsibilitiesRepository = responsibilitiesRepository;
-//        this.requirementsRepository = requirementsRepository;
-//        this.applicationRepository = applicationRepository;
-//    }
 
     public JobPostService(JobPostRepository jobPostRepository, ApplicationRepository applicationRepository) {
         this.jobPostRepository = jobPostRepository;
@@ -46,8 +34,6 @@ public class JobPostService {
 
     @Transactional
     public void deleteJobPost(Long jobPostId) {
-        //responsibilitiesRepository.deleteByVacancyVacancyID(jobPostId);
-        //requirementsRepository.deleteByVacancyVacancyID(jobPostId);
         applicationRepository.deleteApplicationByJobPost_JobPostID(jobPostId);
         jobPostRepository.deleteByJobPostID(jobPostId);
     }
