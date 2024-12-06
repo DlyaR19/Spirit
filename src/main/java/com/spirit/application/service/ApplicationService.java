@@ -2,10 +2,7 @@ package com.spirit.application.service;
 
 
 import com.spirit.application.entitiy.Application;
-import com.spirit.application.entitiy.FirstName;
-import com.spirit.application.entitiy.Student;
 import com.spirit.application.repository.ApplicationRepository;
-import com.spirit.application.repository.FirstNameRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +12,11 @@ import java.util.List;
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
-    private final FirstNameRepository firstNameRepository;
 
     public ApplicationService(
-            ApplicationRepository applicationRepository,
-            FirstNameRepository firstNameRepository
+            ApplicationRepository applicationRepository
     ) {
         this.applicationRepository = applicationRepository;
-        this.firstNameRepository = firstNameRepository;
     }
 
     @Transactional
@@ -40,10 +34,6 @@ public class ApplicationService {
 
     public void deleteApplication(Application application) {
         applicationRepository.delete(application);
-    }
-
-    public FirstName getFirstName(Student student) {
-        return firstNameRepository.findFirstNameByStudent_StudentID(student.getStudentID());
     }
 
     public String getCoverLetter(long applicationID) {

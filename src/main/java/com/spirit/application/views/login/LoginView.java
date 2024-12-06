@@ -36,14 +36,14 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     }
 
     private LoginForm setUpUI() {
-        LoginForm setUpLoginForm;
+        LoginForm setLoginForm;
         addClassName("main");
         setSizeFull();
 
-        setUpLoginForm = createLoginForm();
-        setUpLoginForm.setAction("login");
+        setLoginForm = createLoginForm();
+        setLoginForm.setAction("login");
 
-        add(setUpLoginForm);
+        add(setLoginForm);
         this.setAlignItems(Alignment.CENTER);
 
         HorizontalLayout additionalInfoLayout = new HorizontalLayout();
@@ -53,14 +53,14 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         HorizontalLayout footer = new HorizontalLayout();
         footer.setAlignItems(Alignment.CENTER);
         footer.setSpacing(true);
-        footer.add(new Text("© 2024 Spirit"), new Anchor(Globals.Pages.ABOUTUS, "About Spirit"));
+        footer.add(new Anchor(Globals.Pages.ABOUTUS, "About Spirit"));
 
-        VerticalLayout layout = new VerticalLayout(setUpLoginForm, additionalInfoLayout, footer);
+        VerticalLayout layout = new VerticalLayout(setLoginForm, additionalInfoLayout, footer);
         layout.setAlignItems(Alignment.CENTER);
 
         add(layout);
 
-        return setUpLoginForm;
+        return setLoginForm;
     }
 
     private LoginForm createLoginForm() {
@@ -83,13 +83,13 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         try {
             loginService.startSession(new UserDTO(loginService.login(input.getUsername(), input.getPassword())));
         } catch (Exception e) {
-            Notification.show("Benutzer mit diesem Benutzernamen und/oder Passwort konnte nicht gefunden werden!");
+            Notification.show("Benutzername oder Passwort falsch");
         }
     }
 
     @Override
-    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (beforeEnterEvent.getLocation()
+    public void beforeEnter(BeforeEnterEvent event) {
+        if (event.getLocation()
                 .getQueryParameters()
                 .getParameters()
                 .containsKey("error")) {

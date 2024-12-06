@@ -26,7 +26,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//@CssImport("./styles/index.css")
 @Route(Globals.Pages.APP)
 public class AppView extends AppLayout {
 

@@ -7,6 +7,8 @@ import java.util.List;
 import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 
+// This class is used to convert markdown to html
+
 @Component
 public class MarkdownConverter {
     private final Parser parser;

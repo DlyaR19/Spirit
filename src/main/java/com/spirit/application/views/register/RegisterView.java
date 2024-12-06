@@ -1,6 +1,5 @@
 package com.spirit.application.views.register;
 
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.router.Menu;
@@ -8,7 +7,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.spirit.application.util.Globals;
-import org.vaadin.lineawesome.LineAwesomeIconUrl;
 
 @PageTitle("Register")
 @Route(value = Globals.Pages.SIGNUP)

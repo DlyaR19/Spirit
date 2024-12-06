@@ -4,7 +4,7 @@ package com.spirit.application.views.register;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.spirit.application.service.RegisterService;
+import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,8 +16,8 @@ public class UnternehmenRegisterView extends BaseRegisterView {
     private TextField companyNameField;
 
     @Autowired
-    public UnternehmenRegisterView(@Qualifier("registerProxy") RegisterService registerService) {
-        super(registerService);
+    public UnternehmenRegisterView(@Qualifier("registerProxy") RegisterInterface registerInterface) {
+        super(registerInterface);
         setupUnternehmenForm();
     }
 
@@ -49,7 +49,7 @@ public class UnternehmenRegisterView extends BaseRegisterView {
         String companyName = companyNameField.getValue();
         String passwordConfirmation = passwordConfirmationField.getValue();
 
-        registerService.registerUnternehmen(username, password, email, companyName, passwordConfirmation);
+        registerInterface.registerUnternehmen(username, password, email, companyName, passwordConfirmation);
         UI.getCurrent().navigate(Globals.Pages.LOGIN);
     }
 }

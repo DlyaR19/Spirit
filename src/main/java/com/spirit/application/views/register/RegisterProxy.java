@@ -2,18 +2,18 @@ package com.spirit.application.views.register;
 
 
 import com.spirit.application.entitiy.*;
-import com.spirit.application.service.RegisterService;
-import com.spirit.application.service.impl.RegisterServiceImpl;
+import com.spirit.application.repository.RegisterInterface;
+import com.spirit.application.service.impl.RegisterInterfaceImpl;
 import com.spirit.application.util.RegisterUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class RegisterProxy implements RegisterService {
-    private final RegisterServiceImpl registerService;
+public class RegisterProxy implements RegisterInterface {
+    private final RegisterInterfaceImpl registerService;
 
-    public RegisterProxy(RegisterServiceImpl registerService) {
+    public RegisterProxy(RegisterInterfaceImpl registerService) {
         this.registerService = registerService;
     }
 
@@ -55,15 +55,6 @@ public class RegisterProxy implements RegisterService {
         registerService.saveStudent(student);
     }
 
-    @Override
-    public void saveVorname(FirstName firstName) {
-        registerService.saveVorname(firstName);
-    }
-
-    @Override
-    public void saveFirstNames(String[] firstNames, Student student) {
-        registerService.saveFirstNames(firstNames, student);
-    }
 
     @Override
     public void saveUnternehmen(Unternehmen unternehmen) {
