@@ -4,12 +4,12 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/bf8238bc-3da0-4f4c-84c8-3f70fd137d80 -->
-    <groupId>com.spirit.application</groupId>
+    <groupId>com.spirit.bewerbung</groupId>
     <artifactId>spirit</artifactId>
     <name>spirit</name>
     <version>1.0-SNAPSHOT</version>
-<!--    <packaging>jar</packaging>-->
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
+<!--    <packaging>war</packaging>-->
 
     <properties>
         <java.version>23</java.version>
@@ -54,11 +54,11 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.parttio</groupId>
-            <artifactId>line-awesome</artifactId>
-            <version>2.1.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.parttio</groupId>-->
+<!--            <artifactId>line-awesome</artifactId>-->
+<!--            <version>2.1.0</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.postgresql</groupId>

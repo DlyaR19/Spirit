@@ -51,11 +51,11 @@ public class EntityFactory {
         return jobPost;
     }
 
-    public Application createApplication(JobPost jobPost, Student student, String base64Letter) {
-        Application application = new Application();
-        application.setJobPost(jobPost);
-        application.setStudent(student);
-        application.setCoverLetter(base64Letter);
-        return application;
+    public Bewerbung createApplication(JobPost jobPost, Student student, String base64Letter) {
+        Bewerbung bewerbung = new Bewerbung();
+        bewerbung.setJobPost(jobPost);
+        bewerbung.setStudent(student);
+        bewerbung.setAnschreiben(base64Letter);
+        return bewerbung;
     }
 }

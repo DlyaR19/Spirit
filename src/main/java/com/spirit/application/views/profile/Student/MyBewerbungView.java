@@ -1,9 +1,9 @@
 package com.spirit.application.views.profile.Student;
 
 
-import com.spirit.application.dto.ApplicationDTO;
-import com.spirit.application.entitiy.Application;
-import com.spirit.application.service.ApplicationService;
+import com.spirit.application.dto.BewerbungDTO;
+import com.spirit.application.entitiy.Bewerbung;
+import com.spirit.application.service.BewerbungService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
 import com.spirit.application.views.AppView;
@@ -26,59 +26,59 @@ import java.util.List;
 
 @Route(value="student/meine-bewerbungen", layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
-public class MyApplicationView extends Composite<VerticalLayout> {
+public class MyBewerbungView extends Composite<VerticalLayout> {
 
     private final VerticalLayout layout;
-    private final transient ApplicationService applicationService;
+    private final transient BewerbungService bewerbungService;
 
 
-    public MyApplicationView(ApplicationService applicationService, SessionService sessionService) {
-        this.applicationService = applicationService;
+    public MyBewerbungView(BewerbungService bewerbungService, SessionService sessionService) {
+        this.bewerbungService = bewerbungService;
         this.layout = new VerticalLayout();
         this.layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
         getContent().getStyle().setAlignItems(Style.AlignItems.CENTER);
-        displayStudentApplications(sessionService.getCurrentStudent().getStudentID());
+        displayStudentBewerbung(sessionService.getCurrentStudent().getStudentID());
         getContent().add(layout);
     }
 
-    private void displayStudentApplications(Long studentId) {
-        List<ApplicationDTO> applicationList = new ArrayList<>();
-        for (Application application : applicationService.getAllApplicationsByStudent(studentId)) {
-            applicationList.add(new ApplicationDTO(application));
+    private void displayStudentBewerbung(Long studentId) {
+        List<BewerbungDTO> bewerbungList = new ArrayList<>();
+        for (Bewerbung bewerbung : bewerbungService.getAllBewerbungByStudent(studentId)) {
+            bewerbungList.add(new BewerbungDTO(bewerbung));
         }
-        for (ApplicationDTO application : applicationList) {
-            layout.add(applicationCard(application));
+        for (BewerbungDTO bewerbung : bewerbungList) {
+            layout.add(bewerbungCard(bewerbung));
         }
     }
 
-    public VerticalLayout applicationCard(ApplicationDTO application) {
-        VerticalLayout applicationCard = new VerticalLayout();
-        HorizontalLayout businessLayout = new HorizontalLayout();
+    public VerticalLayout bewerbungCard(BewerbungDTO bewerbung) {
+        VerticalLayout bewerbungCard = new VerticalLayout();
+        HorizontalLayout unternehmenLayout = new HorizontalLayout();
         Avatar avatar = new Avatar();
         avatar.setImage(
                 "data:image/jpeg;base64," +
-                        application.getJobPost().getUnternehmen().getUser().getProfile().getAvatar()
+                        bewerbung.getJobPost().getUnternehmen().getUser().getProfile().getAvatar()
         );
-        businessLayout.add(avatar, new H4(application.getJobPost().getUnternehmen().getName()));
+        unternehmenLayout.add(avatar, new H4(bewerbung.getJobPost().getUnternehmen().getName()));
         HorizontalLayout infoLayout = new HorizontalLayout();
-        infoLayout.add(new H3("Bewerbung als: "), new Span(application.getJobPost().getTitle()));
+        infoLayout.add(new H3("Bewerbung als: "), new Span(bewerbung.getJobPost().getTitle()));
         VerticalLayout jobPostLayout = new VerticalLayout();
         jobPostLayout.add(
                 new H3("Stellenbeschreibung: "),
-                new Span(application.getJobPost().getDescription())
+                new Span(bewerbung.getJobPost().getDescription())
         );
         HorizontalLayout buttonLayout = new HorizontalLayout();
-        buttonLayout.add(new Button("zurückziehen", buttonClickEvent -> openDialog(application, applicationCard)));
-        applicationCard.add(businessLayout, infoLayout, jobPostLayout, buttonLayout);
-        applicationCard.setWidth("100%");
-        applicationCard.setMaxWidth("700px");
-        applicationCard.getStyle().set("border", "1px solid #ccc");
-        applicationCard.getStyle().set("border-radius", "8px");
-        applicationCard.getStyle().set("box-shadow", "0 2px 4px rgba(0, 0, 0, 0.1)");
-        return applicationCard;
+        buttonLayout.add(new Button("zurückziehen", buttonClickEvent -> openDialog(bewerbung, bewerbungCard)));
+        bewerbungCard.add(unternehmenLayout, infoLayout, jobPostLayout, buttonLayout);
+        bewerbungCard.setWidth("100%");
+        bewerbungCard.setMaxWidth("700px");
+        bewerbungCard.getStyle().set("border", "1px solid #ccc");
+        bewerbungCard.getStyle().set("border-radius", "8px");
+        bewerbungCard.getStyle().set("box-shadow", "0 2px 4px rgba(0, 0, 0, 0.1)");
+        return bewerbungCard;
     }
 
-    public void openDialog(ApplicationDTO application, VerticalLayout applicationCard) {
+    public void openDialog(BewerbungDTO bewerbung, VerticalLayout bewerbungCard) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");
         dialog.setHeight("200px");
@@ -86,8 +86,8 @@ public class MyApplicationView extends Composite<VerticalLayout> {
         H5 title = new H5("Möchstest du die Bewerbung zurückziehen?");
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.add(new Button("Ja", buttonClickEvent -> {
-            applicationService.deleteApplication(application.getApplication());
-            layout.remove(applicationCard);
+            bewerbungService.deleteBewerbung(bewerbung.getBewerbung());
+            layout.remove(bewerbungCard);
             dialog.close();
         }), new Button("Abbrechen" , buttonClickEvent -> dialog.close()));
         dialogLayout.setPadding(true);

@@ -2,7 +2,7 @@ package com.spirit.application.service;
 
 
 import com.spirit.application.entitiy.JobPost;
-import com.spirit.application.repository.ApplicationRepository;
+import com.spirit.application.repository.BewerbungRepository;
 import com.spirit.application.repository.JobPostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +13,11 @@ import java.util.List;
 public class JobPostService {
 
     private final JobPostRepository jobPostRepository;
-    private final ApplicationRepository applicationRepository;
+    private final BewerbungRepository bewerbungRepository;
 
-    public JobPostService(JobPostRepository jobPostRepository, ApplicationRepository applicationRepository) {
+    public JobPostService(JobPostRepository jobPostRepository, BewerbungRepository bewerbungRepository) {
         this.jobPostRepository = jobPostRepository;
-        this.applicationRepository = applicationRepository;
+        this.bewerbungRepository = bewerbungRepository;
     }
 
     public void saveJobPost(JobPost jobPost) {
@@ -34,7 +34,7 @@ public class JobPostService {
 
     @Transactional
     public void deleteJobPost(Long jobPostId) {
-        applicationRepository.deleteApplicationByJobPost_JobPostID(jobPostId);
+        bewerbungRepository.deleteBewerbungByJobPost_JobPostID(jobPostId);
         jobPostRepository.deleteByJobPostID(jobPostId);
     }
 

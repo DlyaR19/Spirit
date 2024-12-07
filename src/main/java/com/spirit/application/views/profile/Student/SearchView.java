@@ -2,7 +2,7 @@ package com.spirit.application.views.profile.Student;
 
 
 import com.spirit.application.dto.JobPostDTO;
-import com.spirit.application.service.ApplicationService;
+import com.spirit.application.service.BewerbungService;
 import com.spirit.application.service.JobPostService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.EntityFactory;
@@ -44,7 +44,7 @@ public class SearchView extends Composite<VerticalLayout> {
     private final transient EntityFactory entityFactory = new EntityFactory();
     private final transient MarkdownConverter markdownConverter = new MarkdownConverter();
     private final transient SessionService sessionService;
-    private final transient ApplicationService applicationService;
+    private final transient BewerbungService bewerbungService;
     private final String[] comboBoxItems = {
             "Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt",
             "Masterprojekt", "Büro", "Homeoffice",
@@ -52,9 +52,9 @@ public class SearchView extends Composite<VerticalLayout> {
 
     @Autowired
     public SearchView(JobPostService jobPostService, SessionService sessionService,
-                      ApplicationService applicationService) {
+                      BewerbungService bewerbungService) {
         this.sessionService = sessionService;
-        this.applicationService = applicationService;
+        this.bewerbungService = bewerbungService;
         this.layout = new VerticalLayout();
         this.layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
 
@@ -225,7 +225,7 @@ public class SearchView extends Composite<VerticalLayout> {
             try (InputStream inputStream = buffer.getInputStream()) {
                 byte[] bytes = inputStream.readAllBytes();
                 String base64Letter = Base64.getEncoder().encodeToString(bytes);
-                applicationService.saveApplication(entityFactory.createApplication(
+                bewerbungService.saveBewerbung(entityFactory.createApplication(
                         vacancy.getJobPost(),
                         sessionService.getCurrentStudent().getStudent(), base64Letter));
                 Notification.show("Bewerbung erfolgreich eingereicht");

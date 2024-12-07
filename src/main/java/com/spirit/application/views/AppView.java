@@ -3,13 +3,13 @@ package com.spirit.application.views;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
 import com.spirit.application.util.Utils;
-import com.spirit.application.views.profile.Student.MyApplicationView;
+import com.spirit.application.views.profile.Student.MyBewerbungView;
 import com.spirit.application.views.profile.Student.ProfilStudentView;
 import com.spirit.application.views.profile.Student.SearchView;
 import com.spirit.application.views.profile.Unternehmen.AddJobPostView;
 import com.spirit.application.views.profile.Unternehmen.MyJobPostView;
 import com.spirit.application.views.profile.Unternehmen.ProfileUnternehmenView;
-import com.spirit.application.views.profile.Unternehmen.ShowApplicationView;
+import com.spirit.application.views.profile.Unternehmen.ShowBewerbungView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -92,14 +92,14 @@ public class AppView extends AppLayout {
         if (sessionService.getUserRole().contains(Globals.Roles.STUDENT)) {
             tabs = Utils.append(tabs, createTab("Profil", ProfilStudentView.class));
             tabs = Utils.append(tabs, createTab("Job suchen", SearchView.class));
-            tabs = Utils.append(tabs, createTab("Meine Bewerbungen", MyApplicationView.class));
+            tabs = Utils.append(tabs, createTab("Meine Bewerbungen", MyBewerbungView.class));
             //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
         } else if (sessionService.getUserRole().contains(Globals.Roles.UNTERNEHMEN)) {
             tabs = Utils.append(tabs, createTab("Profil", ProfileUnternehmenView.class));
             //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
             tabs = Utils.append(tabs, createTab("Stellenausschreibung hinzufügen", AddJobPostView.class));
             tabs = Utils.append(tabs, createTab("Meine Stellenausschreibungen", MyJobPostView.class));
-            tabs = Utils.append(tabs, createTab("Bewerbungen einsehen", ShowApplicationView.class));
+            tabs = Utils.append(tabs, createTab("Bewerbungen einsehen", ShowBewerbungView.class));
         }
         return tabs;
     }
