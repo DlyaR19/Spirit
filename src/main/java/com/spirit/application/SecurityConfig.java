@@ -1,6 +1,7 @@
 package com.spirit.application;
 
 import com.spirit.application.service.SecurityService;
+import com.spirit.application.util.Globals;
 import com.spirit.application.views.login.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurity;
 import org.springframework.context.annotation.Bean;
@@ -8,14 +9,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 @Configuration
@@ -34,6 +37,16 @@ public class SecurityConfig extends VaadinWebSecurity {
         super.configure(http);
         setLoginView(http, LoginView.class);
     }
+    
+//    @Configuration
+//    public static class VaadinResourceConfig extends VaadinWebSecurity {
+//        @Override
+//        public void configure(WebSecurity web) throws Exception {
+//            web.ignoring().requestMatchers(
+//                    new AntPathRequestMatcher("/images/**")
+//            );
+//        }
+//    }
 
 
     @Bean
@@ -72,5 +85,25 @@ public class SecurityConfig extends VaadinWebSecurity {
         public boolean supports(Class<?> authentication) {
             return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
         }
+//
+//        @Configuration
+//        public static class WebConfig implements WebMvcConfigurer {
+//            @Override
+//            public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//                registry.addResourceHandler("/images/**")
+//                        .addResourceLocations("classpath:/META-INF/resources/images/");
+//            }
+//        }
+
+//        @Configuration
+//        public static class VaadinResourceConfig extends VaadinWebSecurity {
+//            @Override
+//            public void configure(WebSecurity web) throws Exception {
+//                web.ignoring().requestMatchers(
+//                        new AntPathRequestMatcher("/images/**")
+//                );
+//            }
+//        }
+
     }
 }
