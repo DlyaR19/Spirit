@@ -2,7 +2,6 @@ package com.spirit.application.views.profile.Unternehmen;
 
 
 import com.spirit.application.dto.ApplicationDTO;
-import com.spirit.application.dto.FirstNameDTO;
 import com.spirit.application.dto.JobPostDTO;
 import com.spirit.application.entitiy.Application;
 import com.spirit.application.entitiy.JobPost;
@@ -76,12 +75,7 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
         type.setWidth("min-content");
         type.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         type.setEnabled(true);
-        H4 studentName = new H4(
-                new FirstNameDTO(
-                        applicationService.getFirstName(application.getStudent())).getFirstNameName()
-                        + " "
-                        + application.getStudent().getLastName()
-        );
+        H4 studentName = new H4(application.getStudent().getFirstName() + " " + application.getStudent().getLastName());
         avaterLayout.add(studentAvatar, studentName);
         H6 profileDescription = new H6("Profilbeschreibung");
         Div profileDescriptionParagraph = new Div();
@@ -100,7 +94,7 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
             studentAvatarDialog.setImage(
                     "data:image/jpeg;base64," + application.getStudent().getUser().getProfile().getAvatar()
             );
-            H6 profileName = new H6(applicationService.getFirstName(application.getStudent()) + " " + application.getStudent().getLastName());
+            H6 profileName = new H6(application.getStudent().getFirstName() + " " + application.getStudent().getLastName());
             // TODO get Interessen und co from profilStudentLayout
             TextArea profileDescriptionDialog = new TextArea("Profilbeschreibung");
             profileDescriptionDialog.setValue(application.getStudent().getUser().getProfile().getProfileDescription());

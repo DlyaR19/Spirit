@@ -8,6 +8,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
+// TODO Chat view for students
 @PageTitle("Chat")
 @Route(value = Globals.Pages.CHAT_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)

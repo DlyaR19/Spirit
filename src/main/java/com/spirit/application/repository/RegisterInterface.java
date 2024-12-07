@@ -1,11 +1,11 @@
-package com.spirit.application.service;
+package com.spirit.application.repository;
 
 
 import com.spirit.application.entitiy.*;
 
 import java.util.List;
 
-public interface RegisterService {
+public interface RegisterInterface {
     void saveUser(User user);
 
     List<User> getUsers();
@@ -17,10 +17,6 @@ public interface RegisterService {
     void saveProfile(Profile profile);
 
     void saveStudent(Student student);
-
-    void saveVorname(FirstName firstName);
-
-    void saveFirstNames(String[] firstNames, Student student);
 
     void saveUnternehmen(Unternehmen unternehmen);
 

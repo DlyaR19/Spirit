@@ -30,6 +30,9 @@ public class Student implements Serializable {
     @Basic
     @Column(name = "lebenslauf", columnDefinition = "TEXT")
     private String resume;
+    @Basic
+    @Column(name = "vorname", length = 128, nullable = false)
+    private String firstName;
 
 
     @Override
@@ -40,11 +43,12 @@ public class Student implements Serializable {
         return studentID == student.studentID &&
                 Objects.equals(user, student.user) &&
                 Objects.equals(lastName, student.lastName) &&
-                Objects.equals(birthdate, student.birthdate);
+                Objects.equals(birthdate, student.birthdate) &&
+                Objects.equals(firstName, student.firstName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentID, user, lastName, birthdate);
+        return Objects.hash(studentID, user, lastName, birthdate, firstName);
     }
 }

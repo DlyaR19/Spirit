@@ -1,7 +1,7 @@
 package com.spirit.application.views.register;
 
 
-import com.spirit.application.service.RegisterService;
+import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.Globals;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -17,7 +17,7 @@ import com.vaadin.flow.router.RouterLayout;
 
 public abstract class BaseRegisterView extends FormLayout implements RouterLayout {
 
-    protected final transient RegisterService registerService;
+    protected final transient RegisterInterface registerInterface;
     protected TextField usernameField;
     protected PasswordField passwordField;
     protected EmailField emailField;
@@ -27,8 +27,8 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
     protected Span errorMessageField;
     protected VerticalLayout verticalLayout;
 
-    protected BaseRegisterView(RegisterService registerService) {
-        this.registerService = registerService;
+    protected BaseRegisterView(RegisterInterface registerInterface) {
+        this.registerInterface = registerInterface;
         setupLayout();
         setupForm();
         addButtons();

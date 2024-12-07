@@ -51,10 +51,6 @@ public class JobPost implements Serializable {
                 Objects.equals(publishDate, jobPost.publishDate);
     }
 
-//    public String getTitle() {
-//        return title;
-//    }
-
     @Override
     public int hashCode() {
         return Objects.hash(jobPostID, unternehmen, title, description, location, publishDate);

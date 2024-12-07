@@ -40,8 +40,7 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
     private final transient MarkdownConverter markdownConverter;
 
     @Autowired
-    public MyJobPostView(
-                           SessionService sessionService,
+    public MyJobPostView(SessionService sessionService,
                            JobPostService jobPostService,
                            MarkdownConverter markdownConverter) {
         this.sessionService = sessionService;

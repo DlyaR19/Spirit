@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 
+// This class is used to create entities with the given parameters
+// Pattern: Factory
 @Component
 public class EntityFactory {
 
@@ -23,20 +25,13 @@ public class EntityFactory {
         return user;
     }
 
-    public Student createStudent(User user, String lastName) {
+    public Student createStudent(User user, String lastName, String firstName) {
         Student student = new Student();
         student.setUser(user);
         student.setLastName(lastName);
+        student.setFirstName(firstName);
         return student;
     }
-
-    public FirstName createFirstName(String firstName, Student student) {
-        FirstName firstNameEntity = new FirstName();
-        firstNameEntity.setFirstNameName(firstName);
-        firstNameEntity.setStudent(student);
-        return firstNameEntity;
-    }
-
 
     public Unternehmen createUnternehmen(String name, User user) {
         Unternehmen unternehmen = new Unternehmen();

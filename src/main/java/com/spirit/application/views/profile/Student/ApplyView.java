@@ -3,11 +3,9 @@ package com.spirit.application.views.profile.Student;
 
 import com.spirit.application.util.Globals;
 import com.spirit.application.views.AppView;
-import com.spirit.application.views.MainLayout;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -16,8 +14,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 
-
-//@CssImport("./styles/index.css")
 @Route(value = Globals.Pages.APPLY_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
 public class ApplyView extends Composite<VerticalLayout> {

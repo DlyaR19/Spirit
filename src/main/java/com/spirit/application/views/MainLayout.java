@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * The main view is a top-level placeholder for other views.
+ * Before the user logs in, this view is displayed.
  */
 @Layout
 @AnonymousAllowed
@@ -69,7 +70,9 @@ public class MainLayout extends AppLayout {
 
     private Footer createFooter() {
         Footer layout = new Footer();
-
+        layout.addClassNames(LumoUtility.Padding.Vertical.SMALL);
+        layout.add(new Hr());
+        layout.add(new Span("© 2024 Spirit"));
         return layout;
     }
 

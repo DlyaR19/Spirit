@@ -5,7 +5,7 @@ import java.util.Arrays;
 public class Utils {
 
     private Utils() {
-        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+        throw new UnsupportedOperationException("Class cannot be instantiated as it is a utility class");
     }
 
     public static <T> T[] append(T[] arr, T element) {

@@ -4,7 +4,7 @@ package com.spirit.application.views.register;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.spirit.application.service.RegisterService;
+import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.Globals;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,8 +17,8 @@ public class StudentRegisterView extends BaseRegisterView {
     private TextField lastNameTextField;
 
     @Autowired
-    public StudentRegisterView(@Qualifier("registerProxy") RegisterService registerService) {
-        super(registerService);
+    public StudentRegisterView(@Qualifier("registerProxy") RegisterInterface registerInterface) {
+        super(registerInterface);
         setupStudentForm();
     }
     // TODO andere Felder hinzufügen wie z.B. Studiengang, Geburtsdatum (date picker), etc.
@@ -54,7 +54,7 @@ public class StudentRegisterView extends BaseRegisterView {
         String lastName = this.lastNameTextField.getValue();
         String passwordConfirmation = passwordConfirmationField.getValue();
 
-        registerService.registerStudent(username, password, email, firstName, lastName, passwordConfirmation);
+        registerInterface.registerStudent(username, password, email, firstName, lastName, passwordConfirmation);
         UI.getCurrent().navigate(Globals.Pages.LOGIN);
     }
 }

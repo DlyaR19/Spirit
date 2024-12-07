@@ -4,7 +4,7 @@ package com.spirit.application.service.impl;
 
 import com.spirit.application.entitiy.*;
 import com.spirit.application.repository.*;
-import com.spirit.application.service.RegisterService;
+import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.EntityFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class RegisterServiceImpl implements RegisterService {
+public class RegisterInterfaceImpl implements RegisterInterface {
 
     private final EntityFactory entityFactory;
 
@@ -23,18 +23,15 @@ public class RegisterServiceImpl implements RegisterService {
 
     private final StudentRepository studentRepository;
 
-    private final FirstNameRepository firstNameRepository;
-
     private final UnternehmenRepository unternehmenRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public RegisterServiceImpl(EntityFactory entityFactory, UserRepository userRepository, ProfileRepository profileRepository, StudentRepository studentRepository, FirstNameRepository firstNameRepository, UnternehmenRepository unternehmenRepository, PasswordEncoder passwordEncoder) {
+    public RegisterInterfaceImpl(EntityFactory entityFactory, UserRepository userRepository, ProfileRepository profileRepository, StudentRepository studentRepository, UnternehmenRepository unternehmenRepository, PasswordEncoder passwordEncoder) {
         this.entityFactory = entityFactory;
         this.userRepository = userRepository;
         this.profileRepository = profileRepository;
         this.studentRepository = studentRepository;
-        this.firstNameRepository = firstNameRepository;
         this.unternehmenRepository = unternehmenRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -56,9 +53,8 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation) {
-        Student student = entityFactory.createStudent(registerUser(username, password, email), lastName);
+        Student student = entityFactory.createStudent(registerUser(username, password, email), lastName, firstName);
         saveStudent(student);
-        saveFirstNames(firstName.split(" "), student);
     }
 
     private User registerUser(String username, String password, String email) {
@@ -89,18 +85,6 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public void saveStudent(Student student) {
         studentRepository.save(student);
-    }
-
-    @Override
-    public void saveVorname(FirstName firstName) {
-        firstNameRepository.save(firstName);
-    }
-
-    @Override
-    public void saveFirstNames(String[] firstNames, Student student) {
-        for (String firstName : firstNames) {
-            saveVorname(entityFactory.createFirstName(firstName, student));
-        }
     }
 
     @Override
