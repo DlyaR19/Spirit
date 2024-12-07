@@ -1,101 +1,115 @@
 package com.spirit.application.views.login;
 
-
-import com.spirit.application.dto.UserDTO;
-import com.spirit.application.service.LoginService;
-import com.spirit.application.util.Globals;
-import com.vaadin.flow.component.Text;
+import com.spirit.application.views.main.MainView;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.login.AbstractLogin;
-import com.vaadin.flow.component.login.LoginForm;
-import com.vaadin.flow.component.login.LoginI18n;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.*;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-
 @PageTitle("Login")
-@Route(Globals.Pages.LOGIN)
-@Menu(order = 1)
+@Route(value = "login", layout = MainView.class)
 @AnonymousAllowed
-public class LoginView extends VerticalLayout implements BeforeEnterObserver {
+public class LoginView extends VerticalLayout {
 
-    private final LoginForm loginForm;
-    private final transient LoginService loginService;
-
-    // TODO Passwort vergessen Funktionalität hinzufügen (wenn nötig)
-
-    public LoginView(LoginService loginService) {
-        loginForm = setUpUI();
-        //loginForm.addForgotPasswordListener(e -> UI.getCurrent().navigate(Globals.Pages.FORGOT_PASSWORD));
-        loginForm.addLoginListener(this::handleLogin);
-        this.loginService = loginService;
-    }
-
-    private LoginForm setUpUI() {
-        LoginForm setUpLoginForm;
-        addClassName("main");
+    public LoginView() {
+        // Zentrieren des Inhalts
         setSizeFull();
+        setAlignItems(FlexComponent.Alignment.CENTER);
+        setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        getStyle().set("background-color", "#f9fafb");
 
-        setUpLoginForm = createLoginForm();
-        setUpLoginForm.setAction("login");
+        // Login-Box erstellen
+        Div loginBox = new Div();
+        loginBox.getStyle()
+                .set("padding", "2rem")
+                .set("border-radius", "12px")
+                .set("box-shadow", "0 4px 12px rgba(0, 0, 0, 0.1)")
+                .set("background-color", "white")
+                .set("max-width", "400px")
+                .set("width", "100%");
 
-        add(setUpLoginForm);
-        this.setAlignItems(Alignment.CENTER);
+        // Titel
+        H1 title = new H1("Anmelden");
+        title.getStyle()
+                .set("font-size", "24px")
+                .set("font-weight", "bold")
+                .set("text-align", "center")
+                .set("margin-bottom", "1rem");
+        loginBox.add(title);
 
-        HorizontalLayout additionalInfoLayout = new HorizontalLayout();
-        additionalInfoLayout.add(new Text("Sie haben noch kein Konto? "), new Anchor(Globals.Pages.SIGNUP, "Melden Sie sich hier an!"));
-        additionalInfoLayout.setAlignItems(Alignment.CENTER);
+        // Benutzername-Feld
+        TextField usernameField = new TextField("Benutzername");
+        usernameField.setPlaceholder("Geben Sie Ihren Benutzernamen ein");
+        usernameField.setWidthFull();
+        usernameField.getStyle().set("margin-bottom", "1rem");
+        loginBox.add(usernameField);
 
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.setAlignItems(Alignment.CENTER);
-        footer.setSpacing(true);
-        footer.add(new Text("© 2024 Spirit"), new Anchor(Globals.Pages.ABOUTUS, "About Spirit"));
+        // Passwort-Feld
+        PasswordField passwordField = new PasswordField("Passwort");
+        passwordField.setPlaceholder("Geben Sie Ihr Passwort ein");
+        passwordField.setWidthFull();
+        passwordField.getStyle().set("margin-bottom", "1rem");
+        loginBox.add(passwordField);
 
-        VerticalLayout layout = new VerticalLayout(setUpLoginForm, additionalInfoLayout, footer);
-        layout.setAlignItems(Alignment.CENTER);
+        // Login-Button
+        Button loginButton = new Button("Anmelden");
+        loginButton.setWidthFull();
+        loginButton.getStyle()
+                .set("background-color", "#007bff")
+                .set("color", "white")
+                .set("padding", "0.8rem")
+                .set("font-size", "16px")
+                .set("border-radius", "8px")
+                .set("cursor", "pointer");
+        loginButton.addClickListener(event -> {
+            // Login-Logik hier hinzufügen
+        });
+        loginBox.add(loginButton);
 
-        add(layout);
+        // Passwort vergessen
+        Anchor forgotPassword = new Anchor("#", "Passwort vergessen?");
+        forgotPassword.getStyle()
+                .set("display", "block")
+                .set("text-align", "center")
+                .set("margin-top", "1rem")
+                .set("color", "#007bff")
+                .set("font-size", "14px");
+        loginBox.add(forgotPassword);
 
-        return setUpLoginForm;
-    }
+        // Registrierung
+        Paragraph registerPrompt = new Paragraph("Sie haben noch kein Konto?");
+        registerPrompt.getStyle()
+                .set("margin-top", "1rem")
+                .set("font-size", "14px")
+                .set("text-align", "center");
+        Anchor registerLink = new Anchor("register", "Melden Sie sich hier an!");
+        registerLink.getStyle()
+                .set("font-size", "14px")
+                .set("color", "#007bff")
+                .set("text-decoration", "underline");
 
-    private LoginForm createLoginForm() {
-        LoginForm component = new LoginForm();
-        LoginI18n i18n = LoginI18n.createDefault();
-        LoginI18n.Form i18nForm = i18n.getForm();
+        Div registerDiv = new Div(registerPrompt, registerLink);
+        registerDiv.getStyle().set("text-align", "center");
+        loginBox.add(registerDiv);
 
-        i18nForm.setTitle("Anmelden");
-        i18nForm.setUsername("Benutzername");
-        i18nForm.setPassword("Passwort");
-        i18nForm.setSubmit("Anmelden");
-        i18nForm.setForgotPassword("Passwort vergessen");
-        i18n.setForm(i18nForm);
-        component.setI18n(i18n);
+        // Footer
+        Paragraph footer = new Paragraph("© 2024 Spirit. Alle Rechte vorbehalten.");
+        footer.getStyle()
+                .set("font-size", "12px")
+                .set("color", "#888")
+                .set("text-align", "center")
+                .set("margin-top", "2rem");
+        loginBox.add(footer);
 
-        return component;
-    }
-
-    private void handleLogin(AbstractLogin.LoginEvent input) {
-        try {
-            loginService.startSession(new UserDTO(loginService.login(input.getUsername(), input.getPassword())));
-        } catch (Exception e) {
-            Notification.show("Benutzer mit diesem Benutzernamen und/oder Passwort konnte nicht gefunden werden!");
-        }
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (beforeEnterEvent.getLocation()
-                .getQueryParameters()
-                .getParameters()
-                .containsKey("error")) {
-            loginForm.setError(true);
-            Notification notification = Notification.show("Anmelden fehlgeschlagen");
-            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-        }
+        // Login-Box hinzufügen
+        add(loginBox);
     }
 }
