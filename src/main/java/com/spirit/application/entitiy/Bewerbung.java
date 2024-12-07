@@ -11,13 +11,13 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
-@Table(name = "bewirbt", schema = "public")
-public class Application implements Serializable {
+@Table(name = "bewerbung", schema = "public")
+public class Bewerbung implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bewirbtid")
-    private long applicationID;
+    @Column(name = "bewerbungid")
+    private long bewerbungID;
 
     @ManyToOne
     @JoinColumn(name = "studentid")
@@ -31,21 +31,21 @@ public class Application implements Serializable {
 
     @Basic
     @Column(name = "anschreiben", columnDefinition = "TEXT")
-    private String coverLetter;
+    private String anschreiben;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Application that = (Application) o;
-        return applicationID == that.applicationID &&
+        Bewerbung that = (Bewerbung) o;
+        return bewerbungID == that.bewerbungID &&
                 Objects.equals(student, that.student) &&
                 Objects.equals(jobPost, that.jobPost) &&
-                Objects.equals(coverLetter, that.coverLetter);
+                Objects.equals(anschreiben, that.anschreiben);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(applicationID, student, jobPost, coverLetter);
+        return Objects.hash(bewerbungID, student, jobPost, anschreiben);
     }
 }

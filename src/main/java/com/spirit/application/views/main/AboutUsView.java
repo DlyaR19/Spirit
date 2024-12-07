@@ -58,11 +58,11 @@ public class AboutUsView extends VerticalLayout {
                 "                        menschlichen Ansatz zu kombinieren, um Unternehmen und Individuen gleichermaßen zu helfen, ihre Ziele zu erreichen.\n");
 
 
-//        //Logo
-//        H2 logoTitle = new H2("Unser Logo");
-//        logoTitle.getElement().getStyle().set("text-align", "center");
-//        Image logo = new Image("/images/spirit_logo.png", "Spirit Logo");
-//        logo.setWidth("300px");
+        //Logo
+        H2 logoTitle = new H2("Unser Logo");
+        logoTitle.getElement().getStyle().set("text-align", "center");
+        Image logo = new Image("/images/spirit_logo.png", "Spirit Logo");
+        logo.setWidth("300px");
 
         //Werte
         H2 valuesTitle = new H2("Unsere Werte");
@@ -93,7 +93,7 @@ public class AboutUsView extends VerticalLayout {
         team.add(new Div(new Text("Zerda Aydin – Prozess-Managerin")));
 
         // Hinzufügen der Komponenten zum Layout
-        add(title, intro, visionTitle, vision, missionTitle, mission,
+        add(title, intro, visionTitle, vision, missionTitle, mission, logoTitle, logo,
                 valuesTitle, valuesList, teamTitle, team);
     }
 }

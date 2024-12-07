@@ -1,11 +1,11 @@
 package com.spirit.application.views.profile.Unternehmen;
 
 
-import com.spirit.application.dto.ApplicationDTO;
+import com.spirit.application.dto.BewerbungDTO;
 import com.spirit.application.dto.JobPostDTO;
-import com.spirit.application.entitiy.Application;
+import com.spirit.application.entitiy.Bewerbung;
 import com.spirit.application.entitiy.JobPost;
-import com.spirit.application.service.ApplicationService;
+import com.spirit.application.service.BewerbungService;
 import com.spirit.application.service.JobPostService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
@@ -35,53 +35,53 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-@Route(value = Globals.Pages.SHOW_APPLICATION, layout = AppView.class)
-@PageTitle("Show Applications")
+@Route(value = Globals.Pages.SHOW_BEWERBUNG, layout = AppView.class)
+@PageTitle("Bewerbungen")
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
-public class ShowApplicationView extends Composite<VerticalLayout> implements AfterNavigationObserver {
+public class ShowBewerbungView extends Composite<VerticalLayout> implements AfterNavigationObserver {
 
     private static final String INNER_HTML = "innerHTML";
     private final VerticalLayout layout = new VerticalLayout();
-    private final List<ApplicationDTO> applicationsList = new ArrayList<>();
+    private final List<BewerbungDTO> bewerbungList = new ArrayList<>();
     private final transient MarkdownConverter markdownConverter;
-    private final transient ApplicationService applicationService;
+    private final transient BewerbungService bewerbungService;
     private final transient SessionService sessionService;
     private final transient JobPostService jobPostService;
 
-    public ShowApplicationView(
+    public ShowBewerbungView(
             MarkdownConverter markdownConverter,
-            ApplicationService applicationService,
+            BewerbungService bewerbungService,
             SessionService sessionService,
             JobPostService jobPostService
     ) {
         this.markdownConverter = markdownConverter;
-        this.applicationService = applicationService;
+        this.bewerbungService = bewerbungService;
         this.sessionService = sessionService;
         this.jobPostService = jobPostService;
         getContent().getStyle().setAlignItems(Style.AlignItems.CENTER);
         getContent().add(layout);
     }
 
-    public VerticalLayout studentCard(ApplicationDTO application, JobPostDTO jobPost) {
+    public VerticalLayout studentCard(BewerbungDTO bewerbung, JobPostDTO jobPost) {
         VerticalLayout studentCardLayout = new VerticalLayout();
         HorizontalLayout jobPostInfo = new HorizontalLayout();
         jobPostInfo.add(new H4(jobPost.getTitle()));
         HorizontalLayout avaterLayout = new HorizontalLayout();
         Avatar studentAvatar = new Avatar();
         studentAvatar.setImage(
-                "data:image/jpeg;base64," + application.getStudent().getUser().getProfile().getAvatar()
+                "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
         );
         Button type = new Button(jobPost.getEmploymentType());
         type.setWidth("min-content");
         type.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         type.setEnabled(true);
-        H4 studentName = new H4(application.getStudent().getFirstName() + " " + application.getStudent().getLastName());
+        H4 studentName = new H4(bewerbung.getStudent().getFirstName() + " " + bewerbung.getStudent().getLastName());
         avaterLayout.add(studentAvatar, studentName);
         H6 profileDescription = new H6("Profilbeschreibung");
         Div profileDescriptionParagraph = new Div();
         profileDescriptionParagraph.getElement().setProperty(
                 INNER_HTML, markdownConverter.convertToHtml(
-                        application.getStudent().getUser().getProfile().getProfileDescription())
+                        bewerbung.getStudent().getUser().getProfile().getProfileDescription())
         );
         HorizontalLayout buttonLayout = new HorizontalLayout();
 
@@ -92,12 +92,12 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
             VerticalLayout profileLayout = new VerticalLayout();
             Avatar studentAvatarDialog = new Avatar();
             studentAvatarDialog.setImage(
-                    "data:image/jpeg;base64," + application.getStudent().getUser().getProfile().getAvatar()
+                    "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
             );
-            H6 profileName = new H6(application.getStudent().getFirstName() + " " + application.getStudent().getLastName());
+            H6 profileName = new H6(bewerbung.getStudent().getFirstName() + " " + bewerbung.getStudent().getLastName());
             // TODO get Interessen und co from profilStudentLayout
             TextArea profileDescriptionDialog = new TextArea("Profilbeschreibung");
-            profileDescriptionDialog.setValue(application.getStudent().getUser().getProfile().getProfileDescription());
+            profileDescriptionDialog.setValue(bewerbung.getStudent().getUser().getProfile().getProfileDescription());
             profileDescriptionDialog.setReadOnly(true);
             profileLayout.add(studentAvatarDialog, profileName, profileDescriptionDialog);
             profileDialog.add(profileLayout);
@@ -106,10 +106,10 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
 
         });
 
-        Button downloadCoverLetterButton = getDownloadCoverLetterButton(application);
+        Button downloadAnschreibenButton = getDownloadAnschreibenButton(bewerbung);
 
 
-        buttonLayout.add(showProfileButton, downloadCoverLetterButton);
+        buttonLayout.add(showProfileButton, downloadAnschreibenButton);
 
 
         studentCardLayout.add(jobPostInfo, type, avaterLayout, profileDescription, profileDescriptionParagraph, buttonLayout);
@@ -121,10 +121,10 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
         return studentCardLayout;
     }
 
-    private @NotNull Button getDownloadCoverLetterButton(ApplicationDTO application) {
-        Button downloadCoverLetterButton = new Button("Download Bewerbung");
-        downloadCoverLetterButton.addClickListener(e -> {
-            String base64coverLetter = applicationService.getCoverLetter(application.getApplicationID());
+    private @NotNull Button getDownloadAnschreibenButton(BewerbungDTO bewerbung) {
+        Button downloadAnschreibenButton = new Button("Download Bewerbung");
+        downloadAnschreibenButton.addClickListener(e -> {
+            String base64coverLetter = bewerbungService.getAnschreiben(bewerbung.getBewerbungID());
             if (base64coverLetter != null && !base64coverLetter.isEmpty()) {
 
                 byte[] pdfBytes = Base64.getDecoder().decode(base64coverLetter);
@@ -141,27 +141,27 @@ public class ShowApplicationView extends Composite<VerticalLayout> implements Af
                 Notification.show("Bewerbung-Download gestartet.");
             } else {
                 Notification.show("Keine Bewerbung gefunden.");
-                downloadCoverLetterButton.setEnabled(false);
+                downloadAnschreibenButton.setEnabled(false);
             }
         });
-        return downloadCoverLetterButton;
+        return downloadAnschreibenButton;
     }
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        loadAndDisplayApplications(sessionService.getCurrentUnternehmen().getUnternehmenID());
+        loadAndDisplayBerwerbung(sessionService.getCurrentUnternehmen().getUnternehmenID());
     }
 
-    private void loadAndDisplayApplications(Long unternehmenId) {
+    private void loadAndDisplayBerwerbung(Long unternehmenId) {
         List<JobPost> jobPosts = jobPostService.getJobPostByUnternehmenId(unternehmenId);
         layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
         for (JobPost jobPost : jobPosts) {
             JobPostDTO jobPostDTO = new JobPostDTO(jobPost);
-            List<Application> applications = applicationService.getAllApplications(jobPost.getJobPostID());
-            for (Application application : applications) {
-                ApplicationDTO applicationDTO = new ApplicationDTO(application);
-                applicationsList.add(applicationDTO);
-                layout.add(studentCard(applicationDTO, jobPostDTO));
+            List<Bewerbung> bewerbungs = bewerbungService.getAllBewerbung(jobPost.getJobPostID());
+            for (Bewerbung bewerbung : bewerbungs) {
+                BewerbungDTO bewerbungDTO = new BewerbungDTO(bewerbung);
+                bewerbungList.add(bewerbungDTO);
+                layout.add(studentCard(bewerbungDTO, jobPostDTO));
             }
         }
     }

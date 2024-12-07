@@ -26,7 +26,7 @@ public class Globals {
         public static final String PROFIL_STUDENT = "student/profile";
         public static final String PROFIL_UNTERNEHMEN = "unternehmen/profile";
         public static final String MY_JOBPOSTS = "unternehmen/my-jobposts";
-        public static final String SHOW_APPLICATION = "unternehmen/show/application";
+        public static final String SHOW_BEWERBUNG = "unternehmen/show/bewerbung";
         public static final String JOBPOST = "unternehmen/jobpost";
         public static final String SEARCH_STUDENT = "student/search";
         public static final String APPLY_STUDENT = "student/apply";
