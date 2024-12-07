@@ -21,6 +21,7 @@ import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @PageTitle("JobPost Details")
 @Route(value = Globals.Pages.MY_JOBPOSTS, layout = AppView.class)
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
+
 public class MyJobPostView extends Composite<VerticalLayout> implements AfterNavigationObserver {
 
     private static final String INNER_HTML = "innerHTML";

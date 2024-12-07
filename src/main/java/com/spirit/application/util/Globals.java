@@ -31,6 +31,7 @@ public class Globals {
         public static final String SEARCH_STUDENT = "student/search";
         public static final String APPLY_STUDENT = "student/apply";
         public static final String ABOUTUS = "about";
+        public static final String DASHBOARD = "dashboard";
         public static final String CHAT_STUDENT = "student/chat";
         public static final String CHAT_UNTERNEHMEN = "unternehmen/chat";
 
