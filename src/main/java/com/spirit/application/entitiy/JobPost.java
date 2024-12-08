@@ -23,19 +23,19 @@ public class JobPost implements Serializable {
     private Unternehmen unternehmen;
     @Basic
     @Column(name = "titel", length = 256, nullable = false)
-    private String title;
+    private String titel;
     @Basic
     @Column(name = "beschreibung", length = 6400, nullable = false)
-    private String description;
+    private String beschreibung;
     @Basic
     @Column(name = "anstellungsart", length = 128, nullable = false)
-    private String employmentType;
+    private String anstellungsart;
     @Basic
     @Column(name = "standort", length = 256, nullable = false)
-    private String location;
+    private String standort;
     @Basic
     @Column(name = "veroeffentlichungsdatum", nullable = false)
-    private Date publishDate;
+    private Date veroeffentlichungsdatum;
 
 
     @Override
@@ -45,15 +45,15 @@ public class JobPost implements Serializable {
         JobPost jobPost = (JobPost) o;
         return jobPostID == jobPost.jobPostID &&
                 Objects.equals(unternehmen, jobPost.unternehmen) &&
-                Objects.equals(title, jobPost.title) &&
-                Objects.equals(description, jobPost.description) &&
-                Objects.equals(location, jobPost.location) &&
-                Objects.equals(publishDate, jobPost.publishDate);
+                Objects.equals(titel, jobPost.titel) &&
+                Objects.equals(beschreibung, jobPost.beschreibung) &&
+                Objects.equals(standort, jobPost.standort) &&
+                Objects.equals(veroeffentlichungsdatum, jobPost.veroeffentlichungsdatum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(jobPostID, unternehmen, title, description, location, publishDate);
+        return Objects.hash(jobPostID, unternehmen, titel, beschreibung, standort, veroeffentlichungsdatum);
     }
 
 }

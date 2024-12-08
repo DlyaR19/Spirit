@@ -45,25 +45,23 @@ public class AppView extends AppLayout {
         setUpUI();
     }
 
-    private static Tab createTab(String label, VaadinIcon icon, Class<? extends Component> navigationTarget) {
+    private static Tab createTab(String s, VaadinIcon icon, Class<? extends Component> navigationTarget) {
         Icon tabIcon = icon.create();
-        tabIcon.setSize("24px"); // Icon-Größe anpassen
-        tabIcon.getStyle().set("margin", "0 auto"); // Zentrierung des Icons
-
-        RouterLink link = new RouterLink(label, navigationTarget);
-        link.getStyle().set("text-align", "center"); // Text zentrieren
-        link.addClassName("menu-link"); // CSS-Klasse hinzufügen
-
+        tabIcon.setSize("24px");
+        tabIcon.getStyle().set("margin", "0 auto");
+        RouterLink link = new RouterLink(s, navigationTarget);
+        link.getStyle().set("text-align", "center");
+        link.addClassName("menu-link");
         // Vertikales Layout für Icon und Text
-        VerticalLayout layout = new VerticalLayout(tabIcon, link);
+        HorizontalLayout layout = new HorizontalLayout(tabIcon, link);
         layout.addClassName("menu-item"); // CSS-Klasse für die Linie und Abstände
-        layout.setSpacing(false);
-        layout.setPadding(false);
+        layout.setSpacing(true);
+        layout.setPadding(true);
         layout.setAlignItems(FlexComponent.Alignment.CENTER); // Inhalte zentrieren
 
-        final Tab tab = new Tab(layout); // Füge das Layout in den Tab ein
-        ComponentUtil.setData(tab, Class.class, navigationTarget);
-        return tab;
+        final Tab t = new Tab(layout);
+        ComponentUtil.setData(t, Class.class, navigationTarget);
+        return t;
     }
 
     private void setUpUI() {
@@ -75,6 +73,7 @@ public class AppView extends AppLayout {
     }
 
     private Component createHeaderContent() {
+
         H1 viewTitle;
         HorizontalLayout layout = new HorizontalLayout();
         layout.setId("header");
@@ -83,17 +82,17 @@ public class AppView extends AppLayout {
 
         layout.add(new DrawerToggle());
         viewTitle = new H1();
-        layout.addAndExpand(viewTitle); // Titel wird erweitert
+        viewTitle.setWidthFull();
+        layout.add(viewTitle);
 
         HorizontalLayout topRightLayout = new HorizontalLayout();
         topRightLayout.setWidthFull();
         topRightLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
         topRightLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        // Abmeldebutton mit Icon
         MenuBar menuBar = new MenuBar();
-        menuBar.addClassName("logout-button"); // Optional: CSS-Klasse für Styling
-        menuBar.addItem(createLogoutButton(), e -> logoutUser()); // Logout-Button hinzufügen
+        menuBar.addClassName("logout-button");
+        menuBar.addItem(createLogoutButton(), e -> logoutUser());
         topRightLayout.add(menuBar);
 
         layout.add(topRightLayout);
@@ -101,19 +100,15 @@ public class AppView extends AppLayout {
     }
 
     private HorizontalLayout createLogoutButton() {
-        Icon logoutIcon = VaadinIcon.SIGN_OUT.create(); // Icon für Abmeldung
-        logoutIcon.setSize("16px"); // Größe des Icons
-        logoutIcon.getStyle().set("margin-right", "5px"); // Abstand zwischen Icon und Text
-
-        Span logoutText = new Span("Abmelden"); // Text für den Button
-
-        // Kombiniere Icon und Text
-        HorizontalLayout buttonLayout = new HorizontalLayout(logoutIcon, logoutText);
-        buttonLayout.setSpacing(false); // Kein zusätzlicher Abstand
-        buttonLayout.setAlignItems(FlexComponent.Alignment.CENTER); // Inhalte zentrieren
-        buttonLayout.getStyle().set("cursor", "pointer"); // Zeige Hand-Cursor bei Hover
-
-        return buttonLayout;
+        Icon icon = VaadinIcon.SIGN_OUT.create();
+        icon.setSize("16px");
+        icon.getStyle().set("margin-right", "5px");
+        Span logoutText = new Span("Abmelden");
+        HorizontalLayout layout = new HorizontalLayout(icon, logoutText);
+        layout.setSpacing(false);
+        layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.getStyle().set("cursor", "pointer");
+        return layout;
     }
 
     private Tabs createMenu() {
@@ -124,19 +119,21 @@ public class AppView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
+
         Tab[] tabs = new Tab[]{};
 
         if (sessionService.getUserRole().contains(Globals.Roles.STUDENT)) {
             tabs = Utils.append(tabs, createTab("Profil", VaadinIcon.USER, ProfilStudentView.class));
             tabs = Utils.append(tabs, createTab("Job suchen", VaadinIcon.SEARCH, SearchView.class));
             tabs = Utils.append(tabs, createTab("Meine Bewerbungen", VaadinIcon.FILE_TEXT, MyBewerbungView.class));
+            //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
         } else if (sessionService.getUserRole().contains(Globals.Roles.UNTERNEHMEN)) {
             tabs = Utils.append(tabs, createTab("Profil", VaadinIcon.BUILDING, ProfileUnternehmenView.class));
+            //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
             tabs = Utils.append(tabs, createTab("Stellenausschreibung hinzufügen", VaadinIcon.PLUS_CIRCLE, AddJobPostView.class));
             tabs = Utils.append(tabs, createTab("Meine Stellenausschreibungen", VaadinIcon.CLIPBOARD, MyJobPostView.class));
             tabs = Utils.append(tabs, createTab("Bewerbungen einsehen", VaadinIcon.FILE_PROCESS, ShowBewerbungView.class));
         }
-
         return tabs;
     }
 
@@ -162,11 +159,13 @@ public class AppView extends AppLayout {
         verticalLayout.add(menu);
         return verticalLayout;
     }
+
     private Footer createFooter() {
-        Footer layout = new Footer();
-        layout.addClassNames(LumoUtility.Padding.Vertical.SMALL);
-        layout.add(new Hr());
-        layout.add(new Span("© 2024 Spirit"));
-        return layout;
+        Footer footer = new Footer();
+        footer.addClassName(LumoUtility.Padding.Vertical.SMALL);
+        footer.add(new Hr());
+        footer.add(new Span("© 2021 Spirit"));
+        return footer;
     }
+
 }

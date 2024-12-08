@@ -93,11 +93,11 @@
 
 .main-view .drop-zone[remaining-space] {
   background: repeating-linear-gradient(
-    -45deg,
-    var(--cv-stripe-color),
-    var(--cv-stripe-color) var(--cv-stripe-width),
-    transparent var(--cv-stripe-width),
-    transparent var(--cv-stripe-gap)
+          -45deg,
+          var(--cv-stripe-color),
+          var(--cv-stripe-color) var(--cv-stripe-width),
+          transparent var(--cv-stripe-width),
+          transparent var(--cv-stripe-gap)
   );
 }
 

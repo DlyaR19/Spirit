@@ -9,6 +9,9 @@ import com.spirit.application.views.profile.ProfileBaseView;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
+// TODO anstelle von linkedIn vielleicht Textfelder dynamisch generieren (siehe ProfileBaseView)
+// TODO andere Informationen hinzufügen wie z.B. Branche, Ansprechpartner, etc.
+
 @Route(value = Globals.Pages.PROFIL_UNTERNEHMEN, layout = AppView.class)
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
 public class ProfileUnternehmenView extends ProfileBaseView {

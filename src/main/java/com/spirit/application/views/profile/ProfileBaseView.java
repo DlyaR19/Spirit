@@ -27,9 +27,6 @@ import java.util.Base64;
 
 public abstract class ProfileBaseView extends Composite<VerticalLayout> {
 
-    // TODO anstelle von linkedIn vielleicht Textfelder dynamisch generieren
-    // TODO andere Informationen hinzufügen wie z.B. Studiengang, Geburtsdatum, Vor- und Nachname, etc.
-
     protected final transient ProfileService profileService;
     protected final transient SessionService sessionService;
     protected final transient VerticalLayout layout = new VerticalLayout();

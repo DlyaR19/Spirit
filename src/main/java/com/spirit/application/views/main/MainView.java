@@ -16,11 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 //@Menu(order = 0)
 public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
-    public MainView(){
-        // TODO eine Dashboard View hinzufügen mit Stellenausschreibungen
-
-    }
-
     @Override
     public synchronized void beforeEnter(BeforeEnterEvent event) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -12,9 +12,9 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
     List<JobPost> findJobPostByUnternehmenUnternehmenID(Long unternehmenId);
 
-    List<JobPost> findJobPostByEmploymentType(String employmentType);
+    List<JobPost> findJobPostByAnstellungsart(String anstellungsart);
 
-    List<JobPost> findJobPostByTitle(String title);
+    List<JobPost> findJobPostByTitel(String titel);
 
     void deleteByJobPostID(Long jobPostId);
 

@@ -85,25 +85,5 @@ public class SecurityConfig extends VaadinWebSecurity {
         public boolean supports(Class<?> authentication) {
             return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
         }
-//
-//        @Configuration
-//        public static class WebConfig implements WebMvcConfigurer {
-//            @Override
-//            public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//                registry.addResourceHandler("/images/**")
-//                        .addResourceLocations("classpath:/META-INF/resources/images/");
-//            }
-//        }
-
-//        @Configuration
-//        public static class VaadinResourceConfig extends VaadinWebSecurity {
-//            @Override
-//            public void configure(WebSecurity web) throws Exception {
-//                web.ignoring().requestMatchers(
-//                        new AntPathRequestMatcher("/images/**")
-//                );
-//            }
-//        }
-
     }
 }

@@ -25,7 +25,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -57,8 +56,8 @@ public class AddJobPostView extends Composite<VerticalLayout> {
         titleLayout.setWidth("100%");
 
         HorizontalLayout infoLayout = new HorizontalLayout();
-        ComboBox<String> comboBox = new ComboBox<>("Employment Type: ");
-        TextField location = new TextField("Location: ");
+        ComboBox<String> comboBox = new ComboBox<>("Anstellungsart: ");
+        TextField location = new TextField("Standort: ");
         comboBox.setWidth("50%"); // Stellt sicher, dass der Kombinationsfeld die Hälfte des verfügbaren Platzes einnimmt
         location.setWidth("50%"); // Stellt sicher, dass das Standortfeld die Hälfte des verfügbaren Platzes einnimmt
         comboBox.setItems("Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt", "Masterprojekt", "Büro", "Homeoffice");

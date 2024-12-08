@@ -61,11 +61,11 @@ public class MyBewerbungView extends Composite<VerticalLayout> {
         );
         unternehmenLayout.add(avatar, new H4(bewerbung.getJobPost().getUnternehmen().getName()));
         HorizontalLayout infoLayout = new HorizontalLayout();
-        infoLayout.add(new H3("Bewerbung als: "), new Span(bewerbung.getJobPost().getTitle()));
+        infoLayout.add(new H3("Bewerbung als: "), new Span(bewerbung.getJobPost().getTitel()));
         VerticalLayout jobPostLayout = new VerticalLayout();
         jobPostLayout.add(
                 new H3("Stellenbeschreibung: "),
-                new Span(bewerbung.getJobPost().getDescription())
+                new Span(bewerbung.getJobPost().getBeschreibung())
         );
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.add(new Button("zurückziehen", buttonClickEvent -> openDialog(bewerbung, bewerbungCard)));

@@ -40,14 +40,14 @@ public class EntityFactory {
         return unternehmen;
     }
 
-    public JobPost createJobPost(String employmentType, String title, String location, String description, Unternehmen unternehmen, Date date) {
+    public JobPost createJobPost(String anstellungsart, String title, String standort, String description, Unternehmen unternehmen, Date date) {
         JobPost jobPost = new JobPost();
-        jobPost.setTitle(title);
-        jobPost.setEmploymentType(employmentType);
-        jobPost.setLocation(location);
-        jobPost.setDescription(description);
+        jobPost.setTitel(title);
+        jobPost.setAnstellungsart(anstellungsart);
+        jobPost.setStandort(standort);
+        jobPost.setBeschreibung(description);
         jobPost.setUnternehmen(unternehmen);
-        jobPost.setPublishDate(date);
+        jobPost.setVeroeffentlichungsdatum(date);
         return jobPost;
     }
 

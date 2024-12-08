@@ -65,13 +65,13 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
     public VerticalLayout studentCard(BewerbungDTO bewerbung, JobPostDTO jobPost) {
         VerticalLayout studentCardLayout = new VerticalLayout();
         HorizontalLayout jobPostInfo = new HorizontalLayout();
-        jobPostInfo.add(new H4(jobPost.getTitle()));
+        jobPostInfo.add(new H4(jobPost.getTitel()));
         HorizontalLayout avaterLayout = new HorizontalLayout();
         Avatar studentAvatar = new Avatar();
         studentAvatar.setImage(
                 "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
         );
-        Button type = new Button(jobPost.getEmploymentType());
+        Button type = new Button(jobPost.getAnstellungsart());
         type.setWidth("min-content");
         type.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         type.setEnabled(true);

@@ -92,17 +92,17 @@ public class SearchView extends Composite<VerticalLayout> {
 
     private void performSearch(String searchText, String employmentType) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
-                .filter(jobPost -> (employmentType == null || employmentType.isEmpty() || jobPost.getEmploymentType().equalsIgnoreCase(employmentType)) &&
+                .filter(jobPost -> (employmentType == null || employmentType.isEmpty() || jobPost.getAnstellungsart().equalsIgnoreCase(employmentType)) &&
                         (searchText == null || searchText.isEmpty() || jobPostMatchesSearchText(jobPost, searchText)))
                 .toList();
         updateJobPostList(searchedJobPosts);
     }
 
     private boolean jobPostMatchesSearchText(JobPostDTO jobPost, String searchText) {
-        return jobPost.getTitle().toLowerCase().contains(searchText.toLowerCase()) ||
-                jobPost.getDescription().toLowerCase().contains(searchText.toLowerCase()) ||
+        return jobPost.getTitel().toLowerCase().contains(searchText.toLowerCase()) ||
+                jobPost.getBeschreibung().toLowerCase().contains(searchText.toLowerCase()) ||
                 jobPost.getUnternehmen().getName().toLowerCase().contains(searchText.toLowerCase())
-                || jobPost.getLocation().toLowerCase().contains(searchText.toLowerCase());
+                || jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
     }
     private void updateJobPostList(List<JobPostDTO> jobPostToDisplay) {
         layout.removeAll();
@@ -112,34 +112,34 @@ public class SearchView extends Composite<VerticalLayout> {
 
     }
 
-    public VerticalLayout createCard(JobPostDTO vacancy) {
+    public VerticalLayout createCard(JobPostDTO jobPost) {
         VerticalLayout cardLayout = new VerticalLayout();
         Avatar avatar = new Avatar();
-        avatar.setImage("data:image/jpeg;base64," + vacancy.getUnternehmen().getUser().getProfile().getAvatar());
+        avatar.setImage("data:image/jpeg;base64," + jobPost.getUnternehmen().getUser().getProfile().getAvatar());
         HorizontalLayout avatarLayout = new HorizontalLayout();
-        avatarLayout.add(avatar, new H5(vacancy.getUnternehmen().getName()));
-        H3 title = new H3(vacancy.getTitle());
-        Button type = new Button(vacancy.getEmploymentType());
+        avatarLayout.add(avatar, new H5(jobPost.getUnternehmen().getName()));
+        H3 title = new H3(jobPost.getTitel());
+        Button type = new Button(jobPost.getAnstellungsart());
         type.setWidth("min-content");
         type.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         type.setEnabled(true);
         HorizontalLayout dateLayout = new HorizontalLayout(
                 new H4("Datum: "),
-                new Span(vacancy.getPublishDate().toString())
+                new Span(jobPost.getVeroeffentlichungsdatum().toString())
         );
         HorizontalLayout locationLayout = new HorizontalLayout(
                 new H4("Standort: "),
-                new Span(vacancy.getLocation())
+                new Span(jobPost.getStandort())
         );
         HorizontalLayout infoLayout = new HorizontalLayout(dateLayout, locationLayout);
         H4 profileDescription = new H4("Über uns ");
         Div profileDescriptionParagraph = new Div();
         profileDescriptionParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(
-                vacancy.getUnternehmen().getUser().getProfile().getProfileDescription())
+                jobPost.getUnternehmen().getUser().getProfile().getProfileDescription())
         );
         VerticalLayout contactLayout = new VerticalLayout();
-        contactLayout.add(createContactLayout("Email: ", vacancy.getUnternehmen().getUser().getEmail()));
-        contactLayout.add(createContactLayout("LinkedIn: ", vacancy.getUnternehmen().getUser().getProfile().getLinkedinUsername()));
+        contactLayout.add(createContactLayout("Email: ", jobPost.getUnternehmen().getUser().getEmail()));
+        contactLayout.add(createContactLayout("LinkedIn: ", jobPost.getUnternehmen().getUser().getProfile().getLinkedinUsername()));
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button learnMore = new Button("Mehr erfahren");
         buttonLayout.add(learnMore);
@@ -151,7 +151,7 @@ public class SearchView extends Composite<VerticalLayout> {
         cardLayout.getStyle().set("border-radius", "8px");
         cardLayout.getStyle().set("box-shadow", "0 2px 4px rgba(0, 0, 0, 0.1)");
 
-        learnMore.addClickListener(event -> openDialog(vacancy));
+        learnMore.addClickListener(event -> openDialog(jobPost));
 
         return cardLayout;
     }
@@ -173,19 +173,19 @@ public class SearchView extends Composite<VerticalLayout> {
 
         Avatar avatar = new Avatar();
         avatar.setImage("data:image/jpeg;base64," + vacancy.getUnternehmen().getUser().getProfile().getAvatar());
-        H2 title = new H2(vacancy.getTitle());
-        Button type = new Button(vacancy.getEmploymentType());
+        H2 title = new H2(vacancy.getTitel());
+        Button type = new Button(vacancy.getAnstellungsart());
         type.setWidth("min-content");
         type.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         type.setEnabled(true);
 
-        HorizontalLayout dateLayout = new HorizontalLayout(new H4("Datum: "), new Span(vacancy.getPublishDate().toString()));
-        HorizontalLayout locationLayout = new HorizontalLayout(new H4("Standort: "), new Span(vacancy.getLocation()));
+        HorizontalLayout dateLayout = new HorizontalLayout(new H4("Datum: "), new Span(vacancy.getVeroeffentlichungsdatum().toString()));
+        HorizontalLayout locationLayout = new HorizontalLayout(new H4("Standort: "), new Span(vacancy.getStandort()));
         HorizontalLayout infoLayout = new HorizontalLayout(dateLayout, locationLayout);
 
         H4 description = new H4("Beschreibung: ");
         Div desParagraph = new Div();
-        desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(vacancy.getDescription()));
+        desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(vacancy.getBeschreibung()));
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button apply = new Button("Jetzt bewerben");
@@ -211,7 +211,7 @@ public class SearchView extends Composite<VerticalLayout> {
         dialog.setHeight("400px");
 
         VerticalLayout dialogLayout = new VerticalLayout();
-        H4 title = new H4("Bewerbung als: " + vacancy.getTitle());
+        H4 title = new H4("Bewerbung als: " + vacancy.getTitel());
         dialogLayout.setPadding(true);
         dialogLayout.setSpacing(true);
         MemoryBuffer buffer = new MemoryBuffer();

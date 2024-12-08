@@ -21,7 +21,6 @@ import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -116,11 +115,11 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
                     jobPost.getJobPostID(),
                     jobPost.getUnternehmen().getUser().getProfile().getAvatar(),
                     jobPost.getUnternehmen().getName(),
-                    jobPost.getTitle(),
-                    jobPost.getEmploymentType(),
-                    jobPost.getLocation(),
-                    jobPost.getDescription(),
-                    jobPost.getPublishDate()
+                    jobPost.getTitel(),
+                    jobPost.getAnstellungsart(),
+                    jobPost.getStandort(),
+                    jobPost.getBeschreibung(),
+                    jobPost.getVeroeffentlichungsdatum()
             );
             cardsLayout.add(card);
         }

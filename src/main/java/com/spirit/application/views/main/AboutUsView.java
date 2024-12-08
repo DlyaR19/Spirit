@@ -1,14 +1,10 @@
 package com.spirit.application.views.main;
 
+
 import com.spirit.application.util.Globals;
 import com.spirit.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Footer;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -19,6 +15,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
 
+
 @PageTitle("Über Uns")
 @Route(value = Globals.Pages.ABOUTUS, layout = MainLayout.class)
 @Menu(order = 3)
@@ -26,42 +23,48 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class AboutUsView extends VerticalLayout {
 
+    // TODO Besser gestalten
+    
     public AboutUsView() {
-        // Grundlayout-Einstellungen
         setWidthFull();
         setSpacing(true);
         setPadding(true);
         setAlignItems(FlexComponent.Alignment.CENTER);
         getStyle().set("display", "flex").set("flex-direction", "column").set("min-height", "100vh");
 
-        // Haupttitel
+        //Titel
         H1 title = new H1("Willkommen bei Spirit!");
         title.getElement().getStyle().set("text-align", "center");
         title.getElement().getStyle().set("font-style", "italic").set("text-decoration", "underline");
 
-        // Einleitung
+        //Einleitung
         Div intro = createTextBlock("Wir bei Spirit glauben daran, dass wir Menschen zusammenbringen können, um großartige Dinge zu erreichen. " +
                         "Unsere Plattform verbindet Talente mit den richtigen Möglichkeiten und hilft dabei, die Welt ein Stück besser zu machen. " +
                         "Unser Hauptsitz befindet sich im Herzen von Sankt Augustin, einem Ort, an dem Innovation und Kreativität zusammenfließen.",
                 "left");
 
-        // Vision
+        //Vision
         H2 visionTitle = createSectionTitle("Unsere Vision");
         Div vision = createTextBlock("Wir möchten die Art und Weise, wie Menschen arbeiten und sich vernetzen, revolutionieren. " +
                         "Unser Ziel ist es, eine Plattform zu schaffen, die Menschen nicht nur miteinander verbindet, sondern auch ihre individuellen Stärken und Potenziale hervorhebt.",
                 "left");
 
-        // Mission
+        //Mission
         H2 missionTitle = createSectionTitle("Unsere Mission");
         Div mission = createTextBlock("Bei Spirit stehen die Menschen im Mittelpunkt. Unsere Mission ist es, die besten Technologien " +
                         "mit einem menschlichen Ansatz zu kombinieren, um Unternehmen und Individuen gleichermaßen zu helfen, ihre Ziele zu erreichen.",
                 "left");
 
-        // Werte als Kacheln mit Vaadin Icons
+        //Logo
+        H2 logoTitle = createSectionTitle("Unser Logo");
+        Image logo = new Image("https://i.ibb.co/YWqXFWz/Erstelle-ein-Logo-mit-Titel-Spirit-f-r-mein-Software-Engineering-Projekt.jpg", "Spirit Logo");
+        logo.setWidth("300px");
+
+        //Werte
         H2 valuesTitle = createSectionTitle("Unsere Werte");
         Div valuesSection = createValuesSection();
 
-        // Team
+        //Team
         H2 teamTitle = createSectionTitle("Unser Team");
         Div team = createTeamSection();
 
@@ -69,7 +72,7 @@ public class AboutUsView extends VerticalLayout {
         Div footer = createFooter();
 
         // Hinzufügen der Komponenten zum Layout
-        add(title, intro, visionTitle, vision, missionTitle, mission, valuesTitle, valuesSection, teamTitle, team, footer);
+        add(title, intro, visionTitle, vision, missionTitle, mission, logoTitle, logo, valuesTitle, valuesSection, teamTitle, team, footer);
     }
 
     private H2 createSectionTitle(String title) {
