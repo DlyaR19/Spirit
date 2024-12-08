@@ -3,10 +3,9 @@ package com.spirit.application.views;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.*;
-import com.vaadin.flow.component.icon.SvgIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.Scroller;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.router.Layout;
@@ -17,8 +16,8 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.util.List;
 
 /**
- * The main view is a top-level placeholder for other views.
- * Before the user logs in, this view is displayed.
+ * Navigation bevor der Anmeldung
+ *
  */
 @Layout
 @AnonymousAllowed
@@ -31,7 +30,6 @@ public class MainLayout extends AppLayout {
         addDrawerContent();
         addHeaderContent();
     }
-
 
     private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
@@ -58,14 +56,30 @@ public class MainLayout extends AppLayout {
 
         List<MenuEntry> menuEntries = MenuConfiguration.getMenuEntries();
         menuEntries.forEach(entry -> {
-            if (entry.icon() != null) {
-                nav.addItem(new SideNavItem(entry.title(), entry.path(), new SvgIcon(entry.icon())));
-            } else {
-                nav.addItem(new SideNavItem(entry.title(), entry.path()));
-            }
+            Icon icon = getIconForMenuEntry(entry.title());
+            SideNavItem item = icon != null
+                    ? new SideNavItem(entry.title(), entry.path(), icon)
+                    : new SideNavItem(entry.title(), entry.path());
+            nav.addItem(item);
         });
 
         return nav;
+    }
+
+    private Icon getIconForMenuEntry(String title) {
+        // Hier die passenden Icons für die Menüpunkte definieren
+        switch (title.toLowerCase()) {
+            case "dashboard":
+                return VaadinIcon.HOME.create();
+            case "login":
+                return VaadinIcon.SIGN_IN.create();
+            case "register":
+                return VaadinIcon.USER.create();
+            case "über uns":
+                return VaadinIcon.INFO_CIRCLE.create();
+            default:
+                return null; // Kein Icon für unbekannte Menüpunkte
+        }
     }
 
     private Footer createFooter() {
