@@ -1,6 +1,5 @@
 package com.spirit.application.views.register;
 
-
 import com.spirit.application.entitiy.*;
 import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.service.impl.RegisterInterfaceImpl;
@@ -54,7 +53,6 @@ public class RegisterProxy implements RegisterInterface {
     public void saveStudent(Student student) {
         registerService.saveStudent(student);
     }
-
 
     @Override
     public void saveUnternehmen(Unternehmen unternehmen) {

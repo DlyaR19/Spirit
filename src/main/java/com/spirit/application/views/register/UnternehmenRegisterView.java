@@ -1,6 +1,5 @@
 package com.spirit.application.views.register;
 
-
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;

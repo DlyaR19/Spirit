@@ -1,6 +1,5 @@
 package com.spirit.application.views.register;
 
-
 import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.Globals;
 import com.vaadin.flow.component.UI;

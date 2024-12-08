@@ -1,11 +1,12 @@
 package com.spirit.application.views.login;
 
-
 import com.spirit.application.dto.UserDTO;
 import com.spirit.application.service.LoginService;
 import com.spirit.application.util.Globals;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
@@ -16,7 +17,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-
+@CssImport("./themes/spirit/views/LoginView.css")
 @PageTitle("Login")
 @Route(Globals.Pages.LOGIN)
 @Menu(order = 1)
@@ -26,41 +27,57 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private final LoginForm loginForm;
     private final transient LoginService loginService;
 
-    // TODO Passwort vergessen Funktionalität hinzufügen (wenn nötig)
-
     public LoginView(LoginService loginService) {
-        loginForm = setUpUI();
-        //loginForm.addForgotPasswordListener(e -> UI.getCurrent().navigate(Globals.Pages.FORGOT_PASSWORD));
-        loginForm.addLoginListener(this::handleLogin);
         this.loginService = loginService;
-    }
 
-    private LoginForm setUpUI() {
-        LoginForm setLoginForm;
-        addClassName("main");
-        setSizeFull();
+        // Login-Formular
+        loginForm = createLoginForm();
+        loginForm.setAction("login");
+        loginForm.addLoginListener(this::handleLogin);
 
-        setLoginForm = createLoginForm();
-        setLoginForm.setAction("login");
+        // Haupt-Container
+        Div container = new Div();
+        container.addClassName("login-container");
 
-        add(setLoginForm);
-        this.setAlignItems(Alignment.CENTER);
+        // Layout für Formular-Inhalt
+        VerticalLayout formLayout = new VerticalLayout();
+        formLayout.setAlignItems(Alignment.CENTER);
+        formLayout.addClassName("form-layout");
 
-        HorizontalLayout additionalInfoLayout = new HorizontalLayout();
-        additionalInfoLayout.add(new Text("Sie haben noch kein Konto? "), new Anchor(Globals.Pages.SIGNUP, "Melden Sie sich hier an!"));
+        // Zusatzinfos
+        VerticalLayout additionalInfoLayout = new VerticalLayout();
         additionalInfoLayout.setAlignItems(Alignment.CENTER);
+        additionalInfoLayout.setSpacing(false);
 
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.setAlignItems(Alignment.CENTER);
-        footer.setSpacing(true);
-        footer.add(new Anchor(Globals.Pages.ABOUTUS, "About Spirit"));
+        // Text für Registrierung
+        HorizontalLayout registerInfo = new HorizontalLayout();
+        registerInfo.setAlignItems(Alignment.CENTER);
+        registerInfo.add(
+                new Text("Sie haben noch kein Konto? "),
+                createAnchor(Globals.Pages.SIGNUP, "Melden Sie sich hier an!")
+        );
 
-        VerticalLayout layout = new VerticalLayout(setLoginForm, additionalInfoLayout, footer);
-        layout.setAlignItems(Alignment.CENTER);
+        // Footer mit Link "About Spirit"
+        Div footer = new Div();
+        footer.add(createAnchor(Globals.Pages.ABOUTUS, "About Spirit"));
+        footer.addClassName("footer");
 
-        add(layout);
+        // Hinzufügen zu den Zusatzinfos
+        additionalInfoLayout.add(registerInfo, footer);
 
-        return setLoginForm;
+        // Zusammenstellen des Formularlayouts
+        formLayout.add(loginForm, additionalInfoLayout);
+
+        // Formular in Container einfügen
+        container.add(formLayout);
+
+        // Zentrieren
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+
+        // Container hinzufügen
+        add(container);
     }
 
     private LoginForm createLoginForm() {
@@ -79,6 +96,16 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         return component;
     }
 
+    private Anchor createAnchor(String href, String text) {
+        Anchor anchor = new Anchor(href, text);
+        anchor.getStyle()
+                .set("color", "#0056b3")
+                .set("text-decoration", "none")
+                .set("font-weight", "bold");
+        anchor.addClassName("link");
+        return anchor;
+    }
+
     private void handleLogin(AbstractLogin.LoginEvent input) {
         try {
             loginService.startSession(new UserDTO(loginService.login(input.getUsername(), input.getPassword())));
@@ -94,7 +121,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                 .getParameters()
                 .containsKey("error")) {
             loginForm.setError(true);
-            Notification notification = Notification.show("Anmelden fehlgeschlagen");
+            Notification notification = Notification.show("Anmelden fehlgeschlagen!");
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }

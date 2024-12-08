@@ -15,7 +15,9 @@ import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -28,6 +30,7 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @CssImport("./themes/spirit/views/AppView.css")
@@ -158,5 +161,12 @@ public class AppView extends AppLayout {
         verticalLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
         verticalLayout.add(menu);
         return verticalLayout;
+    }
+    private Footer createFooter() {
+        Footer layout = new Footer();
+        layout.addClassNames(LumoUtility.Padding.Vertical.SMALL);
+        layout.add(new Hr());
+        layout.add(new Span("© 2024 Spirit"));
+        return layout;
     }
 }
