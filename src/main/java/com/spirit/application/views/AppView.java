@@ -14,7 +14,11 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -26,6 +30,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@CssImport("./themes/spirit/views/AppView.css")
 @Route(Globals.Pages.APP)
 public class AppView extends AppLayout {
 
@@ -37,11 +42,25 @@ public class AppView extends AppLayout {
         setUpUI();
     }
 
-    private static Tab createTab(String s, Class<? extends Component> navigationTarget) {
-        final Tab t = new Tab();
-        t.add(new RouterLink(s, navigationTarget));
-        ComponentUtil.setData(t, Class.class, navigationTarget);
-        return t;
+    private static Tab createTab(String label, VaadinIcon icon, Class<? extends Component> navigationTarget) {
+        Icon tabIcon = icon.create();
+        tabIcon.setSize("24px"); // Icon-Größe anpassen
+        tabIcon.getStyle().set("margin", "0 auto"); // Zentrierung des Icons
+
+        RouterLink link = new RouterLink(label, navigationTarget);
+        link.getStyle().set("text-align", "center"); // Text zentrieren
+        link.addClassName("menu-link"); // CSS-Klasse hinzufügen
+
+        // Vertikales Layout für Icon und Text
+        VerticalLayout layout = new VerticalLayout(tabIcon, link);
+        layout.addClassName("menu-item"); // CSS-Klasse für die Linie und Abstände
+        layout.setSpacing(false);
+        layout.setPadding(false);
+        layout.setAlignItems(FlexComponent.Alignment.CENTER); // Inhalte zentrieren
+
+        final Tab tab = new Tab(layout); // Füge das Layout in den Tab ein
+        ComponentUtil.setData(tab, Class.class, navigationTarget);
+        return tab;
     }
 
     private void setUpUI() {
@@ -53,7 +72,6 @@ public class AppView extends AppLayout {
     }
 
     private Component createHeaderContent() {
-
         H1 viewTitle;
         HorizontalLayout layout = new HorizontalLayout();
         layout.setId("header");
@@ -62,20 +80,37 @@ public class AppView extends AppLayout {
 
         layout.add(new DrawerToggle());
         viewTitle = new H1();
-        viewTitle.setWidthFull();
-        layout.add(viewTitle);
+        layout.addAndExpand(viewTitle); // Titel wird erweitert
 
         HorizontalLayout topRightLayout = new HorizontalLayout();
         topRightLayout.setWidthFull();
         topRightLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
         topRightLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
+        // Abmeldebutton mit Icon
         MenuBar menuBar = new MenuBar();
-        menuBar.addItem("Abmelden", e -> logoutUser());
+        menuBar.addClassName("logout-button"); // Optional: CSS-Klasse für Styling
+        menuBar.addItem(createLogoutButton(), e -> logoutUser()); // Logout-Button hinzufügen
         topRightLayout.add(menuBar);
 
         layout.add(topRightLayout);
         return layout;
+    }
+
+    private HorizontalLayout createLogoutButton() {
+        Icon logoutIcon = VaadinIcon.SIGN_OUT.create(); // Icon für Abmeldung
+        logoutIcon.setSize("16px"); // Größe des Icons
+        logoutIcon.getStyle().set("margin-right", "5px"); // Abstand zwischen Icon und Text
+
+        Span logoutText = new Span("Abmelden"); // Text für den Button
+
+        // Kombiniere Icon und Text
+        HorizontalLayout buttonLayout = new HorizontalLayout(logoutIcon, logoutText);
+        buttonLayout.setSpacing(false); // Kein zusätzlicher Abstand
+        buttonLayout.setAlignItems(FlexComponent.Alignment.CENTER); // Inhalte zentrieren
+        buttonLayout.getStyle().set("cursor", "pointer"); // Zeige Hand-Cursor bei Hover
+
+        return buttonLayout;
     }
 
     private Tabs createMenu() {
@@ -86,21 +121,19 @@ public class AppView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-
         Tab[] tabs = new Tab[]{};
 
         if (sessionService.getUserRole().contains(Globals.Roles.STUDENT)) {
-            tabs = Utils.append(tabs, createTab("Profil", ProfilStudentView.class));
-            tabs = Utils.append(tabs, createTab("Job suchen", SearchView.class));
-            tabs = Utils.append(tabs, createTab("Meine Bewerbungen", MyBewerbungView.class));
-            //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
+            tabs = Utils.append(tabs, createTab("Profil", VaadinIcon.USER, ProfilStudentView.class));
+            tabs = Utils.append(tabs, createTab("Job suchen", VaadinIcon.SEARCH, SearchView.class));
+            tabs = Utils.append(tabs, createTab("Meine Bewerbungen", VaadinIcon.FILE_TEXT, MyBewerbungView.class));
         } else if (sessionService.getUserRole().contains(Globals.Roles.UNTERNEHMEN)) {
-            tabs = Utils.append(tabs, createTab("Profil", ProfileUnternehmenView.class));
-            //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
-            tabs = Utils.append(tabs, createTab("Stellenausschreibung hinzufügen", AddJobPostView.class));
-            tabs = Utils.append(tabs, createTab("Meine Stellenausschreibungen", MyJobPostView.class));
-            tabs = Utils.append(tabs, createTab("Bewerbungen einsehen", ShowBewerbungView.class));
+            tabs = Utils.append(tabs, createTab("Profil", VaadinIcon.BUILDING, ProfileUnternehmenView.class));
+            tabs = Utils.append(tabs, createTab("Stellenausschreibung hinzufügen", VaadinIcon.PLUS_CIRCLE, AddJobPostView.class));
+            tabs = Utils.append(tabs, createTab("Meine Stellenausschreibungen", VaadinIcon.CLIPBOARD, MyJobPostView.class));
+            tabs = Utils.append(tabs, createTab("Bewerbungen einsehen", VaadinIcon.FILE_PROCESS, ShowBewerbungView.class));
         }
+
         return tabs;
     }
 
