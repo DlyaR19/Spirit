@@ -1,0 +1,32 @@
+/* Hauptcontainer */
+.login-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 24px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Formular-Layout */
+.form-layout {
+    width: 100%;
+}
+
+/* Footer- und Zusatzinformationen */
+.footer {
+    margin-top: 16px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Links stylen */
+.link {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
