@@ -24,8 +24,8 @@ public class Profile implements Serializable {
     @Column(name = "profilbeschreibung", length = 6400)
     private String profileDescription;
     @Basic
-    @Column(name = "linkedin_benutzername", length = 2048, unique = true)
-    private String linkedinUsername;
+    @Column(name = "webseite", length = 2048, unique = true)
+    private String webseite;
 
 
     @Override
@@ -36,11 +36,11 @@ public class Profile implements Serializable {
         return profileID == profile.profileID &&
                 Objects.equals(avatar, profile.avatar) &&
                 Objects.equals(profileDescription, profile.profileDescription) &&
-                Objects.equals(linkedinUsername, profile.linkedinUsername);
+                Objects.equals(webseite, profile.webseite);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(profileID, avatar, profileDescription, linkedinUsername);
+        return Objects.hash(profileID, avatar, profileDescription, webseite);
     }
 }

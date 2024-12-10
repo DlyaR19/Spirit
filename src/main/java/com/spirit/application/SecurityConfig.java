@@ -20,6 +20,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Konfiguriert die Sicherheitseinstellungen der Anwendung
+ * Implementiert Spring Security mit Vaadin-Integration
+ */
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends VaadinWebSecurity {
@@ -27,11 +32,18 @@ public class SecurityConfig extends VaadinWebSecurity {
     final SecurityService securityService;
     final PasswordEncoder passwordEncoder;
 
+    /**
+     * Konstruktor initialisiert Sicherheitsdienste
+     */
     public SecurityConfig(SecurityService securityService) {
         this.securityService = securityService;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    /**
+     * Konfiguriert die HTTP-Sicherheitseinstellungen
+     * @param http HttpSecurity-Objekt für Konfiguration
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
@@ -48,27 +60,39 @@ public class SecurityConfig extends VaadinWebSecurity {
 //        }
 //    }
 
-
+    /**
+     * Hash-Encoder für Passwörter
+     * @return PasswordEncoder-Objekt
+     */
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Custom Authentication Provider für die Benutzerauthentifizierung
+     * @return AuthenticationProvider-Objekt
+     */
     @Bean
     public AuthenticationProvider customAuthenticationProvider() {
         return new CustomAuthenticationProvider(securityService, passwordEncoder);
     }
 
+    /**
+     * Custom Authentication Provider für die Benutzerauthentifizierung
+     */
     private record CustomAuthenticationProvider(SecurityService securityService, PasswordEncoder passwordEncoder) implements AuthenticationProvider {
 
         @Override
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
+            // Authentifizierungslogik
             try {
                 String username = authentication.getName();
                 String password = authentication.getCredentials().toString();
                 UserDetails userDetails = securityService.loadUserByUsername(username);
 
+                // Überprüfung der Anmeldedaten
                 if (userDetails == null) {
                     throw new BadCredentialsException("User not found");
                 }
@@ -81,6 +105,11 @@ public class SecurityConfig extends VaadinWebSecurity {
             }
         }
 
+        /**
+         * Überprüft, ob der AuthenticationProvider das gegebene Authentifizierungsobjekt unterstützt
+         * @param authentication Authentifizierungsobjekt
+         * @return true, wenn das Objekt unterstützt wird
+         */
         @Override
         public boolean supports(Class<?> authentication) {
             return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);

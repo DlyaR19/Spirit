@@ -4,6 +4,13 @@ import com.spirit.application.entitiy.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Diese Klasse stellt ein Repository für die User-Entität dar.
+ * Sie erbt von der JpaRepository-Klasse, die die grundlegenden CRUD-Operationen bereitstellt.
+ * Das UserRepository ermöglicht das Speichern, Löschen und Suchen von Benutzern.
+ * Es bietet Methoden zum Suchen von Benutzern anhand des Benutzernamens und des Passworts.
+ */
+
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsernameAndPassword(String username, String password);

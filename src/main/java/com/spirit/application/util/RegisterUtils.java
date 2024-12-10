@@ -3,12 +3,30 @@ package com.spirit.application.util;
 
 import com.vaadin.flow.component.notification.Notification;
 
+/**
+ * Utility-Klasse mit statischen Methoden zur Validierung von Registrierungsdaten
+ */
+
 public class RegisterUtils {
 
+    /**
+     * Privater Konstruktor verhindert Instanziierung
+     * @throws UnsupportedOperationException wenn versucht wird, die Klasse zu instanziieren
+     */
     private RegisterUtils() {
         throw new UnsupportedOperationException("Class should not be instantiated, it is a utility class.");
     }
 
+    /**
+     * Validiert Registrierungsdaten für Studenten
+     * @return true wenn alle Eingaben valid sind
+     * @param username Benutzername
+     * @param firstName Vorname
+     * @param lastName Nachname
+     * @param email E-Mail Adresse
+     * @param password Passwort
+     * @param passwordConfirmation Passwortbestätigung
+     */
     public static boolean validateInput(String username, String firstName, String lastName, String email, String password, String passwordConfirmation) {
         if (!isValidVorname(firstName)) {
             Notification.show("Kein gültiger Vorname (3-30 Zeichen, nur Buchstaben, Leerzeichen und Bindestriche).");
@@ -21,6 +39,15 @@ public class RegisterUtils {
         return checkDefaultInput(username, email, password, passwordConfirmation);
     }
 
+    /**
+     * Validiert Registrierungsdaten für Unternehmen
+     * @return true wenn alle Eingaben valid sind
+     * @param username Benutzername
+     * @param unternehmenName Unternehmensname
+     * @param email E-Mail Adresse
+     * @param password Passwort
+     * @param passwordConfirmation Passwortbestätigung
+     */
     public static boolean validateInput(String username, String unternehmenName, String email, String password, String passwordConfirmation) {
         if (!isValidUnternehmenName(unternehmenName)) {
             Notification.show("Kein gültiger Unternehmensnamen (mindestens 3-30 Zeichen, nur Buchstaben, Leerzeichen und Ziffern).");
@@ -29,13 +56,29 @@ public class RegisterUtils {
         return checkDefaultInput(username, email, password, passwordConfirmation);
     }
 
+    /**
+     * Validiert Registrierungsdaten für Admins
+     * @return true wenn alle Eingaben valid sind
+     * @param username Benutzername
+     * @param email E-Mail Adresse
+     * @param password Passwort
+     * @param passwordConfirmation Passwortbestätigung
+     */
     public static boolean validateInput(String username, String email, String password, String passwordConfirmation) {
         return checkDefaultInput(username, email, password, passwordConfirmation);
     }
 
+    /**
+     * Basis-Validierung für alle Benutzertypen
+     * @return true wenn alle Eingaben valid sind
+     * @param username Benutzername
+     * @param email E-Mail Adresse
+     * @param password Passwort
+     * @param passwordConfirmation Passwortbestätigung
+     */
     private static boolean checkDefaultInput(String username, String email, String password, String passwordConfirmation) {
         if (!isValidUsername(username)) {
-            Notification.show("Kein gültiger Benutzername (4-20 Zeichen, nur Buchstaben und Ziffern).");
+            Notification.show("Kein gültiger Benutzername (3-20 Zeichen, nur Buchstaben und Ziffern).");
             return false;
         }
         if (!isValidEmail(email)) {
@@ -53,6 +96,11 @@ public class RegisterUtils {
         return true;
     }
 
+    /**
+     * Überprüft, ob die E-Mail Adresse gültig ist
+     * @return true wenn die E-Mail Adresse gültig ist
+     * @param email E-Mail Adresse
+     */
     private static boolean isValidEmail(String email) {
         int atIndex = email.indexOf('@');
         int dotIndex = email.lastIndexOf('.');
@@ -69,6 +117,11 @@ public class RegisterUtils {
         return true;
     }
 
+    /**
+     * Überprüft, ob das Passwort komplex genug ist
+     * @return true wenn das Passwort komplex genug ist
+     * @param password Passwort
+     */
     private static boolean isPasswordComplex(String password) {
         if (password.length() < 8 || password.length() > 16) {
             return false;
@@ -87,6 +140,11 @@ public class RegisterUtils {
         return hasUpper && hasLower && hasDigit;
     }
 
+    /**
+     * Überprüft, ob der Unternehmensname gültig ist
+     * @return true wenn der Unternehmensname gültig ist
+     * @param unternehmenName Unternehmensname
+     */
     private static boolean isValidUnternehmenName(String unternehmenName) {
         if (unternehmenName.length() < 3) {
             return false;
@@ -100,14 +158,29 @@ public class RegisterUtils {
         return true;
     }
 
+    /**
+     * Überprüft, ob der Vorname gültig ist
+     * @return true wenn der Vorname gültig ist
+     * @param vorname Vorname
+     */
     private static boolean isValidVorname(String vorname) {
         return isValidName(vorname);
     }
 
+    /**
+     * Überprüft, ob der Nachname gültig ist
+     * @return true wenn der Nachname gültig ist
+     * @param nachname Nachname
+     */
     private static boolean isValidNachname(String nachname) {
         return isValidName(nachname);
     }
 
+    /**
+     * Überprüft, ob der Name gültig ist
+     * @return true wenn der Name gültig ist
+     * @param name Name
+     */
     private static boolean isValidName(String name) {
         if (name.length() < 3 || name.length() > 30) {
             return false;
@@ -121,8 +194,13 @@ public class RegisterUtils {
         return true;
     }
 
+    /**
+     * Überprüft, ob der Benutzername gültig ist
+     * @return true wenn der Benutzername gültig ist
+     * @param username Benutzername
+     */
     private static boolean isValidUsername(String username) {
-        if (username.length() < 4 || username.length() > 20) {
+        if (username.length() < 3 || username.length() > 20) {
             return false;
         }
 

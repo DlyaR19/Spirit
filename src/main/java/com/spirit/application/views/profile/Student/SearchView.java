@@ -139,7 +139,7 @@ public class SearchView extends Composite<VerticalLayout> {
         );
         VerticalLayout contactLayout = new VerticalLayout();
         contactLayout.add(createContactLayout("Email: ", jobPost.getUnternehmen().getUser().getEmail()));
-        contactLayout.add(createContactLayout("LinkedIn: ", jobPost.getUnternehmen().getUser().getProfile().getLinkedinUsername()));
+        contactLayout.add(createContactLayout("Webseite: ", jobPost.getUnternehmen().getUser().getProfile().getWebseite()));
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button learnMore = new Button("Mehr erfahren");
         buttonLayout.add(learnMore);
@@ -225,7 +225,7 @@ public class SearchView extends Composite<VerticalLayout> {
             try (InputStream inputStream = buffer.getInputStream()) {
                 byte[] bytes = inputStream.readAllBytes();
                 String base64Letter = Base64.getEncoder().encodeToString(bytes);
-                bewerbungService.saveBewerbung(entityFactory.createApplication(
+                bewerbungService.saveBewerbung(entityFactory.createBewerbung(
                         vacancy.getJobPost(),
                         sessionService.getCurrentStudent().getStudent(), base64Letter));
                 Notification.show("Bewerbung erfolgreich eingereicht");

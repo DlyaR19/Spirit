@@ -8,7 +8,7 @@ import com.spirit.application.views.profile.ProfileBaseView;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
-// TODO anstelle von linkedIn vielleicht Textfelder dynamisch generieren (siehe ProfileBaseView)
+// TODO anstelle von webseite vielleicht Textfelder dynamisch generieren (siehe ProfileBaseView)
 // TODO andere Informationen hinzufügen wie z.B. Studiengang, Geburtsdatum, Vor- und Nachname, etc.
 
 @Route(value = Globals.Pages.PROFIL_STUDENT, layout = AppView.class)

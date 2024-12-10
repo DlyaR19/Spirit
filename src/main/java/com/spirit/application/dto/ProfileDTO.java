@@ -5,8 +5,10 @@ import com.spirit.application.entitiy.Profile;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Diese Klasse repräsentiert ein ProfileDTO-Objekt, das als Datenübertragungsobjekt für die Profile-Entität dient.
+ */
 
-// Diese Klasse repräsentiert ein ProfileDTO-Objekt, das als Datenübertragungsobjekt für die Profile-Entität dient.
 @Setter
 @Getter
 public class ProfileDTO {
@@ -14,13 +16,13 @@ public class ProfileDTO {
     private long profileID;
     private String avatarUrl;
     private String profileDescription;
-    private String linkedinUsername;
+    private String webseite;
 
     public ProfileDTO(Profile entity) {
         this.profileID = entity.getProfileID();
         this.avatarUrl = entity.getAvatar();
         this.profileDescription = entity.getProfileDescription();
-        this.linkedinUsername = entity.getLinkedinUsername();
+        this.webseite = entity.getWebseite();
     }
 
     public String toString() {
@@ -28,7 +30,7 @@ public class ProfileDTO {
                 "profileID=" + profileID +
                 ", avatarUrl='" + avatarUrl + '\'' +
                 ", profileDescription='" + profileDescription + '\'' +
-                ", linkedinUsername='" + linkedinUsername + '\'' +
+                ", webseite='" + webseite + '\'' +
                 '}';
     }
 }

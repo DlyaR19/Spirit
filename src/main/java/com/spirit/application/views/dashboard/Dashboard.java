@@ -131,7 +131,7 @@ public class Dashboard extends Composite<VerticalLayout> {
         );
         VerticalLayout contactLayout = new VerticalLayout();
         contactLayout.add(createContactLayout("Email: ", jobPost.getUnternehmen().getUser().getEmail()));
-        contactLayout.add(createContactLayout("LinkedIn: ", jobPost.getUnternehmen().getUser().getProfile().getLinkedinUsername()));
+        contactLayout.add(createContactLayout("Webseite: ", jobPost.getUnternehmen().getUser().getProfile().getWebseite()));
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button learnMore = new Button("Mehr erfahren");
         buttonLayout.add(learnMore);

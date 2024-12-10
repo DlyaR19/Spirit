@@ -33,37 +33,61 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Dies ist die Hauptansicht der Anwendung nach erfolgreicher Anmeldung
+ * Erbt von AppLayout, um das grundlegende Layout-Framework von Vaadin zu nutzen
+ */
+
+
 @CssImport("./themes/spirit/views/AppView.css")
 @Route(Globals.Pages.APP)
 public class AppView extends AppLayout {
 
+    // SessionService für Benutzersitzungsverwaltung
     private final transient SessionService sessionService;
 
+    /**
+     * Konstruktor initialisiert die Ansicht
+     */
     @Autowired
     public AppView(SessionService sessionService) {
         this.sessionService = sessionService;
         setUpUI();
     }
 
+    /**
+     * Erstellt ein Tab-Element für die Navigation mit Icon und Text
+     * @param s Text für den Tab
+     * @param icon Icon für den Tab
+     * @param navigationTarget Zielkomponente für Navigation
+     */
     private static Tab createTab(String s, VaadinIcon icon, Class<? extends Component> navigationTarget) {
+        // Icon-Setup
         Icon tabIcon = icon.create();
         tabIcon.setSize("24px");
         tabIcon.getStyle().set("margin", "0 auto");
+
+        // Link-Setup
         RouterLink link = new RouterLink(s, navigationTarget);
         link.getStyle().set("text-align", "center");
         link.addClassName("menu-link");
-        // Vertikales Layout für Icon und Text
+
+        // Layout für Icon und Text
         HorizontalLayout layout = new HorizontalLayout(tabIcon, link);
         layout.addClassName("menu-item"); // CSS-Klasse für die Linie und Abstände
         layout.setSpacing(true);
         layout.setPadding(true);
         layout.setAlignItems(FlexComponent.Alignment.CENTER); // Inhalte zentrieren
 
+        // Tab erstellen und Navigationsziel setzen
         final Tab t = new Tab(layout);
         ComponentUtil.setData(t, Class.class, navigationTarget);
         return t;
     }
 
+    /**
+     * Initialisiert die Benutzeroberfläche
+     */
     private void setUpUI() {
         Tabs sideMenu;
         setPrimarySection(Section.DRAWER);
@@ -72,6 +96,10 @@ public class AppView extends AppLayout {
         addToDrawer(createDrawerContent(sideMenu));
     }
 
+    /**
+     * Erstellt den Inhalt des Headers
+     * @return Header-Element
+     */
     private Component createHeaderContent() {
 
         H1 viewTitle;
@@ -99,6 +127,10 @@ public class AppView extends AppLayout {
         return layout;
     }
 
+    /**
+     * Erstellt den Logout-Button
+     * @return Layout mit Logout-Button
+     */
     private HorizontalLayout createLogoutButton() {
         Icon icon = VaadinIcon.SIGN_OUT.create();
         icon.setSize("16px");
@@ -111,6 +143,10 @@ public class AppView extends AppLayout {
         return layout;
     }
 
+    /**
+     * Erstellt das Menü für die Navigation
+     * @return Tabs-Element mit Menüpunkten
+     */
     private Tabs createMenu() {
         final Tabs tabs = new Tabs();
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
@@ -118,6 +154,10 @@ public class AppView extends AppLayout {
         return tabs;
     }
 
+    /**
+     * Erstellt die Menüpunkte für die Navigation
+     * @return Array mit Menüpunkten
+     */
     private Component[] createMenuItems() {
 
         Tab[] tabs = new Tab[]{};
@@ -137,21 +177,38 @@ public class AppView extends AppLayout {
         return tabs;
     }
 
+    /**
+     * Beendet die Benutzersitzung
+     */
     private void logoutUser() {
         sessionService.endSession();
     }
 
+    /**
+     * Fügt Komponenten zum Navbar hinzu
+     * @param touchOptimized Touch-optimierte Ansicht
+     * @param components Komponenten
+     */
     @Override
     public void addToNavbar(boolean touchOptimized, Component... components) {
         String slot = "navbar" + (touchOptimized ? " touch-optimized" : "");
         SlotUtils.addToSlot(this, slot, components);
     }
 
+    /**
+     * Fügt Komponenten zum Drawer hinzu
+     * @param components Komponenten
+     */
     @Override
     public void addToDrawer(Component... components) {
         SlotUtils.addToSlot(this, "drawer", components);
     }
 
+    /**
+     * Erstellt den Inhalt des Drawers
+     * @param menu Menü für den Drawer
+     * @return Drawer-Inhalt
+     */
     private Component createDrawerContent(Tabs menu) {
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setSizeFull();
@@ -160,6 +217,10 @@ public class AppView extends AppLayout {
         return verticalLayout;
     }
 
+    /**
+     * Erstellt den Footer
+     * @return Footer-Element
+     */
     private Footer createFooter() {
         Footer footer = new Footer();
         footer.addClassName(LumoUtility.Padding.Vertical.SMALL);

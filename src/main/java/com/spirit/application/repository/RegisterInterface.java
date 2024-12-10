@@ -5,6 +5,12 @@ import com.spirit.application.entitiy.*;
 
 import java.util.List;
 
+/**
+ * Diese Klasse stellt ein Interface für die Registrierung dar.
+ * Sie bietet Methoden zum Speichern von Benutzern, Profilen, Studenten und Unternehmen an.
+ * Service Register
+ */
+
 public interface RegisterInterface {
     void saveUser(User user);
 

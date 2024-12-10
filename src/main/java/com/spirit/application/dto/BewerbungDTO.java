@@ -7,8 +7,10 @@ import com.spirit.application.entitiy.JobPost;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Diese Klasse repräsentiert ein BewerbungDTO-Objekt, das als Datenübertragungsobjekt für die Bewerbung-Entität dient.
+ */
 
-// Diese Klasse repräsentiert ein BewerbungDTO-Objekt, das als Datenübertragungsobjekt für die Bewerbung-Entität dient.
 @Setter
 @Getter
 public class BewerbungDTO {

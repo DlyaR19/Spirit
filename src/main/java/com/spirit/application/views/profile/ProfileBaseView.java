@@ -32,7 +32,7 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
     protected final transient VerticalLayout layout = new VerticalLayout();
     protected transient MarkdownConverter markdownConverter = new MarkdownConverter();
     protected Avatar avatar;
-    protected H6 linkedIn;
+    protected H6 webseite;
     protected Div description;
     protected Upload upload;
     protected MemoryBuffer buffer;
@@ -60,15 +60,15 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         H2 username = new H2(setGreetingText());
         H6 email = new H6(user.getEmail());
         email.getStyle().set(OPACITY, "0.8");
-        linkedIn = new H6(user.getProfile().getLinkedinUsername());
-        linkedIn.getStyle().set(OPACITY, "0.8");
+        webseite = new H6(user.getProfile().getWebseite());
+        webseite.getStyle().set(OPACITY, "0.8");
         HorizontalLayout emailLayout = new HorizontalLayout(
                 new H6("Email: "), email);
-        HorizontalLayout linkedInLayout = new HorizontalLayout(
-                new H6("LinkedIn: "), linkedIn);
+        HorizontalLayout webseiteLayout = new HorizontalLayout(
+                new H6("Webseite: "), webseite);
         HorizontalLayout buttonLayout = new HorizontalLayout(new Button("bearbeiten", event ->
                 openEditDialog(user)), new Button("Bild hochladen", event -> openAvatarDialog(user)));
-        infoLayout.add(username, emailLayout, linkedInLayout, buttonLayout);
+        infoLayout.add(username, emailLayout, webseiteLayout, buttonLayout);
         header.add(avatar, infoLayout);
         return header;
     }
@@ -93,16 +93,16 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         dialog.setHeight("500px");
         VerticalLayout editLayout = new VerticalLayout();
         HorizontalLayout inputLayout = new HorizontalLayout();
-        TextField linkedInTexField = new TextField("LinkedIn: ");
+        TextField webseiteTexField = new TextField("Webseite: ");
         TextArea descriptionTextField = new TextArea("Beschreibung: ");
         descriptionTextField.setWidth("400px");
         descriptionTextField.setHeight("200px");
-        inputLayout.add(linkedInTexField);
+        inputLayout.add(webseiteTexField);
         HorizontalLayout descriptionLayout = new HorizontalLayout(descriptionTextField);
         Button save = new Button("Speichern");
         Button cancel = new Button("Abbrechen");
-        if (linkedInTexField.getValue().isEmpty()) {
-            linkedInTexField.setValue(user.getProfile().getLinkedinUsername() != null ? user.getProfile().getLinkedinUsername() : "");
+        if (webseiteTexField.getValue().isEmpty()) {
+            webseiteTexField.setValue(user.getProfile().getWebseite() != null ? user.getProfile().getWebseite() : "");
         }
         if (descriptionTextField.getValue().isEmpty()) {
             descriptionTextField.setValue(user.getProfile().getProfileDescription() != null ? user.getProfile().getProfileDescription() : "");
@@ -111,7 +111,7 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
             try {
                 profileService.saveSocials(
                         sessionService.getCurrentUser().getProfile(),
-                        linkedInTexField.getValue(),
+                        webseiteTexField.getValue(),
                         descriptionTextField.getValue()
                 );
                 updateProfileData(user);
@@ -170,7 +170,7 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
     }
 
     private void updateProfileData(UserDTO user) {
-        linkedIn.setText(user.getProfile().getLinkedinUsername());
+        webseite.setText(user.getProfile().getWebseite());
         description.getElement().setProperty(
                 "innerHTML",
                 markdownConverter.convertToHtml(user.getProfile().getProfileDescription())

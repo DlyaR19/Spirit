@@ -3,17 +3,27 @@ package com.spirit.application.util;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+/**
+ * Zentrale Konstanten-Klasse der Anwendung
+ */
 
 public class Globals {
 
+    // Globale Konstanten
     public static final String CURRENT_USER = "current_user";
     public static final String BASE_URL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
     private static final String EXCEPTION_1 = "This is a utility class and cannot be instantiated";
 
+    /**
+     * Privater Konstruktor verhindert Instanziierung
+     */
     private Globals() {
         throw new UnsupportedOperationException(EXCEPTION_1);
     }
 
+    /**
+     * Innere Klasse für URL-Pfade
+     */
     public static class Pages {
 
         public static final String MAIN = "";
@@ -40,6 +50,9 @@ public class Globals {
         }
     }
 
+    /**
+     * Innere Klasse für Benutzerrollen
+     */
     public static class Roles {
 
         public static final String STUDENT = "student";

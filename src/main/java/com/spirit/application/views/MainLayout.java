@@ -16,21 +16,28 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.util.List;
 
 /**
- * Navigation bevor der Anmeldung
- *
+ * Definiert das Hauptlayout der Anwendung vor der Anmeldung
+ * Implementiert die grundlegende Navigationsstruktur
  */
+
 @Layout
-@AnonymousAllowed
+@AnonymousAllowed // Erlaubt Zugriff ohne Authentifizierung
 public class MainLayout extends AppLayout {
 
-    private H1 viewTitle;
+    private H1 viewTitle; // Titel der aktuellen Ansicht
 
+    /**
+     * Konstruktor initialisiert das Layout mit Drawer und Header
+     */
     public MainLayout() {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
     }
 
+    /**
+     * Erstellt den Header mit Toggle-Button und Titel
+     */
     private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
         toggle.setAriaLabel("Menu toggle");
@@ -41,6 +48,9 @@ public class MainLayout extends AppLayout {
         addToNavbar(true, toggle, viewTitle);
     }
 
+    /**
+     * Erstellt den Drawer mit Menüpunkten und Footer
+     */
     private void addDrawerContent() {
         Span appName = new Span("Spirit");
         appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
@@ -51,6 +61,10 @@ public class MainLayout extends AppLayout {
         addToDrawer(header, scroller, createFooter());
     }
 
+    /**
+     * Erstellt die Navigationsstruktur
+     * @return SideNav-Element mit Menüpunkten
+     */
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
@@ -66,6 +80,11 @@ public class MainLayout extends AppLayout {
         return nav;
     }
 
+    /**
+     * Liefert das passende Icon für einen Menüpunkt
+     * @param title Titel des Menüpunkts
+     * @return Icon-Element
+     */
     private Icon getIconForMenuEntry(String title) {
         // Hier die passenden Icons für die Menüpunkte definieren
         switch (title.toLowerCase()) {
@@ -82,6 +101,10 @@ public class MainLayout extends AppLayout {
         }
     }
 
+    /**
+     * Erstellt den Footer mit Urheberrechtshinweis
+     * @return Footer-Element
+     */
     private Footer createFooter() {
         Footer layout = new Footer();
         layout.addClassNames(LumoUtility.Padding.Vertical.SMALL);
@@ -90,12 +113,19 @@ public class MainLayout extends AppLayout {
         return layout;
     }
 
+    /**
+     * Setzt den Titel der aktuellen Ansicht
+     */
     @Override
     protected void afterNavigation() {
         super.afterNavigation();
         viewTitle.setText(getCurrentPageTitle());
     }
 
+    /**
+     * Liefert den Titel der aktuellen Ansicht
+     * @return Titel der aktuellen Ansicht
+     */
     private String getCurrentPageTitle() {
         return MenuConfiguration.getPageHeader(getContent()).orElse("");
     }

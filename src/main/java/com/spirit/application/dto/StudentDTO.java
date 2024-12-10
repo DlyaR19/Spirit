@@ -8,8 +8,10 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * Diese Klasse repräsentiert ein StudentDTO-Objekt, das als Datenübertragungsobjekt für die Student-Entität dient.
+ */
 
-// Diese Klasse repräsentiert ein StudentDTO-Objekt, das als Datenübertragungsobjekt für die Student-Entität dient.
 @Setter
 @Getter
 public class StudentDTO extends UserDTO {

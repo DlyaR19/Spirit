@@ -6,15 +6,28 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 
-// This class is used to create entities with the given parameters
-// Pattern: Factory
+/**
+ * Factory-Klasse zur Erstellung von Entitäten
+ * Implementiert das Factory-Pattern
+ */
+
 @Component
 public class EntityFactory {
 
+    /**
+     * Erstellt ein neues Profile-Objekt
+     */
     public Profile createProfile() {
         return new Profile();
     }
 
+    /**
+     * Erstellt ein neues User-Objekt mit den angegebenen Parametern
+     * @param profile Zugehöriges Profil
+     * @param username Benutzername
+     * @param password Passwort
+     * @param email E-Mail-Adresse
+     */
     public User createUser(Profile profile, String username, String password, String email) {
         User user = new User();
         user.setProfile(profile);
@@ -25,6 +38,12 @@ public class EntityFactory {
         return user;
     }
 
+    /**
+     * Erstellt ein neues Student-Objekt mit den angegebenen Parametern
+     * @param user Zugehöriger Benutzer
+     * @param lastName Nachname
+     * @param firstName Vorname
+     */
     public Student createStudent(User user, String lastName, String firstName) {
         Student student = new Student();
         student.setUser(user);
@@ -33,6 +52,11 @@ public class EntityFactory {
         return student;
     }
 
+    /**
+     * Erstellt ein neues Unternehmen-Objekt mit den angegebenen Parametern
+     * @param name Name des Unternehmens
+     * @param user Zugehöriger Benutzer
+     */
     public Unternehmen createUnternehmen(String name, User user) {
         Unternehmen unternehmen = new Unternehmen();
         unternehmen.setName(name);
@@ -40,6 +64,15 @@ public class EntityFactory {
         return unternehmen;
     }
 
+    /**
+     * Erstellt ein neues JobPost-Objekt mit den angegebenen Parametern
+     * @param anstellungsart Art der Anstellung
+     * @param title Titel
+     * @param standort Standort
+     * @param description Beschreibung
+     * @param unternehmen Zugehöriges Unternehmen
+     * @param date Datum der Veröffentlichung
+     */
     public JobPost createJobPost(String anstellungsart, String title, String standort, String description, Unternehmen unternehmen, Date date) {
         JobPost jobPost = new JobPost();
         jobPost.setTitel(title);
@@ -51,7 +84,13 @@ public class EntityFactory {
         return jobPost;
     }
 
-    public Bewerbung createApplication(JobPost jobPost, Student student, String base64Letter) {
+    /**
+     * Erstellt ein neues Bewerbung-Objekt mit den angegebenen Parametern
+     * @param jobPost Zugehöriger JobPost
+     * @param student Zugehöriger Student
+     * @param base64Letter Anschreiben als Base64-String
+     */
+    public Bewerbung createBewerbung(JobPost jobPost, Student student, String base64Letter) {
         Bewerbung bewerbung = new Bewerbung();
         bewerbung.setJobPost(jobPost);
         bewerbung.setStudent(student);
