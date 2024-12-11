@@ -33,6 +33,8 @@ public class Student implements Serializable {
     @Basic
     @Column(name = "vorname", length = 128, nullable = false)
     private String firstName;
+    @Column(name="skills")
+    private String skills;
 
 
     @Override

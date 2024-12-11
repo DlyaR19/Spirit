@@ -36,6 +36,10 @@ public class JobPost implements Serializable {
     @Basic
     @Column(name = "veroeffentlichungsdatum", nullable = false)
     private Date veroeffentlichungsdatum;
+    @Column(name = "anforderungen")
+    private String anforderungen;
+    @Column(name = "aufgaben")
+    private String aufgaben;
 
 
     @Override
