@@ -42,7 +42,7 @@ public class StellenausschreibenTest {
 
         //Stellenausschreibung löschen
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Meine Stellenausschreibungen"))).click();
-        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("vaadin-button:nth-child(7)"))).click(); // Löschen Button
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("vaadin-button:nth-child(7)"))).click(); // Löschen Button
     }
 
     @AfterEach
