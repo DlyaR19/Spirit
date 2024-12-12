@@ -16,6 +16,7 @@
     "@vaadin/vaadin-usage-statistics": "2.1.3",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
+    "es-abstract": "^1.23.5",
     "lit": "3.2.1",
     "proj4": "2.12.1",
     "react": "18.3.1",
@@ -61,7 +62,8 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "es-abstract": "$es-abstract"
   },
   "vaadin": {
     "dependencies": {
@@ -105,6 +107,6 @@
       "workbox-core": "7.3.0",
       "workbox-precaching": "7.3.0"
     },
-    "hash": "c53abf46b44d07aad808ea2fe6339b3199903640edbcd1a7ebc956dcfd219a6d"
+    "hash": "d7516c3bbdad0178d6a431c6b00027e5bad12e164ba736af2e60c49a1949581f"
   }
 }
