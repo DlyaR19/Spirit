@@ -84,6 +84,11 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
         Div desParagraph = new Div();
         desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(descriptionValue));
 
+        Long viewCount = jobPostService.getViewCount(jobPostService.getJobPostByJobPostID(id));
+        Span viewCountSpan = new Span("Aufrufe: " + viewCount);
+        viewCountSpan.getStyle().set("font-size", "0.8em");
+        viewCountSpan.getStyle().set("color", "gray");
+
         Button editButton = new Button("Löschen");
         editButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
@@ -92,7 +97,7 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
             UI.getCurrent().navigate(MyJobPostView.class);
         });
 
-        cardLayout.add(titleLayout, title, type, infoLayout, description, desParagraph, editButton);
+        cardLayout.add(titleLayout, title, type, infoLayout, description, desParagraph, viewCountSpan, editButton);
 
         cardLayout.setWidth("100%");
         cardLayout.setMaxWidth("700px");

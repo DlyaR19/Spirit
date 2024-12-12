@@ -7,7 +7,9 @@ import com.spirit.application.repository.JobPostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JobPostService - Verwaltet Stellenausschreibungs-bezogene Operationen
@@ -24,6 +26,7 @@ public class JobPostService {
     // Repositories für Datenbankzugriff
     private final JobPostRepository jobPostRepository;
     private final BewerbungRepository bewerbungRepository;
+    private final Map<Long, Long> viewCountMap = new HashMap<>();
 
     // Konstruktor zur Initialisierung der Repositories
     public JobPostService(JobPostRepository jobPostRepository, BewerbungRepository bewerbungRepository) {
@@ -68,11 +71,25 @@ public class JobPostService {
         jobPostRepository.deleteByJobPostID(jobPostId);
     }
 
+    @Transactional
+    public void incrementViewCount(JobPost jobPost) {
+        Long currentCount = viewCountMap.getOrDefault(jobPost.getJobPostID(), 0L);
+        viewCountMap.put(jobPost.getJobPostID(), currentCount + 1);
+    }
+
+    public Long getViewCount(JobPost jobPost) {
+        return viewCountMap.getOrDefault(jobPost.getJobPostID(), 0L);
+    }
+
     /**
      * Prüft, ob keine Stellenausschreibungen in der Datenbank existieren
      * @return true, wenn keine Stellenausschreibungen vorhanden sind
      */
     public boolean isEmpty() {
         return jobPostRepository.count() == 0;
+    }
+
+    public JobPost getJobPostByJobPostID(long jobPostID) {
+        return jobPostRepository.getJobPostByJobPostID(jobPostID);
     }
 }

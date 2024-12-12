@@ -45,6 +45,7 @@ public class SuchView extends Composite<VerticalLayout> {
     private final transient MarkdownConverter markdownConverter = new MarkdownConverter();
     private final transient SessionService sessionService;
     private final transient BewerbungService bewerbungService;
+    private final transient JobPostService jobPostService;
     private final String[] comboBoxItems = {
             "Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt",
             "Masterprojekt", "Büro", "Homeoffice",
@@ -55,6 +56,7 @@ public class SuchView extends Composite<VerticalLayout> {
                     BewerbungService bewerbungService) {
         this.sessionService = sessionService;
         this.bewerbungService = bewerbungService;
+        this.jobPostService = jobPostService;
         this.layout = new VerticalLayout();
         this.layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
 
@@ -143,8 +145,12 @@ public class SuchView extends Composite<VerticalLayout> {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button learnMore = new Button("Mehr erfahren");
         buttonLayout.add(learnMore);
+        Long viewCount = jobPostService.getViewCount(jobPost.getJobPost());
+        Span viewCountSpan = new Span("Aufrufe: " + viewCount);
+        viewCountSpan.getStyle().set("font-size", "0.8em");
+        viewCountSpan.getStyle().set("color", "gray");
         cardLayout.add(title, avatarLayout, type, infoLayout, contactLayout, profileDescription,
-                profileDescriptionParagraph, buttonLayout);
+                profileDescriptionParagraph, buttonLayout, viewCountSpan);
         cardLayout.setWidth("100%");
         cardLayout.setMaxWidth("700px");
         cardLayout.getStyle().set("border", "1px solid #ccc");
@@ -163,6 +169,7 @@ public class SuchView extends Composite<VerticalLayout> {
     }
 
     private void openDialog(JobPostDTO vacancy) {
+        jobPostService.incrementViewCount(vacancy.getJobPost());
         Dialog dialog = new Dialog();
         dialog.setWidth("800px");
         dialog.setHeight("600px");

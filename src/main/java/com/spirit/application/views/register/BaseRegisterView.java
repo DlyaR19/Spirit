@@ -2,6 +2,7 @@ package com.spirit.application.views.register;
 
 import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.Globals;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -60,6 +61,7 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
 
     private void addButtons() {
         submitButton.addClickListener(e -> register());
+        submitButton.addClickShortcut(Key.ENTER);
         cancelButton.addClickListener(e -> UI.getCurrent().navigate(Globals.Pages.LOGIN));
         add(errorMessageField);
         add(new HorizontalLayout(cancelButton, submitButton));
