@@ -38,8 +38,8 @@ public class Globals {
         public static final String MY_JOBPOSTS = "unternehmen/my-jobposts";
         public static final String SHOW_BEWERBUNG = "unternehmen/show/bewerbung";
         public static final String JOBPOST = "unternehmen/jobpost";
-        public static final String SEARCH_STUDENT = "student/search";
-        public static final String APPLY_STUDENT = "student/apply";
+        public static final String SUCHE_STUDENT = "student/suche";
+        public static final String BEWERBUNG_STUDENT = "student/bewerbung";
         public static final String ABOUTUS = "about";
         public static final String DASHBOARD = "dashboard";
         public static final String CHAT_STUDENT = "student/chat";

@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-@Route(value = Globals.Pages.SEARCH_STUDENT, layout = AppView.class)
+@Route(value = Globals.Pages.SUCHE_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
-public class SearchView extends Composite<VerticalLayout> {
+public class SuchView extends Composite<VerticalLayout> {
 
     private static final String FONT_WEIGHT = "font-weight";
     private static final String INNER_HTML = "innerHTML";
@@ -51,8 +51,8 @@ public class SearchView extends Composite<VerticalLayout> {
     };
 
     @Autowired
-    public SearchView(JobPostService jobPostService, SessionService sessionService,
-                      BewerbungService bewerbungService) {
+    public SuchView(JobPostService jobPostService, SessionService sessionService,
+                    BewerbungService bewerbungService) {
         this.sessionService = sessionService;
         this.bewerbungService = bewerbungService;
         this.layout = new VerticalLayout();
@@ -80,8 +80,8 @@ public class SearchView extends Composite<VerticalLayout> {
         search.add(employmentType, searchTextField, searchButton, clearSearch);
         searchButton.addClickListener(event -> {
             String searchText = searchTextField.getValue();
-            String selectedEmploymentType = employmentType.getValue();
-            performSearch(searchText, selectedEmploymentType);
+            String selectedAnstellungsart = employmentType.getValue();
+            performSearch(searchText, selectedAnstellungsart);
         });
         clearSearch.addClickListener(event -> {
             searchTextField.clear();
@@ -90,9 +90,9 @@ public class SearchView extends Composite<VerticalLayout> {
         return search;
     }
 
-    private void performSearch(String searchText, String employmentType) {
+    private void performSearch(String searchText, String anstellungsart) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
-                .filter(jobPost -> (employmentType == null || employmentType.isEmpty() || jobPost.getAnstellungsart().equalsIgnoreCase(employmentType)) &&
+                .filter(jobPost -> (anstellungsart == null || anstellungsart.isEmpty() || jobPost.getAnstellungsart().equalsIgnoreCase(anstellungsart)) &&
                         (searchText == null || searchText.isEmpty() || jobPostMatchesSearchText(jobPost, searchText)))
                 .toList();
         updateJobPostList(searchedJobPosts);
@@ -188,9 +188,9 @@ public class SearchView extends Composite<VerticalLayout> {
         desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(vacancy.getBeschreibung()));
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
-        Button apply = new Button("Jetzt bewerben");
-        apply.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        apply.addClickListener(e -> {
+        Button bewerben = new Button("Jetzt bewerben");
+        bewerben.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        bewerben.addClickListener(e -> {
             openApplyDialog(vacancy);
             dialog.close();
         });
@@ -198,7 +198,7 @@ public class SearchView extends Composite<VerticalLayout> {
         Button closeButton = new Button("Schließen", event -> dialog.close());
         closeButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        buttonLayout.add(apply, closeButton);
+        buttonLayout.add(bewerben, closeButton);
 
         dialogLayout.add(title, avatar, type, infoLayout, description, desParagraph, buttonLayout);
         dialog.add(dialogLayout);

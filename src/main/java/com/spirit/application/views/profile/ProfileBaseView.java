@@ -4,15 +4,16 @@ package com.spirit.application.views.profile;
 import com.spirit.application.dto.UserDTO;
 import com.spirit.application.service.ProfileService;
 import com.spirit.application.service.SessionService;
+import com.spirit.application.util.Globals;
 import com.spirit.application.util.MarkdownConverter;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -66,8 +67,28 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
                 new H6("Email: "), email);
         HorizontalLayout webseiteLayout = new HorizontalLayout(
                 new H6("Webseite: "), webseite);
+
+        Button deleteButton = new Button("Profil löschen", event -> {
+            ConfirmDialog dialog = new ConfirmDialog();
+            dialog.setHeader("Bestätigung");
+            dialog.setText("Sind Sie sicher, dass Sie Ihr Profil löschen möchten?");
+
+            // "Löschen"-Button
+            dialog.setConfirmButton("Löschen", confirmEvent -> {
+                profileService.deleteProfile(user.getProfile().getProfileID());
+                Notification.show("Profil erfolgreich gelöscht.", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().navigate(Globals.Pages.LOGIN); // Zur Startseite navigieren
+            });
+
+            // "Abbrechen"-Button
+            dialog.setCancelButton("Abbrechen", cancelEvent -> dialog.close());
+
+            dialog.open();
+        });
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+
         HorizontalLayout buttonLayout = new HorizontalLayout(new Button("bearbeiten", event ->
-                openEditDialog(user)), new Button("Bild hochladen", event -> openAvatarDialog(user)));
+                openEditDialog(user)), new Button("Bild hochladen", event -> openAvatarDialog(user)), deleteButton);
         infoLayout.add(username, emailLayout, webseiteLayout, buttonLayout);
         header.add(avatar, infoLayout);
         return header;
@@ -168,6 +189,7 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         dialog.add(avatarLayout);
         dialog.open();
     }
+
 
     private void updateProfileData(UserDTO user) {
         webseite.setText(user.getProfile().getWebseite());

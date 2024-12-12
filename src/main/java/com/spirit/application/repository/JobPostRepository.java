@@ -25,4 +25,5 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long> {
 
     void deleteByJobPostID(Long jobPostId);
 
+    void deleteJobPostByUnternehmen_UnternehmenID(long unternehmenUnternehmenID);
 }

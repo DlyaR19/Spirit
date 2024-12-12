@@ -1,10 +1,12 @@
 package com.spirit.application.service;
 
 
-import com.spirit.application.entitiy.Profile;
-import com.spirit.application.repository.ProfileRepository;
+import com.spirit.application.entitiy.*;
+import com.spirit.application.repository.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,10 +26,20 @@ public class ProfileService {
 
     // Repository für Profilzugriff
     private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
+    private final BewerbungRepository bewerbungRepository;
+    private final UnternehmenRepository unternehmenRepository;
+    private final JobPostRepository jobPostRepository;
 
     // Konstruktor zur Initialisierung des ProfileRepository
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, StudentRepository studentRepository, BewerbungRepository bewerbungRepository, UnternehmenRepository unternehmenRepository, JobPostRepository jobPostRepository) {
         this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
+        this.bewerbungRepository = bewerbungRepository;
+        this.unternehmenRepository = unternehmenRepository;
+        this.jobPostRepository = jobPostRepository;
     }
 
     /**
@@ -90,4 +102,35 @@ public class ProfileService {
             throw new IllegalArgumentException(PROFILE_NOT_FOUND + profileId + NOT_FOUND);
         }
     }
+
+    // profil löschen
+    @Transactional
+    public void deleteProfile(Long profileId) {
+
+        // Zuerst holen wir das User Objekt, das auf das Profil verweist
+        User user = userRepository.findUserByProfile_ProfileID(profileId);
+        Long userId = user.getUserID();
+
+        // Zuerst holen wir den Studenten/Unternehmen, der auf den Benutzer verweist
+        Student student = studentRepository.findStudentByUserUserID(userId);
+        Unternehmen unternehmen = unternehmenRepository.findUnternehmenByUserUserID(userId);
+
+
+        if (student != null) {
+            bewerbungRepository.deleteBewerbungByStudent_StudentID(student.getStudentID());
+            studentRepository.deleteByUserUserID(userId);
+        } else if (unternehmen != null) {
+            jobPostRepository.deleteJobPostByUnternehmen_UnternehmenID(unternehmen.getUnternehmenID());
+            unternehmenRepository.deleteByUserUserID(userId);
+        } else {
+            throw new IllegalArgumentException(NOT_FOUND);
+        }
+
+        // Dann löschen wir den Benutzer
+        userRepository.deleteByUserID(userId);
+
+        // Schließlich löschen wir das Profil, falls es auf den Benutzer verweist
+        profileRepository.deleteByProfileID(profileId);
+    }
+
 }

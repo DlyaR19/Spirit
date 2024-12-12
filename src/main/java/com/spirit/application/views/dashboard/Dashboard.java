@@ -180,9 +180,9 @@ public class Dashboard extends Composite<VerticalLayout> {
         desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(vacancy.getBeschreibung()));
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
-        Button apply = new Button("Jetzt bewerben");
-        apply.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        apply.addClickListener(e -> {
+        Button bewerben = new Button("Jetzt bewerben");
+        bewerben.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        bewerben.addClickListener(e -> {
             Notification.show("Jetzt einloggen und bewerben!");
             UI.getCurrent().navigate(Globals.Pages.LOGIN);
             dialog.close();
@@ -191,7 +191,7 @@ public class Dashboard extends Composite<VerticalLayout> {
         Button closeButton = new Button("Schließen", event -> dialog.close());
         closeButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        buttonLayout.add(apply, closeButton);
+        buttonLayout.add(bewerben, closeButton);
 
         dialogLayout.add(title, avatar, type, infoLayout, description, desParagraph, buttonLayout);
         dialog.add(dialogLayout);

@@ -16,4 +16,6 @@ public interface UnternehmenRepository extends JpaRepository<Unternehmen, Long> 
     Unternehmen findUnternehmenByUserUserID(Long userID);
 
     boolean existsByUserUserID(Long userID);
+
+    void deleteByUserUserID(Long userID);
 }

@@ -5,7 +5,7 @@ import com.spirit.application.util.Globals;
 import com.spirit.application.util.Utils;
 import com.spirit.application.views.profile.Student.MyBewerbungView;
 import com.spirit.application.views.profile.Student.ProfilStudentView;
-import com.spirit.application.views.profile.Student.SearchView;
+import com.spirit.application.views.profile.Student.SuchView;
 import com.spirit.application.views.profile.Unternehmen.AddJobPostView;
 import com.spirit.application.views.profile.Unternehmen.MyJobPostView;
 import com.spirit.application.views.profile.Unternehmen.ProfileUnternehmenView;
@@ -164,7 +164,7 @@ public class AppView extends AppLayout {
 
         if (sessionService.getUserRole().contains(Globals.Roles.STUDENT)) {
             tabs = Utils.append(tabs, createTab("Profil", VaadinIcon.USER, ProfilStudentView.class));
-            tabs = Utils.append(tabs, createTab("Job suchen", VaadinIcon.SEARCH, SearchView.class));
+            tabs = Utils.append(tabs, createTab("Job suchen", VaadinIcon.SEARCH, SuchView.class));
             tabs = Utils.append(tabs, createTab("Meine Bewerbungen", VaadinIcon.FILE_TEXT, MyBewerbungView.class));
             //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
         } else if (sessionService.getUserRole().contains(Globals.Roles.UNTERNEHMEN)) {

@@ -14,12 +14,12 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 
-@Route(value = Globals.Pages.APPLY_STUDENT, layout = AppView.class)
+@Route(value = Globals.Pages.BEWERBUNG_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
-public class ApplyView extends Composite<VerticalLayout> {
+public class BewerbungView extends Composite<VerticalLayout> {
     private static final String MIN_CONTENT = "min-content";
 
-    public ApplyView() {
+    public BewerbungView() {
         H2 h2 = new H2();
         HorizontalLayout layoutRow = new HorizontalLayout();
         Button buttonPrimary = new Button();

@@ -22,4 +22,6 @@ public interface BewerbungRepository extends JpaRepository<Bewerbung, Long> {
     void deleteBewerbungByJobPost_JobPostID(long jobPostID);
 
     Bewerbung findBewerbungByBewerbungID(long bewerbungID);
+
+    void deleteBewerbungByStudent_StudentID(long studentID);
 }
