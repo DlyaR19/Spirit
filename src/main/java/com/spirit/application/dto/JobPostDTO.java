@@ -21,6 +21,7 @@ public class JobPostDTO {
     private String titel;
     private String anstellungsart;
     private String standort;
+    private String arbeitsmodus;
     private String beschreibung;
     private Date veroeffentlichungsdatum;
 

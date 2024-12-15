@@ -1,6 +1,5 @@
 package com.spirit.application.views.dashboard;
 
-
 import com.spirit.application.dto.JobPostDTO;
 import com.spirit.application.service.JobPostService;
 import com.spirit.application.util.Globals;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Route(value = Globals.Pages.DASHBOARD, layout = MainLayout.class)
-@Menu(order=0)
+@Menu(order = 0)
 @AnonymousAllowed
 @PermitAll
 public class Dashboard extends Composite<VerticalLayout> {
@@ -40,9 +39,14 @@ public class Dashboard extends Composite<VerticalLayout> {
     private final VerticalLayout layout;
     private final List<JobPostDTO> jobPosts = new ArrayList<>();
     private final transient MarkdownConverter markdownConverter = new MarkdownConverter();
-    private final String[] comboBoxItems = {
-            "Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt",
-            "Masterprojekt", "Büro", "Homeoffice",
+    private final String[] comboBoxEmployments = {
+            "Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt", "Masterprojekt"
+    };
+    private final String[] comboBoxLocations = {
+            "Deutschland", "Schweiz", "Österreich", "Bonn", "Köln", "Sankt Augustin", "Berlin", "Dortmund", "Stuttgart"
+    };
+    private final String[] comboBoxOffice = {
+            "Büro", "Homeoffice"
     };
 
     @Autowired
@@ -52,39 +56,76 @@ public class Dashboard extends Composite<VerticalLayout> {
 
         jobPostService.getAllJobPost().forEach(jobpost -> jobPosts.add(new JobPostDTO(jobpost)));
 
-
         updateJobPostList(jobPosts);
+
+        HorizontalLayout searchBarLayout = searchbar();
+
         getContent().getStyle().setAlignItems(Style.AlignItems.CENTER);
-        getContent().add(searchbar(), layout);
+        getContent().add(searchBarLayout, layout);
     }
 
     public HorizontalLayout searchbar() {
-        HorizontalLayout search = new HorizontalLayout();
-        ComboBox<String> employmentType = new ComboBox<>();
-        employmentType.setItems(comboBoxItems);
-        Button searchButton = new Button("Suche");
-        Button clearSearch = new Button("Neue Suche");
+        VerticalLayout searchBarContainer = new VerticalLayout();
+        searchBarContainer.setWidth("100%");
+        searchBarContainer.setMaxWidth("700px");
+        searchBarContainer.getStyle().set("align-items", "stretch");
+
+        HorizontalLayout topRow = new HorizontalLayout();
+        topRow.setWidth("100%");
+
         TextField searchTextField = new TextField();
         searchTextField.setPlaceholder("Standort, Beschreibung, usw.");
         searchTextField.setWidth("100%");
-        search.setWidth("100%");
-        search.setMaxWidth("700px");
-        search.add(employmentType, searchTextField, searchButton, clearSearch);
+
+        Button searchButton = new Button("Suche");
+        Button clearSearch = new Button("Neue Suche");
+
+        topRow.add(searchTextField, searchButton, clearSearch);
+        topRow.setFlexGrow(1, searchTextField);
+
+        HorizontalLayout bottomRow = new HorizontalLayout();
+        bottomRow.setWidth("100%");
+
+        ComboBox<String> employmentType = new ComboBox<>("Anstellungsart");
+        employmentType.setPlaceholder("Teilzeit | Vollzeit | ...");
+        employmentType.setItems(comboBoxEmployments);
+
+        ComboBox<String> locationType = new ComboBox<>("Standort");
+        locationType.setPlaceholder("Bonn | Köln | ...");
+        locationType.setItems(comboBoxLocations);
+
+        ComboBox<String> officeType = new ComboBox<>("Arbeitsmodus");
+        officeType.setPlaceholder("Büro | Homeoffice | ...");
+        officeType.setItems(comboBoxOffice);
+
+        bottomRow.add(employmentType, locationType, officeType);
+        bottomRow.setFlexGrow(1, employmentType, locationType, officeType);
+
+        searchBarContainer.add(topRow, bottomRow);
+
         searchButton.addClickListener(event -> {
             String searchText = searchTextField.getValue();
             String selectedEmploymentType = employmentType.getValue();
-            performSearch(searchText, selectedEmploymentType);
+            String selectedLocationType = locationType.getValue();
+            String selectedOfficeType = officeType.getValue();
+            performSearch(searchText, selectedEmploymentType, selectedLocationType, selectedOfficeType);
         });
+
         clearSearch.addClickListener(event -> {
             searchTextField.clear();
             employmentType.clear();
+            locationType.clear();
+            officeType.clear();
         });
-        return search;
+
+        return new HorizontalLayout(searchBarContainer);
     }
 
-    private void performSearch(String searchText, String employmentType) {
+    private void performSearch(String searchText, String employmentType, String locationType, String officeType) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
                 .filter(jobPost -> (employmentType == null || employmentType.isEmpty() || jobPost.getAnstellungsart().equalsIgnoreCase(employmentType)) &&
+                        (locationType == null || locationType.isEmpty() || jobPost.getStandort().equalsIgnoreCase(locationType)) &&
+                        (officeType == null || officeType.isEmpty() || jobPost.getArbeitsmodus().equalsIgnoreCase(officeType)) &&
                         (searchText == null || searchText.isEmpty() || jobPostMatchesSearchText(jobPost, searchText)))
                 .toList();
         updateJobPostList(searchedJobPosts);
@@ -96,12 +137,10 @@ public class Dashboard extends Composite<VerticalLayout> {
                 jobPost.getUnternehmen().getName().toLowerCase().contains(searchText.toLowerCase())
                 || jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
     }
+
     private void updateJobPostList(List<JobPostDTO> jobPostToDisplay) {
         layout.removeAll();
-        jobPostToDisplay.forEach(jobPostDTO -> {
-            layout.add(createCard(jobPostDTO));
-        });
-
+        jobPostToDisplay.forEach(jobPostDTO -> layout.add(createCard(jobPostDTO)));
     }
 
     public VerticalLayout createCard(JobPostDTO jobPost) {
@@ -197,5 +236,4 @@ public class Dashboard extends Composite<VerticalLayout> {
         dialog.add(dialogLayout);
         dialog.open();
     }
-
 }
