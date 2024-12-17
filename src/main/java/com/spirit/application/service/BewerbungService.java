@@ -71,4 +71,8 @@ public class BewerbungService {
     public String getAnschreiben(long bewerbungID) {
         return bewerbungRepository.findBewerbungByBewerbungID(bewerbungID).getAnschreiben();
     }
+
+    public Long countBewerbungByJobPostId(Long jobPostId) {
+        return bewerbungRepository.countBewerbungByJobPost_JobPostID(jobPostId);
+    }
 }

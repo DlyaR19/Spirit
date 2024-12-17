@@ -64,8 +64,13 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
     public VerticalLayout studentCard(BewerbungDTO bewerbung, JobPostDTO jobPost) {
         VerticalLayout studentCardLayout = new VerticalLayout();
+
+        H4 jobPostTitle = new H4(jobPost.getTitel());
+        jobPostTitle.getStyle().set("margin", "0");
+
         HorizontalLayout jobPostInfo = new HorizontalLayout();
-        jobPostInfo.add(new H4(jobPost.getTitel()));
+        jobPostInfo.add(jobPostTitle);
+
         HorizontalLayout avaterLayout = new HorizontalLayout();
         Avatar studentAvatar = new Avatar();
         studentAvatar.setImage(
@@ -102,8 +107,6 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
             profileLayout.add(studentAvatarDialog, profileName, profileDescriptionDialog);
             profileDialog.add(profileLayout);
             profileDialog.open();
-
-
         });
 
         Button downloadAnschreibenButton = getDownloadAnschreibenButton(bewerbung);
@@ -157,6 +160,14 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
         for (JobPost jobPost : jobPosts) {
             JobPostDTO jobPostDTO = new JobPostDTO(jobPost);
+            Long bewerbungsAnzahl = bewerbungService.countBewerbungByJobPostId(jobPost.getJobPostID());
+            if (bewerbungsAnzahl == 0) {
+                H4 jobPostTitle = new H4(jobPost.getTitel() + " (Keine Bewerbungen)");
+                layout.add(jobPostTitle);
+            } else {
+                H4 jobPostTitle = new H4(jobPost.getTitel() + " (" + bewerbungsAnzahl + " Bewerbungen)");
+                layout.add(jobPostTitle);
+            }
             List<Bewerbung> bewerbungs = bewerbungService.getAllBewerbung(jobPost.getJobPostID());
             for (Bewerbung bewerbung : bewerbungs) {
                 BewerbungDTO bewerbungDTO = new BewerbungDTO(bewerbung);

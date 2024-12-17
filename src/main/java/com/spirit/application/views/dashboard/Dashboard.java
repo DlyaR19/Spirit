@@ -39,6 +39,7 @@ public class Dashboard extends Composite<VerticalLayout> {
     private final VerticalLayout layout;
     private final List<JobPostDTO> jobPosts = new ArrayList<>();
     private final transient MarkdownConverter markdownConverter = new MarkdownConverter();
+    private final transient JobPostService jobPostService;
     private final String[] comboBoxEmployments = {
             "Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt", "Masterprojekt"
     };
@@ -51,6 +52,8 @@ public class Dashboard extends Composite<VerticalLayout> {
 
     @Autowired
     public Dashboard(JobPostService jobPostService) {
+        this.jobPostService = jobPostService;
+
         this.layout = new VerticalLayout();
         this.layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
 
@@ -174,8 +177,12 @@ public class Dashboard extends Composite<VerticalLayout> {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button learnMore = new Button("Mehr erfahren");
         buttonLayout.add(learnMore);
+        Long viewCount = jobPostService.getViewCount(jobPost.getJobPost());
+        Span viewCountSpan = new Span("Aufrufe: " + viewCount);
+        viewCountSpan.getStyle().set("font-size", "0.8em");
+        viewCountSpan.getStyle().set("color", "gray");
         cardLayout.add(title, avatarLayout, type, infoLayout, contactLayout, profileDescription,
-                profileDescriptionParagraph, buttonLayout);
+                profileDescriptionParagraph, buttonLayout, viewCountSpan);
         cardLayout.setWidth("100%");
         cardLayout.setMaxWidth("700px");
         cardLayout.getStyle().set("border", "1px solid #ccc");
