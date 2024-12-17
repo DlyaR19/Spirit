@@ -2,6 +2,7 @@ package com.spirit.application.util;
 
 
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 
 /**
  * Utility-Klasse mit statischen Methoden zur Validierung von Registrierungsdaten
@@ -29,11 +30,11 @@ public class RegisterUtils {
      */
     public static boolean validateInput(String username, String firstName, String lastName, String email, String password, String passwordConfirmation) {
         if (!isValidVorname(firstName)) {
-            Notification.show("Kein gültiger Vorname (3-30 Zeichen, nur Buchstaben, Leerzeichen und Bindestriche).");
+            Notification.show("Kein gültiger Vorname (3-30 Zeichen, nur Buchstaben, Leerzeichen und Bindestriche).", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         if (!isValidNachname(lastName)) {
-            Notification.show("Kein gültiger Nachname (3-30 Zeichen, nur Buchstaben, Leerzeichen und Bindestriche).");
+            Notification.show("Kein gültiger Nachname (3-30 Zeichen, nur Buchstaben, Leerzeichen und Bindestriche).", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         return checkDefaultInput(username, email, password, passwordConfirmation);
@@ -50,7 +51,7 @@ public class RegisterUtils {
      */
     public static boolean validateInput(String username, String unternehmenName, String email, String password, String passwordConfirmation) {
         if (!isValidUnternehmenName(unternehmenName)) {
-            Notification.show("Kein gültiger Unternehmensnamen (mindestens 3-30 Zeichen, nur Buchstaben, Leerzeichen und Ziffern).");
+            Notification.show("Kein gültiger Unternehmensnamen (mindestens 3-30 Zeichen, nur Buchstaben, Leerzeichen und Ziffern).", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         return checkDefaultInput(username, email, password, passwordConfirmation);
@@ -78,19 +79,19 @@ public class RegisterUtils {
      */
     private static boolean checkDefaultInput(String username, String email, String password, String passwordConfirmation) {
         if (!isValidUsername(username)) {
-            Notification.show("Kein gültiger Benutzername (3-20 Zeichen, nur Buchstaben und Ziffern).");
+            Notification.show("Kein gültiger Benutzername (3-20 Zeichen, nur Buchstaben und Ziffern).", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         if (!isValidEmail(email)) {
-            Notification.show("Keine gültige E-Mail Adresse (zB test@test.de).");
+            Notification.show("Keine gültige E-Mail Adresse (zB test@test.de).", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         if (!password.equals(passwordConfirmation)) {
-            Notification.show("Die Passwörter stimmen nicht überein.");
+            Notification.show("Die Passwörter stimmen nicht überein.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         if (!isPasswordComplex(password)) {
-            Notification.show("Das Passwort muss 8-16 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten.");
+            Notification.show("Das Passwort muss 8-16 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben und eine Zahl enthalten.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         return true;

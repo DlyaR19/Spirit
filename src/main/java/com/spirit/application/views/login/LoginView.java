@@ -110,7 +110,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         try {
             loginService.startSession(new UserDTO(loginService.login(input.getUsername(), input.getPassword())));
         } catch (Exception e) {
-            Notification.show("Benutzername oder Passwort falsch");
+            Notification.show("Benutzername oder Passwort falsch", 3000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 

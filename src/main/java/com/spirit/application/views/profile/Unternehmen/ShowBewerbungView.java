@@ -18,6 +18,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -141,9 +142,9 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
                 downloadLink.getElement().executeJs("this.click();");
 
-                Notification.show("Bewerbung-Download gestartet.");
+                Notification.show("Bewerbung-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             } else {
-                Notification.show("Keine Bewerbung gefunden.");
+                Notification.show("Keine Bewerbung gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
                 downloadAnschreibenButton.setEnabled(false);
             }
         });

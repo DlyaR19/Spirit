@@ -44,6 +44,7 @@ public class User {
         return Objects.hash(userID, profile, username, password, blacklisted);
     }
 
-
-
+    public void setUsername(String username) {
+        this.username = username != null ? username.toLowerCase() : null;
+    }
 }

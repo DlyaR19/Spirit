@@ -17,6 +17,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -235,10 +236,12 @@ public class SuchView extends Composite<VerticalLayout> {
                 bewerbungService.saveBewerbung(entityFactory.createBewerbung(
                         vacancy.getJobPost(),
                         sessionService.getCurrentStudent().getStudent(), base64Letter));
-                Notification.show("Bewerbung erfolgreich eingereicht");
+                Notification.show("Bewerbung erfolgreich eingereicht", 3000, Notification.Position.TOP_CENTER)
+                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                 dialog.close();
             } catch (Exception e) {
-                Notification.show("Fehler beim Hochladen des Lebenslaufs: " + e.getMessage());
+                Notification.show("Fehler beim Hochladen des Lebenslaufs: " + e.getMessage() , 5000, Notification.Position.TOP_CENTER)
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
         dialogLayout.add(title, upload, applyButton);

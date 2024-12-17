@@ -1,7 +1,10 @@
 package com.spirit.application.views.register;
 
+import com.spirit.application.service.impl.RegisterInterfaceImpl;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.textfield.TextField;
 import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.Globals;
@@ -48,7 +51,15 @@ public class UnternehmenRegisterView extends BaseRegisterView {
         String companyName = companyNameField.getValue();
         String passwordConfirmation = passwordConfirmationField.getValue();
 
-        registerInterface.registerUnternehmen(username, password, email, companyName, passwordConfirmation);
-        UI.getCurrent().navigate(Globals.Pages.LOGIN);
+        try{
+            registerInterface.registerUnternehmen(username, password, email, companyName, passwordConfirmation);
+            UI.getCurrent().navigate(Globals.Pages.LOGIN);
+            Notification.show("Registrierung erfolgreich!", 3000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+        } catch (RegisterInterfaceImpl.UsernameAlreadyTakenException |
+                 RegisterInterfaceImpl.EmailAlreadyTakenException | IllegalArgumentException ex) {
+            Notification.show("Fehler: " + ex.getMessage(), 5000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
     }
 }

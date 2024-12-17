@@ -10,6 +10,7 @@ import com.spirit.application.repository.UnternehmenRepository;
 import com.spirit.application.repository.UserRepository;
 import com.spirit.application.util.Globals;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.server.VaadinSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class LoginService {
         } else if (isUserUnternehmen(user) && !isBlacklisted(user)) {
             startUnternehmenSession(user);
         } else {
-            Notification.show("Ihr Account ist gebannt! Bitte kontaktieren Sie den Administrator.");
+            Notification.show("Ihr Account ist gebannt! Bitte kontaktieren Sie den Administrator.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 
@@ -58,7 +59,7 @@ public class LoginService {
         VaadinSession.getCurrent().setAttribute(
                 Globals.CURRENT_USER,
                 new UnternehmenDTO(unternehmenRepository.findUnternehmenByUserUserID(user.getUserID())));
-        Notification.show("Erfolgreich eingeloggt!");
+        Notification.show("Erfolgreich eingeloggt!", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 
     /**
@@ -69,7 +70,7 @@ public class LoginService {
         VaadinSession.getCurrent().setAttribute(
                 Globals.CURRENT_USER,
                 new StudentDTO(studentRepository.findStudentByUserUserID(user.getUserID())));
-        Notification.show("Erfolgreich eingeloggt!");
+        Notification.show("Erfolgreich eingeloggt!", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 
     /**
@@ -97,7 +98,7 @@ public class LoginService {
      * @return Der User, falls die Credentials valid sind, sonst null
      */
     public User login(String username, String password) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameIgnoreCase(username);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return user;
         }
@@ -111,11 +112,11 @@ public class LoginService {
      */
     public boolean isBlacklisted(UserDTO user) {
 //        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()).getBlacklisted() == 1;
-        return userRepository.findByUsername(user.getUsername()).getBlacklisted() == 1;
+        return userRepository.findByUsernameIgnoreCase(user.getUsername()).getBlacklisted() == 1;
     }
 
     public User getUser(String username, String password) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameIgnoreCase(username);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return user;
         }
