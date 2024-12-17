@@ -14,6 +14,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -229,7 +230,7 @@ public class Dashboard extends Composite<VerticalLayout> {
         Button bewerben = new Button("Jetzt bewerben");
         bewerben.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         bewerben.addClickListener(e -> {
-            Notification.show("Jetzt einloggen und bewerben!");
+            Notification.show("Jetzt einloggen und bewerben!", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
             UI.getCurrent().navigate(Globals.Pages.LOGIN);
             dialog.close();
         });
