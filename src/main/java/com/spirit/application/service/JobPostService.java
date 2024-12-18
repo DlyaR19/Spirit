@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * JobPostService - Verwaltet Stellenausschreibungs-bezogene Operationen
@@ -91,5 +92,38 @@ public class JobPostService {
 
     public JobPost getJobPostByJobPostID(long jobPostID) {
         return jobPostRepository.getJobPostByJobPostID(jobPostID);
+    }
+
+    public List<String> getUniqueEmploymentTypes() {
+        return jobPostRepository.findAll()
+                .stream()
+                .map(JobPost::getAnstellungsart)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getUniqueLocations() {
+        return jobPostRepository.findAll()
+                .stream()
+                .map(JobPost::getStandort)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getUniqueCompanyNameTypes() {
+        return jobPostRepository.findAll()
+                .stream()
+                .map(jobPost -> jobPost.getUnternehmen().getName())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getUniqueJobTitleTypes() {
+        return jobPostRepository.findAll()
+                .stream()
+                .map(JobPost::getTitel)
+                .distinct()
+                .collect(Collectors.toList());
+
     }
 }

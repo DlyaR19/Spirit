@@ -18,6 +18,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -64,8 +65,13 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
     public VerticalLayout studentCard(BewerbungDTO bewerbung, JobPostDTO jobPost) {
         VerticalLayout studentCardLayout = new VerticalLayout();
+
+        H4 jobPostTitle = new H4(jobPost.getTitel());
+        jobPostTitle.getStyle().set("margin", "0");
+
         HorizontalLayout jobPostInfo = new HorizontalLayout();
-        jobPostInfo.add(new H4(jobPost.getTitel()));
+        jobPostInfo.add(jobPostTitle);
+
         HorizontalLayout avaterLayout = new HorizontalLayout();
         Avatar studentAvatar = new Avatar();
         studentAvatar.setImage(
@@ -102,8 +108,6 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
             profileLayout.add(studentAvatarDialog, profileName, profileDescriptionDialog);
             profileDialog.add(profileLayout);
             profileDialog.open();
-
-
         });
 
         Button downloadAnschreibenButton = getDownloadAnschreibenButton(bewerbung);
@@ -138,9 +142,9 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
                 downloadLink.getElement().executeJs("this.click();");
 
-                Notification.show("Bewerbung-Download gestartet.");
+                Notification.show("Bewerbung-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             } else {
-                Notification.show("Keine Bewerbung gefunden.");
+                Notification.show("Keine Bewerbung gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
                 downloadAnschreibenButton.setEnabled(false);
             }
         });
@@ -157,6 +161,14 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
         for (JobPost jobPost : jobPosts) {
             JobPostDTO jobPostDTO = new JobPostDTO(jobPost);
+            Long bewerbungsAnzahl = bewerbungService.countBewerbungByJobPostId(jobPost.getJobPostID());
+            if (bewerbungsAnzahl == 0) {
+                H4 jobPostTitle = new H4(jobPost.getTitel() + " (Keine Bewerbungen)");
+                layout.add(jobPostTitle);
+            } else {
+                H4 jobPostTitle = new H4(jobPost.getTitel() + " (" + bewerbungsAnzahl + " Bewerbungen)");
+                layout.add(jobPostTitle);
+            }
             List<Bewerbung> bewerbungs = bewerbungService.getAllBewerbung(jobPost.getJobPostID());
             for (Bewerbung bewerbung : bewerbungs) {
                 BewerbungDTO bewerbungDTO = new BewerbungDTO(bewerbung);

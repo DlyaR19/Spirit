@@ -10,10 +10,11 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Route(value = Globals.Pages.DASHBOARD, layout = MainLayout.class)
 @Menu(order = 0)
@@ -39,18 +41,12 @@ public class Dashboard extends Composite<VerticalLayout> {
     private final VerticalLayout layout;
     private final List<JobPostDTO> jobPosts = new ArrayList<>();
     private final transient MarkdownConverter markdownConverter = new MarkdownConverter();
-    private final String[] comboBoxEmployments = {
-            "Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt", "Masterprojekt"
-    };
-    private final String[] comboBoxLocations = {
-            "Deutschland", "Schweiz", "Österreich", "Bonn", "Köln", "Sankt Augustin", "Berlin", "Dortmund", "Stuttgart"
-    };
-    private final String[] comboBoxOffice = {
-            "Büro", "Homeoffice"
-    };
+    private final transient JobPostService jobPostService;
 
     @Autowired
     public Dashboard(JobPostService jobPostService) {
+        this.jobPostService = jobPostService;
+
         this.layout = new VerticalLayout();
         this.layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
 
@@ -58,84 +54,119 @@ public class Dashboard extends Composite<VerticalLayout> {
 
         updateJobPostList(jobPosts);
 
-        HorizontalLayout searchBarLayout = searchbar();
+        // Dynamische Werte für die Filter
+        List<String> employmentTypes = jobPostService.getUniqueEmploymentTypes();
+        List<String> locationTypes = jobPostService.getUniqueLocations();
+        List<String> companyNameTypes = jobPostService.getUniqueCompanyNameTypes();
+        List<String> jobTitleTypes = jobPostService.getUniqueJobTitleTypes();
+
+        // Sortieren der Listen
+        employmentTypes.sort(String::compareToIgnoreCase);
+        locationTypes.sort(String::compareToIgnoreCase);
+        companyNameTypes.sort(String::compareToIgnoreCase);
+        jobTitleTypes.sort(String::compareToIgnoreCase);
+
+        HorizontalLayout searchBarLayout = searchbar(employmentTypes, locationTypes, companyNameTypes, jobTitleTypes);
 
         getContent().getStyle().setAlignItems(Style.AlignItems.CENTER);
         getContent().add(searchBarLayout, layout);
     }
 
-    public HorizontalLayout searchbar() {
+    public HorizontalLayout searchbar(List<String> employmentTypes, List<String> locationTypes, List<String> companyNameTypes, List<String> jobTitleTypes) {
+        // Haupt-Container für die Suchleiste
         VerticalLayout searchBarContainer = new VerticalLayout();
         searchBarContainer.setWidth("100%");
-        searchBarContainer.setMaxWidth("700px");
+        searchBarContainer.setSpacing(false);
         searchBarContainer.getStyle().set("align-items", "stretch");
 
+        // Obere Zeile mit Textfeld und Buttons
         HorizontalLayout topRow = new HorizontalLayout();
         topRow.setWidth("100%");
 
         TextField searchTextField = new TextField();
-        searchTextField.setPlaceholder("Standort, Beschreibung, usw.");
+        searchTextField.setPlaceholder("Standort | Beschreibung | ...");
         searchTextField.setWidth("100%");
 
         Button searchButton = new Button("Suche");
-        Button clearSearch = new Button("Neue Suche");
+        searchButton.setWidth("150px");
+
+        Button clearSearch = new Button("Zurücksetzen");
+        clearSearch.setWidth("150px");
 
         topRow.add(searchTextField, searchButton, clearSearch);
         topRow.setFlexGrow(1, searchTextField);
 
+        // Untere Zeile mit Filtern
         HorizontalLayout bottomRow = new HorizontalLayout();
-        bottomRow.setWidth("100%");
+        bottomRow.setWidth("1200px");
 
-        ComboBox<String> employmentType = new ComboBox<>("Anstellungsart");
+        MultiSelectComboBox<String> employmentType = new MultiSelectComboBox<>("Anstellungsart");
         employmentType.setPlaceholder("Teilzeit | Vollzeit | ...");
-        employmentType.setItems(comboBoxEmployments);
+        employmentType.setWidth("300px");
+        employmentType.setItems(employmentTypes);
 
-        ComboBox<String> locationType = new ComboBox<>("Standort");
+        MultiSelectComboBox<String> locationType = new MultiSelectComboBox<>("Standort");
         locationType.setPlaceholder("Bonn | Köln | ...");
-        locationType.setItems(comboBoxLocations);
+        locationType.setWidth("300px");
+        locationType.setItems(locationTypes);
 
-        ComboBox<String> officeType = new ComboBox<>("Arbeitsmodus");
-        officeType.setPlaceholder("Büro | Homeoffice | ...");
-        officeType.setItems(comboBoxOffice);
+        MultiSelectComboBox<String> companyNameType = new MultiSelectComboBox<>("Unternehmen");
+        companyNameType.setPlaceholder("Telekom | DHL | ...");
+        companyNameType.setWidth("300px");
+        companyNameType.setItems(companyNameTypes);
 
-        bottomRow.add(employmentType, locationType, officeType);
-        bottomRow.setFlexGrow(1, employmentType, locationType, officeType);
+        MultiSelectComboBox<String> jobTitleType = new MultiSelectComboBox<>("Jobtitel");
+        jobTitleType.setPlaceholder("IT-Security | IT-Support | ...");
+        jobTitleType.setWidth("300px");
+        jobTitleType.setItems(jobTitleTypes);
 
+        bottomRow.add(employmentType, locationType, companyNameType, jobTitleType);
+        bottomRow.setFlexGrow(1, employmentType, locationType, companyNameType, jobTitleType);
+
+        // Container füllen
         searchBarContainer.add(topRow, bottomRow);
 
+        // Such-Button Logik
         searchButton.addClickListener(event -> {
             String searchText = searchTextField.getValue();
-            String selectedEmploymentType = employmentType.getValue();
-            String selectedLocationType = locationType.getValue();
-            String selectedOfficeType = officeType.getValue();
-            performSearch(searchText, selectedEmploymentType, selectedLocationType, selectedOfficeType);
+            Set<String> selectedEmploymentTypes = employmentType.getSelectedItems();
+            Set<String> selectedLocationTypes = locationType.getSelectedItems();
+            Set<String> selectedCompanyNameTypes = companyNameType.getSelectedItems();
+            Set<String> selectedJobTitleTypes = jobTitleType.getSelectedItems();
+            performSearch(searchText, selectedEmploymentTypes, selectedLocationTypes, selectedCompanyNameTypes, selectedJobTitleTypes);
         });
 
+        // Clear-Button Logik
         clearSearch.addClickListener(event -> {
             searchTextField.clear();
             employmentType.clear();
             locationType.clear();
-            officeType.clear();
+            companyNameType.clear();
+            jobTitleType.clear();
+
+            searchButton.click();
         });
 
         return new HorizontalLayout(searchBarContainer);
     }
 
-    private void performSearch(String searchText, String employmentType, String locationType, String officeType) {
+    private void performSearch(String searchText, Set<String> employmentTypes, Set<String> locationTypes, Set<String> companyNameTypes, Set<String> jobTitleTypes) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
-                .filter(jobPost -> (employmentType == null || employmentType.isEmpty() || jobPost.getAnstellungsart().equalsIgnoreCase(employmentType)) &&
-                        (locationType == null || locationType.isEmpty() || jobPost.getStandort().equalsIgnoreCase(locationType)) &&
-                        (officeType == null || officeType.isEmpty() || jobPost.getArbeitsmodus().equalsIgnoreCase(officeType)) &&
+                .filter(jobPost -> (employmentTypes.isEmpty() || employmentTypes.contains(jobPost.getAnstellungsart())) &&
+                        (locationTypes.isEmpty() || locationTypes.contains(jobPost.getStandort())) &&
+                        (companyNameTypes.isEmpty() || companyNameTypes.contains(jobPost.getUnternehmen().getName())) &&
+                        (jobTitleTypes.isEmpty() || jobTitleTypes.contains(jobPost.getTitel())) &&
                         (searchText == null || searchText.isEmpty() || jobPostMatchesSearchText(jobPost, searchText)))
                 .toList();
+
         updateJobPostList(searchedJobPosts);
     }
 
     private boolean jobPostMatchesSearchText(JobPostDTO jobPost, String searchText) {
         return jobPost.getTitel().toLowerCase().contains(searchText.toLowerCase()) ||
                 jobPost.getBeschreibung().toLowerCase().contains(searchText.toLowerCase()) ||
-                jobPost.getUnternehmen().getName().toLowerCase().contains(searchText.toLowerCase())
-                || jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
+                jobPost.getUnternehmen().getName().toLowerCase().contains(searchText.toLowerCase()) ||
+                jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
     }
 
     private void updateJobPostList(List<JobPostDTO> jobPostToDisplay) {
@@ -174,8 +205,12 @@ public class Dashboard extends Composite<VerticalLayout> {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button learnMore = new Button("Mehr erfahren");
         buttonLayout.add(learnMore);
+        Long viewCount = jobPostService.getViewCount(jobPost.getJobPost());
+        Span viewCountSpan = new Span("Aufrufe: " + viewCount);
+        viewCountSpan.getStyle().set("font-size", "0.8em");
+        viewCountSpan.getStyle().set("color", "gray");
         cardLayout.add(title, avatarLayout, type, infoLayout, contactLayout, profileDescription,
-                profileDescriptionParagraph, buttonLayout);
+                profileDescriptionParagraph, buttonLayout, viewCountSpan);
         cardLayout.setWidth("100%");
         cardLayout.setMaxWidth("700px");
         cardLayout.getStyle().set("border", "1px solid #ccc");
@@ -222,7 +257,7 @@ public class Dashboard extends Composite<VerticalLayout> {
         Button bewerben = new Button("Jetzt bewerben");
         bewerben.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         bewerben.addClickListener(e -> {
-            Notification.show("Jetzt einloggen und bewerben!");
+            Notification.show("Jetzt einloggen und bewerben!", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_CONTRAST);
             UI.getCurrent().navigate(Globals.Pages.LOGIN);
             dialog.close();
         });

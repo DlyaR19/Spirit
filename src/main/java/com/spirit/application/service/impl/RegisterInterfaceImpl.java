@@ -104,8 +104,10 @@ public class RegisterInterfaceImpl implements RegisterInterface {
      * @param email die gewählte Email
      */
     private User registerUser(String username, String password, String email) {
+        String normalizedUsername = username.toLowerCase();
+
         // Überprüfung auf existierende Username/Email
-        if (getUsers().stream().anyMatch(user -> Objects.equals(user.getUsername(), username))) {
+        if (getUsers().stream().anyMatch(user -> Objects.equals(user.getUsername(), normalizedUsername))) {
             throw new UsernameAlreadyTakenException("Username schon vergeben");
         }
 
@@ -117,7 +119,7 @@ public class RegisterInterfaceImpl implements RegisterInterface {
 
         String passwordHash = passwordEncoder.encode(password);
 
-        User user = entityFactory.createUser(profile, username, passwordHash, email);
+        User user = entityFactory.createUser(profile, normalizedUsername, passwordHash, email);
 
         saveProfile(profile);
         saveUser(user);
