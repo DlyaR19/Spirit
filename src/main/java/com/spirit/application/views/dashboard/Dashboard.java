@@ -98,26 +98,26 @@ public class Dashboard extends Composite<VerticalLayout> {
 
         // Untere Zeile mit Filtern
         HorizontalLayout bottomRow = new HorizontalLayout();
-        bottomRow.setWidth("100%");
+        bottomRow.setWidth("1200px");
 
         MultiSelectComboBox<String> employmentType = new MultiSelectComboBox<>("Anstellungsart");
         employmentType.setPlaceholder("Teilzeit | Vollzeit | ...");
-        employmentType.setWidth("900px");
+        employmentType.setWidth("300px");
         employmentType.setItems(employmentTypes);
 
         MultiSelectComboBox<String> locationType = new MultiSelectComboBox<>("Standort");
         locationType.setPlaceholder("Bonn | Köln | ...");
-        locationType.setWidth("100%");
+        locationType.setWidth("300px");
         locationType.setItems(locationTypes);
 
         MultiSelectComboBox<String> companyNameType = new MultiSelectComboBox<>("Unternehmen");
         companyNameType.setPlaceholder("Telekom | DHL | ...");
-        companyNameType.setWidth("100%");
+        companyNameType.setWidth("300px");
         companyNameType.setItems(companyNameTypes);
 
         MultiSelectComboBox<String> jobTitleType = new MultiSelectComboBox<>("Jobtitel");
         jobTitleType.setPlaceholder("IT-Security | IT-Support | ...");
-        jobTitleType.setWidth("100%");
+        jobTitleType.setWidth("300px");
         jobTitleType.setItems(jobTitleTypes);
 
         bottomRow.add(employmentType, locationType, companyNameType, jobTitleType);
