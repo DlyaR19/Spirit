@@ -92,7 +92,7 @@ public class MainLayout extends AppLayout {
                 return VaadinIcon.HOME.create();
             case "login":
                 return VaadinIcon.SIGN_IN.create();
-            case "register":
+            case "registrierung":
                 return VaadinIcon.USER.create();
             case "über uns":
                 return VaadinIcon.INFO_CIRCLE.create();
