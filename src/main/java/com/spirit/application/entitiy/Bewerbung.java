@@ -33,6 +33,10 @@ public class Bewerbung implements Serializable {
     @Column(name = "anschreiben", columnDefinition = "TEXT")
     private String anschreiben;
 
+    @Basic
+    @Column(name = "lebenslauf", columnDefinition = "TEXT")
+    private String lebenslauf;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

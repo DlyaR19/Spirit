@@ -86,15 +86,18 @@ public class EntityFactory {
 
     /**
      * Erstellt ein neues Bewerbung-Objekt mit den angegebenen Parametern
-     * @param jobPost Zugehöriger JobPost
-     * @param student Zugehöriger Student
-     * @param base64Letter Anschreiben als Base64-String
+     *
+     * @param jobPost           Zugehöriger JobPost
+     * @param student           Zugehöriger Student
+     * @param base64CoverLetter Anschreiben als Base64-String
+     * @param base64CV        Lebenslauf als Base64-String
      */
-    public Bewerbung createBewerbung(JobPost jobPost, Student student, String base64Letter) {
+    public Bewerbung createBewerbung(JobPost jobPost, Student student, String base64CoverLetter, String base64CV) {
         Bewerbung bewerbung = new Bewerbung();
         bewerbung.setJobPost(jobPost);
         bewerbung.setStudent(student);
-        bewerbung.setAnschreiben(base64Letter);
+        bewerbung.setAnschreiben(base64CoverLetter);
+        bewerbung.setLebenslauf(base64CV);
         return bewerbung;
     }
 }

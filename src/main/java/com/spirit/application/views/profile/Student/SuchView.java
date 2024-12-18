@@ -10,6 +10,7 @@ import com.spirit.application.util.Globals;
 import com.spirit.application.util.MarkdownConverter;
 import com.spirit.application.views.AppView;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -32,6 +33,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Route(value = Globals.Pages.SUCHE_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
@@ -213,38 +215,95 @@ public class SuchView extends Composite<VerticalLayout> {
         dialog.open();
     }
 
-    private void openApplyDialog(JobPostDTO vacancy) {
+    private void openApplyDialog(JobPostDTO jobPost) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");
         dialog.setHeight("400px");
 
         VerticalLayout dialogLayout = new VerticalLayout();
-        H4 title = new H4("Bewerbung als: " + vacancy.getTitel());
+        H4 title = new H4("Bewerbung als: " + jobPost.getTitel());
         dialogLayout.setPadding(true);
         dialogLayout.setSpacing(true);
-        MemoryBuffer buffer = new MemoryBuffer();
 
-        Upload upload = new Upload(buffer);
-        upload.setAcceptedFileTypes("application/pdf");
-        upload.setMaxFiles(1);
-        upload.setVisible(true);
+        MemoryBuffer cvBuffer = new MemoryBuffer();
+        Upload cvUpload = new Upload(cvBuffer);
+        cvUpload.setAcceptedFileTypes("application/pdf");
+        cvUpload.setMaxFiles(1);
+        cvUpload.setVisible(true);
+        cvUpload.setDropLabel(new Span("Lebenslauf hier ablegen"));
+        Text cvFileNameDisplay = new Text("");
+
+        // Cover Letter Upload
+        MemoryBuffer coverLetterBuffer = new MemoryBuffer();
+        Upload coverLetterUpload = new Upload(coverLetterBuffer);
+        coverLetterUpload.setAcceptedFileTypes("application/pdf");
+        coverLetterUpload.setMaxFiles(1);
+        coverLetterUpload.setVisible(true);
+        coverLetterUpload.setDropLabel(new Span("Anschreiben hier ablegen"));
+        Text coverLetterFileNameDisplay = new Text("");
+
+        AtomicBoolean cvUploaded = new AtomicBoolean(false);
+        AtomicBoolean coverLetterUploaded = new AtomicBoolean(false);
+
+        // CV Upload Listeners
+        cvUpload.addSucceededListener(event -> {
+            cvUploaded.set(true);
+            cvFileNameDisplay.setText("Hochgeladen: " + event.getFileName());
+        });
+        cvUpload.addFileRejectedListener(event -> {
+            cvUploaded.set(false);
+            cvFileNameDisplay.setText("Fehler beim Upload");
+            Notification.show("Nur PDF-Dateien sind erlaubt", 3000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+        });
+
+        // Cover Letter Upload Listeners
+        coverLetterUpload.addSucceededListener(event -> {
+            coverLetterUploaded.set(true);
+            coverLetterFileNameDisplay.setText("Hochgeladen: " + event.getFileName());
+        });
+        coverLetterUpload.addFileRejectedListener(event -> {
+            coverLetterUploaded.set(false);
+            coverLetterFileNameDisplay.setText("Fehler beim Upload");
+            Notification.show("Nur PDF-Dateien sind erlaubt", 3000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_ERROR);
+        });
 
         Button applyButton = new Button("Bewerben", event -> {
-            try (InputStream inputStream = buffer.getInputStream()) {
-                byte[] bytes = inputStream.readAllBytes();
-                String base64Letter = Base64.getEncoder().encodeToString(bytes);
-                bewerbungService.saveBewerbung(entityFactory.createBewerbung(
-                        vacancy.getJobPost(),
-                        sessionService.getCurrentStudent().getStudent(), base64Letter));
-                Notification.show("Bewerbung erfolgreich eingereicht", 3000, Notification.Position.TOP_CENTER)
-                        .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-                dialog.close();
+
+            // Validate that both CV and cover letter are uploaded
+            if (!cvUploaded.get() || !coverLetterUploaded.get()) {
+                Notification.show("Bitte laden Sie sowohl Lebenslauf als auch Anschreiben als PDF-Dateien hoch",
+                                5000, Notification.Position.TOP_CENTER)
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                return;
+            }
+
+            try {
+                // CV
+                try (InputStream inputStream = cvBuffer.getInputStream()) {
+                    byte[] bytes = inputStream.readAllBytes();
+                    String base64CV = Base64.getEncoder().encodeToString(bytes);
+
+                    // Cover Letter
+                    try (InputStream coverLetterInputStream = coverLetterBuffer.getInputStream()) {
+                        byte[] coverLetterBytes = coverLetterInputStream.readAllBytes();
+                        String base64CoverLetter = Base64.getEncoder().encodeToString(coverLetterBytes);
+
+                        bewerbungService.saveBewerbung(entityFactory.createBewerbung(jobPost.getJobPost(),
+                            sessionService.getCurrentStudent().getStudent(), base64CoverLetter, base64CV));
+                        Notification.show("Bewerbung erfolgreich eingereicht", 3000, Notification.Position.TOP_CENTER)
+                            .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                        dialog.close();
+                }
+                }
             } catch (Exception e) {
-                Notification.show("Fehler beim Hochladen des Lebenslaufs: " + e.getMessage() , 5000, Notification.Position.TOP_CENTER)
+                Notification.show("Fehler beim Hochladen der Dokumente: " + e.getMessage(),
+                                5000, Notification.Position.TOP_CENTER)
                         .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
-        dialogLayout.add(title, upload, applyButton);
+        dialogLayout.add(title, coverLetterUpload, coverLetterFileNameDisplay, cvUpload, cvFileNameDisplay, applyButton);
         dialog.add(dialogLayout);
         dialog.open();
     }

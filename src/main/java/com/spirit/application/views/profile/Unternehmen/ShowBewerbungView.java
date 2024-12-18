@@ -112,8 +112,10 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
         Button downloadAnschreibenButton = getDownloadAnschreibenButton(bewerbung);
 
+        Button downloadLebenslaufButton = getDownloadLebenslaufButton(bewerbung);
 
-        buttonLayout.add(showProfileButton, downloadAnschreibenButton);
+
+        buttonLayout.add(showProfileButton, downloadLebenslaufButton, downloadAnschreibenButton);
 
 
         studentCardLayout.add(jobPostInfo, type, avaterLayout, profileDescription, profileDescriptionParagraph, buttonLayout);
@@ -126,13 +128,17 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
     }
 
     private @NotNull Button getDownloadAnschreibenButton(BewerbungDTO bewerbung) {
-        Button downloadAnschreibenButton = new Button("Download Bewerbung");
+        Button downloadAnschreibenButton = new Button("Anschreiben herunterladen");
         downloadAnschreibenButton.addClickListener(e -> {
             String base64coverLetter = bewerbungService.getAnschreiben(bewerbung.getBewerbungID());
             if (base64coverLetter != null && !base64coverLetter.isEmpty()) {
 
                 byte[] pdfBytes = Base64.getDecoder().decode(base64coverLetter);
-                StreamResource resource = new StreamResource("Bewerbung.pdf", () -> new ByteArrayInputStream(pdfBytes));
+                String filename = String.format("%s_%s_Anschreiben.pdf",
+                        bewerbung.getStudent().getLastName(),
+                        bewerbung.getStudent().getFirstName()
+                );
+                StreamResource resource = new StreamResource(filename, () -> new ByteArrayInputStream(pdfBytes));
                 resource.setContentType("application/pdf");
 
                 Anchor downloadLink = new Anchor(resource, "Download");
@@ -142,13 +148,41 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
                 downloadLink.getElement().executeJs("this.click();");
 
-                Notification.show("Bewerbung-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                Notification.show("Anschreiben-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             } else {
-                Notification.show("Keine Bewerbung gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
-                downloadAnschreibenButton.setEnabled(false);
+                Notification.show("Kein Anschreiben gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
         return downloadAnschreibenButton;
+    }
+
+    private @NotNull Button getDownloadLebenslaufButton(BewerbungDTO bewerbung) {
+        Button downloadLebenslaufButton = new Button("Lebenslauf herunterladen");
+        downloadLebenslaufButton.addClickListener(e -> {
+            String base64cv = bewerbungService.getLebenslauf(bewerbung.getBewerbungID());
+            if (base64cv != null && !base64cv.isEmpty()) {
+
+                byte[] pdfBytes = Base64.getDecoder().decode(base64cv);
+                String filename = String.format("%s_%s_Lebenslauf.pdf",
+                        bewerbung.getStudent().getLastName(),
+                        bewerbung.getStudent().getFirstName()
+                );
+                StreamResource resource = new StreamResource(filename, () -> new ByteArrayInputStream(pdfBytes));
+                resource.setContentType("application/pdf");
+
+                Anchor downloadLink = new Anchor(resource, "Download");
+                downloadLink.getElement().setAttribute("download", true);
+                downloadLink.getStyle().set("display", "none");
+                getContent().add(downloadLink);
+
+                downloadLink.getElement().executeJs("this.click();");
+
+                Notification.show("Lebenslauf-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            } else {
+                Notification.show("Kein Lebenslauf gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
+        });
+        return downloadLebenslaufButton;
     }
 
     @Override
