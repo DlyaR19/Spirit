@@ -1,17 +1,15 @@
 package com.spirit.application.views.register;
 
+import com.spirit.application.util.Globals;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.spirit.application.util.Globals;
 
 @CssImport("./themes/spirit/views/RegisterView.css")
 @PageTitle("Register")
@@ -51,9 +49,9 @@ public class RegisterView extends VerticalLayout {
 
         roleSelector.addValueChangeListener(event -> {
             dynamicFields.removeAll();
-            if (student.equals(event.getValue())) {
+            if (event.getValue().equals(student)) {
                 dynamicFields.add(studentRegisterView);
-            } else if (unternehmen.equals(event.getValue())) {
+            } else {
                 dynamicFields.add(unternehmenRegisterView);
             }
         });
