@@ -42,6 +42,7 @@ public class JobPostDTO {
         jobPost.setTitel(titel);
         jobPost.setAnstellungsart(anstellungsart);
         jobPost.setBeschreibung(beschreibung);
+        jobPost.setStandort(standort);
         return jobPost;
     }
 
