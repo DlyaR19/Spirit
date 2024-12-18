@@ -9,12 +9,15 @@ import com.spirit.application.util.Globals;
 import com.spirit.application.util.MarkdownConverter;
 import com.spirit.application.views.AppView;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H6;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -87,14 +90,84 @@ public class AddJobPostView extends Composite<VerticalLayout> {
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         Button cancel = new Button(DELETE);
 
+//        save.addClickListener(event -> {
+//            JobPost jobPost = entityFactory.createJobPost(comboBox.getValue(), title.getValue(), location.getValue(), textArea.getValue(), sessionService.getCurrentUnternehmen().getUnternehmen(), Date.valueOf(LocalDate.now()));
+//            jobPostService.saveJobPost(jobPost);
+//            comboBox.clear();
+//            title.clear();
+//            location.clear();
+//            textArea.clear();
+//            Notification.show("Stellenanzeige erfolgreich hinzugefügt", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+//        });
+
         save.addClickListener(event -> {
-            JobPost jobPost = entityFactory.createJobPost(comboBox.getValue(), title.getValue(), location.getValue(), textArea.getValue(), sessionService.getCurrentUnternehmen().getUnternehmen(), Date.valueOf(LocalDate.now()));
+            // Reset previous validation states
+            title.setInvalid(false);
+            comboBox.setInvalid(false);
+            location.setInvalid(false);
+            textArea.setInvalid(false);
+
+            // Validate inputs
+            boolean isValid = true;
+
+            // Check title
+            if (title.getValue() == null || title.getValue().trim().isEmpty()) {
+                title.setInvalid(true);
+                title.setErrorMessage("Bitte Titel eingeben");
+                isValid = false;
+            }
+
+            // Check employment type
+            if (comboBox.getValue() == null || comboBox.getValue().trim().isEmpty()) {
+                comboBox.setInvalid(true);
+                comboBox.setErrorMessage("Bitte Anstellungsart auswählen");
+                isValid = false;
+            }
+
+            // Check location
+            if (location.getValue() == null || location.getValue().trim().isEmpty()) {
+                location.setInvalid(true);
+                location.setErrorMessage("Bitte Standort eingeben");
+                isValid = false;
+            }
+
+            // Check description
+            if (textArea.getValue() == null || textArea.getValue().trim().isEmpty()) {
+                textArea.setInvalid(true);
+                textArea.setErrorMessage("Bitte Beschreibung eingeben");
+                isValid = false;
+            }
+
+            // If any validation fails, show error and stop
+            if (!isValid) {
+                Notification.show("Bitte alle Pflichtfelder ausfüllen", 3000, Notification.Position.TOP_CENTER)
+                        .addThemeVariants(NotificationVariant.LUMO_ERROR);
+                return;
+            }
+
+            // If all validations pass, create and save job post
+            JobPost jobPost = entityFactory.createJobPost(
+                    comboBox.getValue(),
+                    title.getValue(),
+                    location.getValue(),
+                    textArea.getValue(),
+                    sessionService.getCurrentUnternehmen().getUnternehmen(),
+                    Date.valueOf(LocalDate.now())
+            );
             jobPostService.saveJobPost(jobPost);
+
+            // Show success notification
+            Notification.show("Stellenanzeige erfolgreich hinzugefügt", 3000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
+            // Clear input fields
             comboBox.clear();
             title.clear();
             location.clear();
             textArea.clear();
+            UI.getCurrent().navigate(Globals.Pages.MY_JOBPOSTS);
         });
+
 
         cancel.addClickListener(event -> {
             comboBox.clear();

@@ -14,6 +14,8 @@ import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -94,6 +96,7 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
 
         editButton.addClickListener(event -> {
             jobPostService.deleteJobPost(id);
+            Notification.show("Stellenanzeige gelöscht", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             UI.getCurrent().navigate(MyJobPostView.class);
         });
 
