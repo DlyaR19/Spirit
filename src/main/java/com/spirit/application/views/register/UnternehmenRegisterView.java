@@ -31,8 +31,8 @@ public class UnternehmenRegisterView extends BaseRegisterView {
         add(usernameField, 2);
         add(emailField, 2);
         add(branchNameField, 2);
-        add(passwordField, 1);
-        add(passwordConfirmationField, 1);
+        add(passwordField, 2);
+        add(passwordConfirmationField, 2);
         add(cancelButton, 1);
         add(submitButton, 1);
     }
