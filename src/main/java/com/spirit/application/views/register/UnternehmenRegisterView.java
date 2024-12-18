@@ -26,6 +26,13 @@ public class UnternehmenRegisterView extends BaseRegisterView {
         companyNameField = new TextField("Name des Unternehmens");
         TextField branchNameField = new TextField("Branche");
 
+        companyNameField.setRequiredIndicatorVisible(true);
+        usernameField.setRequiredIndicatorVisible(true);
+        emailField.setRequiredIndicatorVisible(true);
+        emailField.setPattern(
+                "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
+        passwordField.setRequiredIndicatorVisible(true);
+        passwordConfirmationField.setRequiredIndicatorVisible(true);
 
         add(companyNameField, 2);
         add(usernameField, 2);
