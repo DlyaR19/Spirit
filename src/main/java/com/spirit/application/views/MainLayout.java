@@ -87,18 +87,13 @@ public class MainLayout extends AppLayout {
      */
     private Icon getIconForMenuEntry(String title) {
         // Hier die passenden Icons für die Menüpunkte definieren
-        switch (title.toLowerCase()) {
-            case "dashboard":
-                return VaadinIcon.HOME.create();
-            case "login":
-                return VaadinIcon.SIGN_IN.create();
-            case "registrierung":
-                return VaadinIcon.USER.create();
-            case "über uns":
-                return VaadinIcon.INFO_CIRCLE.create();
-            default:
-                return null; // Kein Icon für unbekannte Menüpunkte
-        }
+        return switch (title.toLowerCase()) {
+            case "dashboard" -> VaadinIcon.HOME.create();
+            case "login" -> VaadinIcon.SIGN_IN.create();
+            case "registrierung" -> VaadinIcon.USER.create();
+            case "über uns" -> VaadinIcon.INFO_CIRCLE.create();
+            default -> null; // Kein Icon für unbekannte Menüpunkte
+        };
     }
 
     /**
