@@ -31,6 +31,15 @@ public class StudentRegisterView extends BaseRegisterView {
         DatePicker geburtsdatum = new DatePicker("Geburtsdatum");
         TextField studiengang = new TextField("Studiengang");
 
+        textFieldFirstName.setRequiredIndicatorVisible(true);
+        textFieldLastName.setRequiredIndicatorVisible(true);
+        usernameField.setRequiredIndicatorVisible(true);
+        emailField.setRequiredIndicatorVisible(true);
+        emailField.setPattern(
+                "^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
+        passwordField.setRequiredIndicatorVisible(true);
+        passwordConfirmationField.setRequiredIndicatorVisible(true);
+
         add(textFieldFirstName, 1);
         add(textFieldLastName, 1);
         add(geburtsdatum, 1);
