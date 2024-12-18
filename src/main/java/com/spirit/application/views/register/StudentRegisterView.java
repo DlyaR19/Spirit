@@ -24,7 +24,7 @@ public class StudentRegisterView extends BaseRegisterView {
         super(registerInterface);
         setupStudentForm();
     }
-    
+
     private void setupStudentForm() {
         textFieldFirstName = new TextField("Vorname");
         textFieldLastName = new TextField("Nachname");
@@ -39,8 +39,8 @@ public class StudentRegisterView extends BaseRegisterView {
         add(emailField, 2);
         add(passwordField, 2);
         add(passwordConfirmationField, 2);
-        add(submitButton, 1);
         add(cancelButton, 1);
+        add(submitButton, 1);
     }
 
     @Override
