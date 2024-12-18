@@ -27,7 +27,6 @@ class StudentTest {
         student.setFirstName("Max");
         student.setLastName("Mustermann");
         student.setBirthdate(LocalDate.of(2000, 1, 1));
-        student.setResume("Lebenslauf-Inhalt");
         student.setSkills("Java");
 
         // Test
@@ -36,7 +35,6 @@ class StudentTest {
         assertEquals("Max", student.getFirstName());
         assertEquals("Mustermann", student.getLastName());
         assertEquals(LocalDate.of(2000, 1, 1), student.getBirthdate());
-        assertEquals("Lebenslauf-Inhalt", student.getResume());
         assertEquals("Java", student.getSkills());
     }
 

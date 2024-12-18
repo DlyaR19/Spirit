@@ -21,7 +21,6 @@ class BewerbungDTOTest {
         student.setFirstName("Max");
         student.setLastName("Mustermann");
         student.setBirthdate(LocalDate.of(2003, 1, 1));
-        student.setResume("Lebenslauf-Inhalt");
         student.setSkills("Java");
 
         // JobPost-Objekt

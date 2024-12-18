@@ -20,7 +20,6 @@ class BewerbungTest {
         student.setFirstName("Max");
         student.setLastName("Mustermann");
         student.setBirthdate(LocalDate.of(2000, 1, 1));
-        student.setResume("Lebenslauf-Inhalt");
         student.setSkills("Java");
 
         // JobPost-Objekt

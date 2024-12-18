@@ -27,7 +27,6 @@ class StudentDTOTest {
         student.setUser(user);
         student.setLastName("Mustermann");
         student.setBirthdate(LocalDate.of(2000, 1, 1));
-        student.setResume("Lebenslauf-Inhalt");
         student.setSkills("Java");
 
         // Student => StudentDTO

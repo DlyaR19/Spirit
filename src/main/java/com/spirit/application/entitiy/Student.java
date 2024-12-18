@@ -28,9 +28,6 @@ public class Student implements Serializable {
     @Column(name = "geburtsdatum")
     private LocalDate birthdate;
     @Basic
-    @Column(name = "lebenslauf", columnDefinition = "TEXT")
-    private String resume;
-    @Basic
     @Column(name = "vorname", length = 128, nullable = false)
     private String firstName;
     @Column(name="skills")
