@@ -12,7 +12,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @CssImport("./themes/spirit/views/RegisterView.css")
-@PageTitle("Register")
+@PageTitle("Registrierung")
 @Route(value = Globals.Pages.SIGNUP)
 @AnonymousAllowed
 @Menu(order = 2)
@@ -40,6 +40,7 @@ public class RegisterView extends VerticalLayout {
         // Rolle auswählen
         RadioButtonGroup<String> roleSelector = new RadioButtonGroup<>();
         roleSelector.setLabel("Registrieren als:");
+        roleSelector.setWidthFull();
         roleSelector.setItems(student, unternehmen);
 
         // Dynamische Felder basierend auf der Auswahl
