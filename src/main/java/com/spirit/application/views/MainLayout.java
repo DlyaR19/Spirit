@@ -5,6 +5,8 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -52,9 +54,19 @@ public class MainLayout extends AppLayout {
      * Erstellt den Drawer mit Menüpunkten und Footer
      */
     private void addDrawerContent() {
+        Image logo = new Image("https://i.ibb.co/YWqXFWz/Erstelle-ein-Logo-mit-Titel-Spirit-f-r-mein-Software-Engineering-Projekt.jpg", "Spirit Logo"); // Use your actual logo URL here
+        logo.setWidth("40px"); // Adjust the size of the logo as needed
+        logo.addClassNames(LumoUtility.Margin.NONE, LumoUtility.Padding.Horizontal.SMALL); // Adjust spacing
+
         Span appName = new Span("Spirit");
         appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
-        Header header = new Header(appName);
+
+        // Combine the logo and appName in the header
+        HorizontalLayout headerLayout = new HorizontalLayout(logo, appName);
+        headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        headerLayout.addClassNames(LumoUtility.Padding.NONE);
+
+        Header header = new Header(headerLayout);
 
         Scroller scroller = new Scroller(createNavigation());
 

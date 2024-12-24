@@ -3,6 +3,8 @@ package com.spirit.application.views;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
 import com.spirit.application.util.Utils;
+import com.spirit.application.views.profile.ChatListView;
+import com.spirit.application.views.profile.ChatView;
 import com.spirit.application.views.profile.Student.MyBewerbungView;
 import com.spirit.application.views.profile.Student.ProfilStudentView;
 import com.spirit.application.views.profile.Student.SuchView;
@@ -166,6 +168,7 @@ public class AppView extends AppLayout {
             tabs = Utils.append(tabs, createTab("Profil", VaadinIcon.USER, ProfilStudentView.class));
             tabs = Utils.append(tabs, createTab("Job suchen", VaadinIcon.SEARCH, SuchView.class));
             tabs = Utils.append(tabs, createTab("Meine Bewerbungen", VaadinIcon.FILE_TEXT, MyBewerbungView.class));
+            tabs = Utils.append(tabs, createTab("Chat List", VaadinIcon.CHAT, ChatListView.class));
             //tabs = Utils.append(tabs, createTab("Passwort ändern", UpdatePasswordView.class));
         } else if (sessionService.getUserRole().contains(Globals.Roles.UNTERNEHMEN)) {
             tabs = Utils.append(tabs, createTab("Profil", VaadinIcon.BUILDING, ProfileUnternehmenView.class));
@@ -173,6 +176,7 @@ public class AppView extends AppLayout {
             tabs = Utils.append(tabs, createTab("Stellenausschreibung hinzufügen", VaadinIcon.PLUS_CIRCLE, AddJobPostView.class));
             tabs = Utils.append(tabs, createTab("Meine Stellenausschreibungen", VaadinIcon.CLIPBOARD, MyJobPostView.class));
             tabs = Utils.append(tabs, createTab("Bewerbungen einsehen", VaadinIcon.FILE_PROCESS, ShowBewerbungView.class));
+            tabs = Utils.append(tabs, createTab("Chat List", VaadinIcon.CHAT, ChatListView.class));
         }
         return tabs;
     }
