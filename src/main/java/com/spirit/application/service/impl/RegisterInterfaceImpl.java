@@ -4,9 +4,12 @@ import com.spirit.application.entitiy.*;
 import com.spirit.application.repository.*;
 import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.EntityFactory;
+import net.bytebuddy.asm.Advice;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -88,8 +91,8 @@ public class RegisterInterfaceImpl implements RegisterInterface {
      * @param passwordConfirmation die Bestätigung des Passworts
      */
     @Override
-    public void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation) {
-        Student student = entityFactory.createStudent(registerUser(username, password, email), lastName, firstName);
+    public void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation, LocalDate birth) {
+        Student student = entityFactory.createStudent(registerUser(username, password, email), lastName, firstName, birth);
         saveStudent(student);
     }
 

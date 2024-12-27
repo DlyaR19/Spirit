@@ -5,6 +5,7 @@ import com.spirit.application.entitiy.*;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  * Factory-Klasse zur Erstellung von Entitäten
@@ -44,8 +45,9 @@ public class EntityFactory {
      * @param lastName Nachname
      * @param firstName Vorname
      */
-    public Student createStudent(User user, String lastName, String firstName) {
+    public Student createStudent(User user, String lastName, String firstName, LocalDate birth) {
         Student student = new Student();
+        student.setBirthdate(birth);
         student.setUser(user);
         student.setLastName(lastName);
         student.setFirstName(firstName);

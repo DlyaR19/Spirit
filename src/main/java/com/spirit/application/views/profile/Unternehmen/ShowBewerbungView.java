@@ -19,6 +19,7 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -95,20 +96,49 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         showProfileButton.addClickListener(e -> {
             Dialog profileDialog = new Dialog();
             profileDialog.setWidth("600px");
+            profileDialog.setCloseOnEsc(true);
+            profileDialog.setCloseOnOutsideClick(true);
+
             VerticalLayout profileLayout = new VerticalLayout();
-            Avatar studentAvatarDialog = new Avatar();
-            studentAvatarDialog.setImage(
+            profileLayout.setSpacing(true);
+            profileLayout.setPadding(true);
+
+            // Avatar and Name
+            HorizontalLayout avatarNameLayout = new HorizontalLayout();
+            avatarNameLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+            Avatar avatar = new Avatar();
+            avatar.setImage(
                     "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
             );
-            H6 profileName = new H6(bewerbung.getStudent().getFirstName() + " " + bewerbung.getStudent().getLastName());
-            // TODO get Interessen und co from profilStudentLayout
+
+            H3 name = new H3(
+                    bewerbung.getStudent().getFirstName() + " " + bewerbung.getStudent().getLastName()
+            );
+            avatarNameLayout.add(avatar, name);
+
+            // Additional Information
+            TextArea birth = new TextArea("Geburtsdatum");
+            birth.setValue(String.valueOf(bewerbung.getStudent().getBirthdate()));
+            birth.setReadOnly(true);
+
             TextArea profileDescriptionDialog = new TextArea("Profilbeschreibung");
-            profileDescriptionDialog.setValue(bewerbung.getStudent().getUser().getProfile().getProfileDescription());
+            profileDescriptionDialog.setValue(
+                    bewerbung.getStudent().getUser().getProfile().getProfileDescription()
+            );
             profileDescriptionDialog.setReadOnly(true);
-            profileLayout.add(studentAvatarDialog, profileName, profileDescriptionDialog);
+
+            // Add additional sections (e.g., Interests, Skills, etc.)
+            Div additionalInfo = new Div();
+            additionalInfo.getStyle().set("margin-top", "10px");
+            additionalInfo.setText("Interessen und Fähigkeiten:"); // Placeholder for future content
+
+            profileLayout.add(avatarNameLayout, birth, profileDescriptionDialog, additionalInfo);
+
             profileDialog.add(profileLayout);
             profileDialog.open();
         });
+
 
         Button downloadAnschreibenButton = getDownloadAnschreibenButton(bewerbung);
 

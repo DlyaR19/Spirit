@@ -6,6 +6,8 @@ import com.spirit.application.service.impl.RegisterInterfaceImpl;
 import com.spirit.application.util.RegisterUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -36,9 +38,9 @@ public class RegisterProxy implements RegisterInterface {
     }
 
     @Override
-    public void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation) {
-        if (RegisterUtils.validateInput(username, firstName, lastName, email, password, passwordConfirmation)) {
-            registerService.registerStudent(username, password, email, firstName, lastName, passwordConfirmation);
+    public void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation, LocalDate birth) {
+        if (RegisterUtils.validateInput(username, firstName, lastName, email, password, passwordConfirmation, birth)) {
+            registerService.registerStudent(username, password, email, firstName, lastName, passwordConfirmation, birth);
         } else {
             throw new RegisterStudentException("Ungültige Registrierungsdaten für Studenten.");
         }

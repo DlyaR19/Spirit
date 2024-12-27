@@ -1,6 +1,7 @@
 package com.spirit.application.views.profile;
 
 
+import com.spirit.application.dto.StudentDTO;
 import com.spirit.application.dto.UserDTO;
 import com.spirit.application.service.ProfileService;
 import com.spirit.application.service.SessionService;
@@ -89,7 +90,13 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
 
         HorizontalLayout buttonLayout = new HorizontalLayout(new Button("bearbeiten", event ->
                 openEditDialog(user)), new Button("Bild hochladen", event -> openAvatarDialog(user)), deleteButton);
-        infoLayout.add(username, emailLayout, webseiteLayout, buttonLayout);
+
+        if (isStudentUser()) {
+            StudentDTO studentDTO = sessionService.getCurrentStudent();
+            infoLayout.add(username, emailLayout, webseiteLayout, birthdateLayout(studentDTO), buttonLayout);
+        } else {
+            infoLayout.add(username, emailLayout, webseiteLayout, buttonLayout);
+        }
         header.add(avatar, infoLayout);
         return header;
     }
@@ -223,5 +230,13 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         } catch (ClassCastException e) {
             return false;
         }
+    }
+
+    private HorizontalLayout birthdateLayout(StudentDTO studentDTO){
+        HorizontalLayout birthdateLayout = new HorizontalLayout();
+        H6 birthdate = new H6("Geburtsdatum: " + studentDTO.getBirthdate());
+        birthdate.getStyle().set(OPACITY, "0.8");
+        birthdateLayout.add(birthdate);
+        return birthdateLayout;
     }
 }

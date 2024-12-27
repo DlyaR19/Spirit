@@ -3,6 +3,7 @@ package com.spirit.application.repository;
 
 import com.spirit.application.entitiy.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public interface RegisterInterface {
 
     void registerUnternehmen(String username, String password, String email, String unternehmenName, String passwordConfirmation);
 
-    void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation);
+    void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation, LocalDate birth);
 
     void saveProfile(Profile profile);
 

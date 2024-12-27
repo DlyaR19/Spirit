@@ -4,6 +4,11 @@ package com.spirit.application.util;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 /**
  * Utility-Klasse mit statischen Methoden zur Validierung von Registrierungsdaten
  */
@@ -28,13 +33,17 @@ public class RegisterUtils {
      * @param password Passwort
      * @param passwordConfirmation Passwortbestätigung
      */
-    public static boolean validateInput(String username, String firstName, String lastName, String email, String password, String passwordConfirmation) {
+    public static boolean validateInput(String username, String firstName, String lastName, String email, String password, String passwordConfirmation, LocalDate birth) {
         if (!isValidVorname(firstName)) {
             Notification.show("Kein gültiger Vorname (3-30 Zeichen, nur Buchstaben, Leerzeichen und Bindestriche).", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             return false;
         }
         if (!isValidNachname(lastName)) {
             Notification.show("Kein gültiger Nachname (3-30 Zeichen, nur Buchstaben, Leerzeichen und Bindestriche).", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return false;
+        }
+        if (!isValidBirthdate(birth)){
+            Notification.show("Geburtsdatum darf nicht in der Zukunft liegen!");
             return false;
         }
         return checkDefaultInput(username, email, password, passwordConfirmation);
@@ -211,5 +220,9 @@ public class RegisterUtils {
             }
         }
         return true;
+    }
+
+    private static boolean isValidBirthdate(LocalDate dateTime){
+        return !dateTime.isAfter(LocalDate.now(ZoneId.systemDefault()));
     }
 }

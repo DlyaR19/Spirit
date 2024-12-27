@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class StudentRegisterView extends BaseRegisterView {
 
     private TextField textFieldFirstName;
     private TextField textFieldLastName;
+    private DatePicker birth;
 
     @Autowired
     public StudentRegisterView(@Qualifier("registerProxy") RegisterInterface registerInterface) {
@@ -33,6 +36,8 @@ public class StudentRegisterView extends BaseRegisterView {
 
         textFieldFirstName.setRequiredIndicatorVisible(true);
         textFieldLastName.setRequiredIndicatorVisible(true);
+        geburtsdatum.setRequired(true);
+        geburtsdatum.setRequiredIndicatorVisible(true);
         usernameField.setRequiredIndicatorVisible(true);
         emailField.setRequiredIndicatorVisible(true);
         emailField.setPattern(
@@ -50,6 +55,8 @@ public class StudentRegisterView extends BaseRegisterView {
         add(passwordConfirmationField, 2);
         add(cancelButton, 1);
         add(submitButton, 1);
+
+        this.birth = geburtsdatum;
     }
 
     @Override
@@ -60,9 +67,10 @@ public class StudentRegisterView extends BaseRegisterView {
         String firstName = this.textFieldFirstName.getValue();
         String lastName = this.textFieldLastName.getValue();
         String passwordConfirmation = passwordConfirmationField.getValue();
+        LocalDate birth = this.birth.getValue();
 
         try {
-            registerInterface.registerStudent(username, password, email, firstName, lastName, passwordConfirmation);
+            registerInterface.registerStudent(username, password, email, firstName, lastName, passwordConfirmation, birth);
             UI.getCurrent().navigate(Globals.Pages.LOGIN);
             Notification
                     .show("Registrierung erfolgreich!", 3000, Notification.Position.TOP_CENTER)

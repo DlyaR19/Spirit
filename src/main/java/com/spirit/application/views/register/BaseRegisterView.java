@@ -25,7 +25,6 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
     protected Button submitButton;
     protected Button cancelButton;
     protected Span errorMessageField;
-    protected VerticalLayout verticalLayout;
 
     protected BaseRegisterView(RegisterInterface registerInterface) {
         this.registerInterface = registerInterface;
