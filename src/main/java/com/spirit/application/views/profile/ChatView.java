@@ -30,6 +30,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * The ChatView class is a Vaadin view that provides a chat interface for users.
+ * Users can select another user to chat with, send messages, and view the chat history.
+ * The class integrates with services for session management, user data retrieval, and chat functionality.
+ */
 @CssImport("./themes/spirit/views/ChatView.css")
 @RolesAllowed({Globals.Roles.STUDENT, Globals.Roles.UNTERNEHMEN})
 @Route(value = Globals.Pages.CHAT, layout = AppView.class)
@@ -45,6 +50,12 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
     private User selectedUser;
     private Consumer<ChatMessageDTO> messageListener;
 
+    /**
+     * Constructs a new ChatView.
+     * @param chatService     the service handling chat operations.
+     * @param sessionService  the service managing the current user session.
+     * @param userRepository  the repository for accessing user data.
+     */
     public ChatView(ChatService chatService,
                     SessionService sessionService,
                     UserRepository userRepository) {
@@ -58,6 +69,9 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         setupMessageListener();
     }
 
+    /**
+     * Configures the layout settings for the chat view.
+     */
     private void setupLayout() {
         setSizeFull();
         setPadding(false);
@@ -65,6 +79,9 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         getStyle().set("background", "var(--lumo-shade-10pct)");
     }
 
+    /**
+     * Initializes and configures the message list component.
+     */
     private void setupMessageList() {
         messageList = new MessageList();
         messageList.setSizeFull();
@@ -78,6 +95,9 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         setFlexGrow(1, messageList);
     }
 
+    /**
+     * Sets up the user selection dropdown, message input field, and send button.
+     */
     private void setupControls() {
         userSelect = new ComboBox<>();
         userSelect.setPlaceholder("Select user");
@@ -114,6 +134,9 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         add(controls);
     }
 
+    /**
+     * Configures a listener for incoming messages to update the view dynamically.
+     */
     private void setupMessageListener() {
         messageListener = message -> {
             UserDTO currentUser = sessionService.getCurrentUser();
@@ -126,6 +149,9 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         chatService.addMessageListener(messageListener);
     }
 
+    /**
+     * Sends a message to the selected user and updates the chat history.
+     */
     private void sendMessage() {
         if (selectedUser == null || messageInput.isEmpty()) {
             Notification.show("Please select a user and enter a message");
@@ -143,6 +169,9 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         refreshMessages();
     }
 
+    /**
+     * Refreshes the chat history by loading messages between the current user and the selected user.
+     */
     private void refreshMessages() {
         if (selectedUser != null) {
             UserDTO currentUser = sessionService.getCurrentUser();
@@ -183,6 +212,10 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         }
     }
 
+    /**
+     * Initializes the message listener when the view is attached to the UI.
+     * @param attachEvent the attach event.
+     */
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         chatService.removeMessageListener(messageListener);
@@ -204,11 +237,20 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         chatService.addMessageListener(messageListener);
     }
 
+    /**
+     * Removes the message listener when the view is detached from the UI.
+     * @param detachEvent the detach event.
+     */
     @Override
     protected void onDetach(DetachEvent detachEvent) {
         chatService.removeMessageListener(messageListener);
     }
 
+    /**
+     * Sets the parameter for this view and loads messages if a user ID is provided.
+     * @param event     the event triggered before navigation.
+     * @param parameter the user ID parameter.
+     */
     @Override
     public void setParameter(BeforeEvent event, @OptionalParameter String parameter) {
         if (parameter != null) {

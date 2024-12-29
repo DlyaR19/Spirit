@@ -7,14 +7,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Diese Klasse stellt ein Repository für die Profile-Entität dar.
- * Sie erbt von der JpaRepository-Klasse, die die grundlegenden CRUD-Operationen bereitstellt.
- * Das ProfileRepository ermöglicht das Speichern, Löschen und Suchen von Profilen.
- * !!! Noch nicht angepasst !!!
+ * Repository for managing Profile entities.
  */
 
 @Repository
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
+    /**
+     * Deletes a Profile by its ID.
+     *
+     * @param profileID the ID of the Profile.
+     */
     void deleteByProfileID(Long profileID);
 }

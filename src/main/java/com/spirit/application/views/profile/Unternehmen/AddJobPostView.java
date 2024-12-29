@@ -31,6 +31,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/**
+ * View for adding a new job post. This page is accessible only to users with the "UNTERNEHMEN" role.
+ * <p>The view provides a form where users can enter details about a job posting, including
+ * title, employment type, location, and description. The form also includes validation for required fields
+ * and options to save or reset the input fields.</p>
+ * <p>On successful submission, the job post is saved to the database and the user is redirected
+ * to their job postings page.</p>
+ */
 @PageTitle("Add JobPost")
 @Route(value = Globals.Pages.JOBPOST, layout = AppView.class)
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
@@ -39,10 +47,15 @@ public class AddJobPostView extends Composite<VerticalLayout> {
     private final transient EntityFactory entityFactory;
     private final transient SessionService sessionService;
     private final transient JobPostService jobPostService;
-
-
     private static final String DELETE = "Löschen";
 
+    /**
+     * Constructs the AddJobPostView.
+     * @param entityFactory     The factory for creating job post entities.
+     * @param sessionService    The session management service.
+     * @param jobPostService    The service for managing job posts.
+     * @param markdownConverter The markdown converter (not currently used in this implementation).
+     */
     @Autowired
     public AddJobPostView(EntityFactory entityFactory, SessionService sessionService, JobPostService jobPostService, MarkdownConverter markdownConverter) {
         this.entityFactory = entityFactory;
@@ -51,6 +64,20 @@ public class AddJobPostView extends Composite<VerticalLayout> {
         setUpUI();
     }
 
+    /**
+     * Sets up the user interface for adding a job post.
+     * <p>
+     * The UI includes:
+     * <ul>
+     *     <li>A text field for the job title.</li>
+     *     <li>A combo box for selecting the employment type.</li>
+     *     <li>A text field for the job location.</li>
+     *     <li>A text area for the job description.</li>
+     *     <li>Save and reset buttons.</li>
+     * </ul>
+     * Includes validation to ensure that all required fields are filled out before saving.
+     * </p>
+     */
     private void setUpUI() {
         HorizontalLayout titleLayout = new HorizontalLayout();
         TextField title = new TextField("Titel: ");
@@ -89,16 +116,6 @@ public class AddJobPostView extends Composite<VerticalLayout> {
         Button save = new Button("Speichern");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         Button cancel = new Button(DELETE);
-
-//        save.addClickListener(event -> {
-//            JobPost jobPost = entityFactory.createJobPost(comboBox.getValue(), title.getValue(), location.getValue(), textArea.getValue(), sessionService.getCurrentUnternehmen().getUnternehmen(), Date.valueOf(LocalDate.now()));
-//            jobPostService.saveJobPost(jobPost);
-//            comboBox.clear();
-//            title.clear();
-//            location.clear();
-//            textArea.clear();
-//            Notification.show("Stellenanzeige erfolgreich hinzugefügt", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-//        });
 
         save.addClickListener(event -> {
             // Reset previous validation states
@@ -186,5 +203,4 @@ public class AddJobPostView extends Composite<VerticalLayout> {
         layoutColumn2.add(h3, subtitle, titleLayout, infoLayout, formLayout2Col, textArea, layoutRow);
         getContent().add(layoutColumn2);
     }
-
 }

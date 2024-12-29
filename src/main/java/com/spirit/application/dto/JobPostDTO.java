@@ -9,9 +9,8 @@ import lombok.Setter;
 import java.sql.Date;
 
 /**
- * Diese Klasse repräsentiert ein JobPostDTO-Objekt, das als Datenübertragungsobjekt für die JobPost-Entität dient.
+ * Data Transfer Object (DTO) for representing a Job Post.
  */
-
 @Setter
 @Getter
 public class JobPostDTO {
@@ -24,6 +23,11 @@ public class JobPostDTO {
     private String beschreibung;
     private Date veroeffentlichungsdatum;
 
+    /**
+     * Constructor to initialize JobPostDTO from a JobPost entity.
+     *
+     * @param entity the JobPost entity to convert into DTO.
+     */
     public JobPostDTO(JobPost entity) {
         this.jobPostID = entity.getJobPostID();
         this.unternehmen = entity.getUnternehmen();
@@ -34,6 +38,11 @@ public class JobPostDTO {
         this.beschreibung = entity.getBeschreibung();
     }
 
+    /**
+     * Converts this DTO back to a JobPost entity.
+     *
+     * @return a JobPost entity corresponding to this DTO.
+     */
     public JobPost getJobPost() {
         JobPost jobPost = new JobPost();
         jobPost.setJobPostID(jobPostID);
@@ -45,6 +54,7 @@ public class JobPostDTO {
         return jobPost;
     }
 
+    @Override
     public String toString() {
         return "JobPostDTO{" +
                 "jobPostID=" + jobPostID +

@@ -11,6 +11,18 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+/**
+ * Main registration view that allows users to register as either a student or a company.
+ * <p>Includes dynamic form fields based on the selected role.</p>
+ * <p><b>Annotations:</b></p>
+ * <ul>
+ *   <li>{@code @CssImport}: Imports custom CSS for styling the view.</li>
+ *   <li>{@code @PageTitle}: Sets the page title to "Registrierung".</li>
+ *   <li>{@code @Route}: Defines the route for the registration page.</li>
+ *   <li>{@code @AnonymousAllowed}: Allows access to the page without authentication.</li>
+ *   <li>{@code @Menu}: Adds the page to the application menu.</li>
+ * </ul>
+ */
 @CssImport("./themes/spirit/views/RegisterView.css")
 @PageTitle("Registrierung")
 @Route(value = Globals.Pages.SIGNUP)
@@ -21,6 +33,10 @@ public class RegisterView extends VerticalLayout {
     private final UnternehmenRegisterView unternehmenRegisterView;
     private final StudentRegisterView studentRegisterView;
 
+    /**
+     * Constructs the RegisterView with the required dependencies and initializes the layout.
+     * @param registerProxy the proxy service used for handling registration logic.
+     */
     public RegisterView(RegisterProxy registerProxy) {
         String student = "Student";
         String unternehmen = "Unternehmen";

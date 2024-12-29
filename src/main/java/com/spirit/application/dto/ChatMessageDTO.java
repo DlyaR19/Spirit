@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object (DTO) for representing a Chat Message.
+ */
 @Getter
 @Setter
 public class ChatMessageDTO {
@@ -16,9 +19,18 @@ public class ChatMessageDTO {
     private String content;
     private LocalDateTime timestamp;
 
+    /**
+     * Default constructor.
+     */
     public ChatMessageDTO() {
     }
 
+    /**
+     * Converts a ChatMessage entity into a ChatMessageDTO.
+     *
+     * @param message the ChatMessage entity to convert.
+     * @return a new ChatMessageDTO instance.
+     */
     public static ChatMessageDTO fromMessage(ChatMessage message) {
         ChatMessageDTO chatMessageDTO = new ChatMessageDTO();
         chatMessageDTO.setChatMessageID(message.getChatMessageID());
@@ -29,6 +41,7 @@ public class ChatMessageDTO {
         return chatMessageDTO;
     }
 
+    @Override
     public String toString() {
         return "ChatMessageDTO{" +
                 "chatMessageID=" + chatMessageID +

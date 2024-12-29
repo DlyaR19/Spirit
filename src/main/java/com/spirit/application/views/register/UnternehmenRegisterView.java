@@ -11,17 +11,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+/**
+ * View for registering a new "Unternehmen" (company) account in the application.
+ * <p>This view extends {@link BaseRegisterView} and customizes the registration form
+ * for companies by including fields specific to companies, such as the company name
+ * and branch.</p>
+ * <p><b>Annotations:</b></p>
+ * <ul>
+ *   <li>{@code @Component}: Marks this class as a Spring-managed component.</li>
+ * </ul>
+ */
 @Component
 public class UnternehmenRegisterView extends BaseRegisterView {
 
     private TextField companyNameField;
 
+    /**
+     * Constructs a new {@code UnternehmenRegisterView}.
+     * @param registerInterface the interface handling registration logic.
+     */
     @Autowired
     public UnternehmenRegisterView(@Qualifier("registerProxy") RegisterInterface registerInterface) {
         super(registerInterface);
         setupUnternehmenForm();
     }
 
+    /**
+     * Configures the registration form for a company account by adding relevant fields,
+     * such as company name, email, username, and password.
+     */
     private void setupUnternehmenForm() {
         companyNameField = new TextField("Name des Unternehmens");
         TextField branchNameField = new TextField("Branche");
@@ -44,6 +62,10 @@ public class UnternehmenRegisterView extends BaseRegisterView {
         add(submitButton, 1);
     }
 
+    /**
+     * Handles the registration process by collecting user input and calling the
+     * appropriate method in {@link RegisterInterface}.
+     */
     @Override
     protected void register() {
         String username = usernameField.getValue();

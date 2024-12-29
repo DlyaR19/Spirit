@@ -18,22 +18,16 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * SecurityService - Implementiert die Sicherheits- und Authentifizierungslogik
- * Verantwortlichkeiten:
- * - Laden von Benutzerdetails für die Authentifizierung
- * - Zuweisen von Benutzerrollen basierend auf Benutzertyp
- * - Bereitstellen von benutzerdefinierten Benutzerdetails
+ * Service class for security functions.
+ * Implements UserDetailsService for authentication and authorization.
  */
-
 @Service
 public class SecurityService implements UserDetailsService {
 
-    // Repositories für Datenbankzugriff
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final UnternehmenRepository unternehmenRepository;
 
-    // Konstruktor zur Initialisierung der Repositories
     public SecurityService(UserRepository userRepository, StudentRepository studentRepository, UnternehmenRepository unternehmenRepository) {
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
@@ -41,10 +35,10 @@ public class SecurityService implements UserDetailsService {
     }
 
     /**
-     * Lädt Benutzerdetails basierend auf Benutzername
-     * @param username Benutzername zur Authentifizierung
-     * @return UserDetails des Benutzers
-     * @throws UsernameNotFoundException wenn Benutzer nicht gefunden wird
+     * Loads user details based on the username.
+     * @param username the username
+     * @return the user details
+     * @throws UsernameNotFoundException if the user is not found
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -52,8 +46,8 @@ public class SecurityService implements UserDetailsService {
     }
 
     /**
-     * Innere Klasse für benutzerdefinierte Benutzerdetails
-     * Implementiert Spring Security's UserDetails Interface
+     * Custom implementation of UserDetails.
+     * Includes user data such as username, password, and roles.
      */
     class CustomUserDetails implements UserDetails {
 
@@ -61,18 +55,13 @@ public class SecurityService implements UserDetailsService {
         private final String password;
         private final List<GrantedAuthority> authorities;
 
-        /**
-         * Konstruktor zur Erstellung von Benutzerdetails
-         * Setzt Benutzername, Passwort und Rollen
-         * @param user Benutzer-Entität
-         */
         public CustomUserDetails(User user) {
+            // Initializes username, password, and roles based on the user type
             try {
                 this.username = user.getUsername();
                 this.password = user.getPassword();
                 this.authorities = new ArrayList<>();
 
-                // Rollenzuweisung basierend auf Benutzertyp
                 if (studentRepository.existsByUserUserID(user.getUserID())) {
                     authorities.add(new SimpleGrantedAuthority("ROLE_" + Globals.Roles.STUDENT));
                 } else if (unternehmenRepository.existsByUserUserID(user.getUserID())) {
@@ -82,8 +71,6 @@ public class SecurityService implements UserDetailsService {
                 throw new UsernameNotFoundException(e.getMessage());
             }
         }
-
-        // Verschiedene Methoden zur Implementierung von UserDetails Interface
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {

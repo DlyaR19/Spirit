@@ -21,10 +21,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
- * Konfiguriert die Sicherheitseinstellungen der Anwendung
- * Implementiert Spring Security mit Vaadin-Integration
+ * Security configuration for the application, extending {@link VaadinWebSecurity} to configure
+ * custom security features for Vaadin-based applications.
+ * <p>It sets up a custom login view, password encoding, and authentication provider.</p>
+ * <p><b>Annotations:</b></p>
+ * <ul>
+ *   <li>{@code @EnableWebSecurity}: Enables web security configuration for the application.</li>
+ *   <li>{@code @Configuration}: Marks this class as a configuration class for Spring Security.</li>
+ * </ul>
  */
-
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends VaadinWebSecurity {
@@ -33,7 +38,8 @@ public class SecurityConfig extends VaadinWebSecurity {
     final PasswordEncoder passwordEncoder;
 
     /**
-     * Konstruktor initialisiert Sicherheitsdienste
+     * Constructor initializes the security services required for authentication.
+     * @param securityService the {@link SecurityService} used for loading user details and handling authentication.
      */
     public SecurityConfig(SecurityService securityService) {
         this.securityService = securityService;
@@ -41,28 +47,20 @@ public class SecurityConfig extends VaadinWebSecurity {
     }
 
     /**
-     * Konfiguriert die HTTP-Sicherheitseinstellungen
-     * @param http HttpSecurity-Objekt für Konfiguration
+     * Configures HTTP security settings.
+     * <p>Sets the login view to {@link LoginView}.</p>
+     * @param http the {@link HttpSecurity} object to configure the HTTP security.
+     * @throws Exception if an error occurs during configuration.
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         setLoginView(http, LoginView.class);
     }
-    
-//    @Configuration
-//    public static class VaadinResourceConfig extends VaadinWebSecurity {
-//        @Override
-//        public void configure(WebSecurity web) throws Exception {
-//            web.ignoring().requestMatchers(
-//                    new AntPathRequestMatcher("/images/**")
-//            );
-//        }
-//    }
 
     /**
-     * Hash-Encoder für Passwörter
-     * @return PasswordEncoder-Objekt
+     * Bean definition for the {@link PasswordEncoder} used for hashing passwords.
+     * @return a {@link PasswordEncoder} instance, specifically a {@link BCryptPasswordEncoder}.
      */
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -70,8 +68,9 @@ public class SecurityConfig extends VaadinWebSecurity {
     }
 
     /**
-     * Custom Authentication Provider für die Benutzerauthentifizierung
-     * @return AuthenticationProvider-Objekt
+     * Bean definition for the custom authentication provider used in the application.
+     * <p>This provider handles the authentication of users by verifying the username and password.</p>
+     * @return an {@link AuthenticationProvider} instance configured with the security service and password encoder.
      */
     @Bean
     public AuthenticationProvider customAuthenticationProvider() {
@@ -79,10 +78,18 @@ public class SecurityConfig extends VaadinWebSecurity {
     }
 
     /**
-     * Custom Authentication Provider für die Benutzerauthentifizierung
+     * Custom authentication provider for user authentication.
+     * <p>This implementation verifies user credentials against the database using {@link SecurityService}.</p>
      */
     private record CustomAuthenticationProvider(SecurityService securityService, PasswordEncoder passwordEncoder) implements AuthenticationProvider {
 
+        /**
+         * Authenticates the provided {@link Authentication} object.
+         * <p>It verifies that the username exists and that the password matches the stored password.</p>
+         * @param authentication the {@link Authentication} object containing user credentials.
+         * @return an authenticated {@link Authentication} object if credentials are valid.
+         * @throws AuthenticationException if authentication fails.
+         */
         @Override
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
@@ -106,9 +113,9 @@ public class SecurityConfig extends VaadinWebSecurity {
         }
 
         /**
-         * Überprüft, ob der AuthenticationProvider das gegebene Authentifizierungsobjekt unterstützt
-         * @param authentication Authentifizierungsobjekt
-         * @return true, wenn das Objekt unterstützt wird
+         * Determines whether the given {@link Authentication} type is supported.
+         * @param authentication the {@link Authentication} object to check.
+         * @return true if the authentication object is of type {@link UsernamePasswordAuthenticationToken}, false otherwise.
          */
         @Override
         public boolean supports(Class<?> authentication) {

@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+/**
+ * Service class for handling chat messages and user interactions.
+ */
 @Service
 @Transactional
 public class ChatService {
@@ -36,14 +39,29 @@ public class ChatService {
         this.chatHelper = chatHelper;
     }
 
+    /**
+     * Adds a message listener to be notified of new messages.
+     * @param listener the listener to be added
+     */
     public void addMessageListener(Consumer<ChatMessageDTO> listener) {
         messageConsumers.add(listener);
     }
 
+    /**
+     * Removes a message listener.
+     * @param listener the listener to be removed
+     */
     public void removeMessageListener(Consumer<ChatMessageDTO> listener) {
         messageConsumers.remove(listener);
     }
 
+    /**
+     * Sends a chat message from one user to another.
+     * @param senderId   the ID of the sender
+     * @param receiverId the ID of the receiver
+     * @param content    the message content
+     * @return the saved chat message
+     */
     public ChatMessage sendMessage(long senderId, long receiverId, String content) {
 
         User sender = userRepository.findById(senderId)
@@ -70,6 +88,10 @@ public class ChatService {
         return savedMessage;
     }
 
+    /**
+     * Notifies all message listeners of a new message.
+     * @param message the message to notify listeners of
+     */
     private void notifyListeners(ChatMessageDTO message) {
         for (Consumer<ChatMessageDTO> listener : messageConsumers) {
             try {
@@ -80,6 +102,12 @@ public class ChatService {
         }
     }
 
+    /**
+     * Retrieves the chat history between two users.
+     * @param userId      the ID of the first user
+     * @param otherUserId the ID of the second user
+     * @return a list of chat messages between the two users
+     */
     public List<ChatMessage> getChatHistory(long userId, long otherUserId) {
         User user1 = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));

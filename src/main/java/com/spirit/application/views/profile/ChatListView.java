@@ -38,6 +38,19 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents the Chat List View in the application, where users can see a list of active chats
+ * and start new conversations. It displays a grid of existing chats, allows searching for users,
+ * and supports navigation to the Chat View for messaging.
+ * <p><b>Annotations:</b></p>
+ * <ul>
+ *   <li>{@code @RolesAllowed}: Restricts access to users with the roles of STUDENT or UNTERNEHMEN.</li>
+ *   <li>{@code @Route}: Specifies the routing path for this view as {@code Globals.Pages.CHATLIST} and
+ *       associates it with the {@code AppView} layout.</li>
+ *   <li>{@code @CssImport}: Links to the CSS file for styling the Chat List View.</li>
+ *   <li>{@code @PageTitle}: Sets the page title to "Chat List".</li>
+ * </ul>
+ */
 @RolesAllowed({Globals.Roles.STUDENT, Globals.Roles.UNTERNEHMEN})
 @Route(value = Globals.Pages.CHATLIST, layout = AppView.class)
 @CssImport("./themes/spirit/views/ChatListView.css")
@@ -51,6 +64,13 @@ public class ChatListView extends VerticalLayout {
     private Consumer<ChatMessageDTO> messageListener;
     private final ChatService chatService;
 
+    /**
+     * Constructs a new ChatListView.
+     * @param chatListService  the service managing the list of chats.
+     * @param sessionService   the service handling user sessions.
+     * @param userRepository   the repository for accessing user data.
+     * @param chatService      the service for handling chat messages.
+     */
     public ChatListView(ChatListService chatListService, SessionService sessionService, UserRepository userRepository, ChatService chatService) {
         this.chatListService = chatListService;
         this.sessionService = sessionService;
@@ -68,6 +88,10 @@ public class ChatListView extends VerticalLayout {
         setupPushUpdates();
     }
 
+    /**
+     * Creates the header for the Chat List View, including a title and a "New Chat" button.
+     * @return the component representing the header.
+     */
     private Component createHeader() {
         H2 title = new H2("Chats");
         Button newChatBtn = new Button("New Chat", VaadinIcon.PLUS.create());
@@ -80,6 +104,9 @@ public class ChatListView extends VerticalLayout {
         return header;
     }
 
+    /**
+     * Opens a dialog for selecting a user to start a new chat.
+     */
     private void showUserSelectionDialog() {
         Dialog dialog = new Dialog();
         dialog.setHeaderTitle("Start New Chat");
@@ -137,6 +164,9 @@ public class ChatListView extends VerticalLayout {
         dialog.open();
     }
 
+    /**
+     * Configures the chat grid, defining its structure and item click behavior.
+     */
     private void setupGrid() {
         chatGrid.addClassName("chat-list-grid");
         chatGrid.setHeightFull();
@@ -172,6 +202,11 @@ public class ChatListView extends VerticalLayout {
         });
     }
 
+    /**
+     * Formats a timestamp to display relative time (e.g., "Today", "Yesterday") or date.
+     * @param timestamp the timestamp to format.
+     * @return the formatted timestamp as a string.
+     */
     private String formatTimestamp(LocalDateTime timestamp) {
         if (timestamp == null) return "";
 
@@ -191,6 +226,9 @@ public class ChatListView extends VerticalLayout {
         }
     }
 
+    /**
+     * Refreshes the chat grid with the latest chat data from the ChatListService.
+     */
     private void refreshChats() {
         List<ChatListDTO> chats = chatListService.getChatsForUser(
                 sessionService.getCurrentUser().getUserID()
@@ -198,6 +236,10 @@ public class ChatListView extends VerticalLayout {
         chatGrid.setItems(chats);
     }
 
+    /**
+     * Handles UI updates when the view is attached to the UI.
+     * @param attachEvent the event triggered when the view is attached.
+     */
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         UI ui = attachEvent.getUI();
@@ -221,12 +263,19 @@ public class ChatListView extends VerticalLayout {
         chatService.addMessageListener(messageListener);
     }
 
+    /**
+     * Cleans up listeners and resources when the view is detached from the UI.
+     * @param detachEvent the event triggered when the view is detached.
+     */
     @Override
     protected void onDetach(DetachEvent detachEvent) {
         chatListService.removeUpdateListener(chatListUpdateListener);
         chatService.removeMessageListener(messageListener);
     }
 
+    /**
+     * Adds listeners for real-time chat updates and message notifications.
+     */
     private void setupPushUpdates() {
         chatListService.addUpdateListener(update -> {
             getUI().ifPresent(ui -> ui.access(this::refreshChats));

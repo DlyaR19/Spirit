@@ -10,28 +10,30 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 /**
- * Utility-Klasse mit statischen Methoden zur Validierung von Registrierungsdaten
+ * Utility class for validating user input during registration.
+ * Contains various methods for input validation such as username, email, password, and others.
+ * This class is not instantiable.
  */
-
 public class RegisterUtils {
 
     /**
-     * Privater Konstruktor verhindert Instanziierung
-     * @throws UnsupportedOperationException wenn versucht wird, die Klasse zu instanziieren
+     * Private constructor to prevent instantiation.
+     * @throws UnsupportedOperationException if an attempt is made to instantiate the class
      */
     private RegisterUtils() {
         throw new UnsupportedOperationException("Class should not be instantiated, it is a utility class.");
     }
 
     /**
-     * Validiert Registrierungsdaten für Studenten
-     * @return true wenn alle Eingaben valid sind
-     * @param username Benutzername
-     * @param firstName Vorname
-     * @param lastName Nachname
-     * @param email E-Mail Adresse
-     * @param password Passwort
-     * @param passwordConfirmation Passwortbestätigung
+     * Validates the input for student registration.
+     * @param username              the username to validate
+     * @param firstName             the first name to validate
+     * @param lastName              the last name to validate
+     * @param email                 the email to validate
+     * @param password              the password to validate
+     * @param passwordConfirmation  the confirmation password to validate
+     * @param birth                 the birthdate to validate
+     * @return true if all inputs are valid, false otherwise
      */
     public static boolean validateInput(String username, String firstName, String lastName, String email, String password, String passwordConfirmation, LocalDate birth) {
         if (!isValidVorname(firstName)) {
@@ -50,13 +52,13 @@ public class RegisterUtils {
     }
 
     /**
-     * Validiert Registrierungsdaten für Unternehmen
-     * @return true wenn alle Eingaben valid sind
-     * @param username Benutzername
-     * @param unternehmenName Unternehmensname
-     * @param email E-Mail Adresse
-     * @param password Passwort
-     * @param passwordConfirmation Passwortbestätigung
+     * Validates the input for company registration.
+     * @param username              the username to validate
+     * @param unternehmenName       the company name to validate
+     * @param email                 the email to validate
+     * @param password              the password to validate
+     * @param passwordConfirmation  the confirmation password to validate
+     * @return true if all inputs are valid, false otherwise
      */
     public static boolean validateInput(String username, String unternehmenName, String email, String password, String passwordConfirmation) {
         if (!isValidUnternehmenName(unternehmenName)) {
@@ -67,24 +69,24 @@ public class RegisterUtils {
     }
 
     /**
-     * Validiert Registrierungsdaten für Admins
-     * @return true wenn alle Eingaben valid sind
-     * @param username Benutzername
-     * @param email E-Mail Adresse
-     * @param password Passwort
-     * @param passwordConfirmation Passwortbestätigung
+     * Validates the input for general user registration.
+     * @param username              the username to validate
+     * @param email                 the email to validate
+     * @param password              the password to validate
+     * @param passwordConfirmation  the confirmation password to validate
+     * @return true if all inputs are valid, false otherwise
      */
     public static boolean validateInput(String username, String email, String password, String passwordConfirmation) {
         return checkDefaultInput(username, email, password, passwordConfirmation);
     }
 
     /**
-     * Basis-Validierung für alle Benutzertypen
-     * @return true wenn alle Eingaben valid sind
-     * @param username Benutzername
-     * @param email E-Mail Adresse
-     * @param password Passwort
-     * @param passwordConfirmation Passwortbestätigung
+     * Checks the default inputs for validity: username, email, password, and password confirmation.
+     * @param username              the username to validate
+     * @param email                 the email to validate
+     * @param password              the password to validate
+     * @param passwordConfirmation  the confirmation password to validate
+     * @return true if all default inputs are valid, false otherwise
      */
     private static boolean checkDefaultInput(String username, String email, String password, String passwordConfirmation) {
         if (!isValidUsername(username)) {
@@ -107,9 +109,9 @@ public class RegisterUtils {
     }
 
     /**
-     * Überprüft, ob die E-Mail Adresse gültig ist
-     * @return true wenn die E-Mail Adresse gültig ist
-     * @param email E-Mail Adresse
+     * Validates an email address.
+     * @param email the email address to validate
+     * @return true if the email is valid, false otherwise
      */
     private static boolean isValidEmail(String email) {
         int atIndex = email.indexOf('@');
@@ -128,9 +130,9 @@ public class RegisterUtils {
     }
 
     /**
-     * Überprüft, ob das Passwort komplex genug ist
-     * @return true wenn das Passwort komplex genug ist
-     * @param password Passwort
+     * Checks if a password is complex enough (length, uppercase, lowercase, digit).
+     * @param password the password to validate
+     * @return true if the password meets complexity requirements, false otherwise
      */
     private static boolean isPasswordComplex(String password) {
         if (password.length() < 8 || password.length() > 16) {
@@ -151,9 +153,9 @@ public class RegisterUtils {
     }
 
     /**
-     * Überprüft, ob der Unternehmensname gültig ist
-     * @return true wenn der Unternehmensname gültig ist
-     * @param unternehmenName Unternehmensname
+     * Validates a company name (length and valid characters).
+     * @param unternehmenName the company name to validate
+     * @return true if the company name is valid, false otherwise
      */
     private static boolean isValidUnternehmenName(String unternehmenName) {
         if (unternehmenName.length() < 3) {
@@ -169,27 +171,27 @@ public class RegisterUtils {
     }
 
     /**
-     * Überprüft, ob der Vorname gültig ist
-     * @return true wenn der Vorname gültig ist
-     * @param vorname Vorname
+     * Validates a first name.
+     * @param vorname the first name to validate
+     * @return true if the first name is valid, false otherwise
      */
     private static boolean isValidVorname(String vorname) {
         return isValidName(vorname);
     }
 
     /**
-     * Überprüft, ob der Nachname gültig ist
-     * @return true wenn der Nachname gültig ist
-     * @param nachname Nachname
+     * Validates a last name.
+     * @param nachname the last name to validate
+     * @return true if the last name is valid, false otherwise
      */
     private static boolean isValidNachname(String nachname) {
         return isValidName(nachname);
     }
 
     /**
-     * Überprüft, ob der Name gültig ist
-     * @return true wenn der Name gültig ist
-     * @param name Name
+     * Validates a general name (used for both first name and last name).
+     * @param name the name to validate
+     * @return true if the name is valid, false otherwise
      */
     private static boolean isValidName(String name) {
         if (name.length() < 3 || name.length() > 30) {
@@ -205,9 +207,9 @@ public class RegisterUtils {
     }
 
     /**
-     * Überprüft, ob der Benutzername gültig ist
-     * @return true wenn der Benutzername gültig ist
-     * @param username Benutzername
+     * Validates a username (length and valid characters).
+     * @param username the username to validate
+     * @return true if the username is valid, false otherwise
      */
     private static boolean isValidUsername(String username) {
         if (username.length() < 3 || username.length() > 20) {
@@ -222,6 +224,11 @@ public class RegisterUtils {
         return true;
     }
 
+    /**
+     * Validates a birthdate (must not be in the future).
+     * @param dateTime the birthdate to validate
+     * @return true if the birthdate is valid, false otherwise
+     */
     private static boolean isValidBirthdate(LocalDate dateTime){
         return !dateTime.isAfter(LocalDate.now(ZoneId.systemDefault()));
     }

@@ -15,7 +15,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import jakarta.annotation.security.PermitAll;
 
-
+/**
+ * View that displays information about the Spirit company, including its vision, mission, values, team, and contact information.
+ * This view is publicly accessible to all users and can be accessed through the "Über Uns" page.
+ */
 @PageTitle("Über Uns")
 @Route(value = Globals.Pages.ABOUTUS, layout = MainLayout.class)
 @Menu(order = 3)
@@ -23,8 +26,10 @@ import jakarta.annotation.security.PermitAll;
 @PermitAll
 public class AboutUsView extends VerticalLayout {
 
-    // TODO Besser gestalten
-    
+    /**
+     * Constructor for initializing the "Über Uns" page view.
+     * Sets up the layout with title, introduction, vision, mission, company values, team information, and footer.
+     */
     public AboutUsView() {
         setWidthFull();
         setSpacing(true);
@@ -75,12 +80,23 @@ public class AboutUsView extends VerticalLayout {
         add(title, intro, visionTitle, vision, missionTitle, mission, logoTitle, logo, valuesTitle, valuesSection, teamTitle, team, footer);
     }
 
+    /**
+     * Creates a section title as an H2 element.
+     * @param title The title of the section.
+     * @return The H2 element with the section title.
+     */
     private H2 createSectionTitle(String title) {
         H2 sectionTitle = new H2(title);
         sectionTitle.getElement().getStyle().set("text-align", "center");
         return sectionTitle;
     }
 
+    /**
+     * Creates a text block as a Div element.
+     * @param text The text content of the block.
+     * @param textAlign The alignment of the text.
+     * @return The Div element with the text block.
+     */
     private Div createTextBlock(String text, String textAlign) {
         Div textBlock = new Div();
         textBlock.setText(text);
@@ -88,6 +104,10 @@ public class AboutUsView extends VerticalLayout {
         return textBlock;
     }
 
+    /**
+     * Creates a section with tiles for the company values.
+     * @return The Div element with the values section.
+     */
     private Div createValuesSection() {
         Div valuesSection = new Div();
         valuesSection.getStyle()
@@ -123,6 +143,13 @@ public class AboutUsView extends VerticalLayout {
         return valuesSection;
     }
 
+    /**
+     * Creates a tile for a company value.
+     * @param title The title of the value.
+     * @param description The description of the value.
+     * @param icon The icon for the value.
+     * @return The Div element with the value tile.
+     */
     private Div createValueTile(String title, String description, VaadinIcon icon) {
         Div tile = new Div();
         tile.getStyle()
@@ -150,6 +177,10 @@ public class AboutUsView extends VerticalLayout {
         return tile;
     }
 
+    /**
+     * Creates a section with information about the team members.
+     * @return The Div element with the team section.
+     */
     private Div createTeamSection() {
         Div team = new Div();
         team.add(
@@ -180,6 +211,10 @@ public class AboutUsView extends VerticalLayout {
         return team;
     }
 
+    /**
+     * Creates a footer with contact information.
+     * @return The Div element with the footer.
+     */
     private Div createFooter() {
         Div footer = new Div();
         footer.addClassName("footer");

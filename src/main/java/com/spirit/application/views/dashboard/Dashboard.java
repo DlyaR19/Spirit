@@ -29,6 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A view class for displaying the dashboard of job posts.
+ * This class provides functionality for filtering, searching, and displaying job posts.
+ * It also allows viewing detailed information of each job post in a dialog.
+ */
 @Route(value = Globals.Pages.DASHBOARD, layout = MainLayout.class)
 @Menu(order = 0)
 @AnonymousAllowed
@@ -43,6 +48,11 @@ public class Dashboard extends Composite<VerticalLayout> {
     private final transient MarkdownConverter markdownConverter = new MarkdownConverter();
     private final transient JobPostService jobPostService;
 
+    /**
+     * Constructor for initializing the dashboard view with the provided job post service.
+     * It fetches job posts and initializes the search bar and filter options.
+     * @param jobPostService The service to fetch job posts from the backend.
+     */
     @Autowired
     public Dashboard(JobPostService jobPostService) {
         this.jobPostService = jobPostService;
@@ -72,6 +82,14 @@ public class Dashboard extends Composite<VerticalLayout> {
         getContent().add(searchBarLayout, layout);
     }
 
+    /**
+     * Creates the search bar for the dashboard which includes a text search field and filter selections.
+     * @param employmentTypes the list of unique employment types.
+     * @param locationTypes the list of unique location types.
+     * @param companyNameTypes the list of unique company names.
+     * @param jobTitleTypes the list of unique job titles.
+     * @return A horizontal layout containing the search bar with filters.
+     */
     public HorizontalLayout searchbar(List<String> employmentTypes, List<String> locationTypes, List<String> companyNameTypes, List<String> jobTitleTypes) {
         // Haupt-Container für die Suchleiste
         VerticalLayout searchBarContainer = new VerticalLayout();
@@ -150,6 +168,14 @@ public class Dashboard extends Composite<VerticalLayout> {
         return new HorizontalLayout(searchBarContainer);
     }
 
+    /**
+     * Executes the search using the provided filters and search text.
+     * @param searchText the text to search in the job posts.
+     * @param employmentTypes the selected employment types.
+     * @param locationTypes the selected location types.
+     * @param companyNameTypes the selected company names.
+     * @param jobTitleTypes the selected job titles.
+     */
     private void performSearch(String searchText, Set<String> employmentTypes, Set<String> locationTypes, Set<String> companyNameTypes, Set<String> jobTitleTypes) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
                 .filter(jobPost -> (employmentTypes.isEmpty() || employmentTypes.contains(jobPost.getAnstellungsart())) &&
@@ -162,6 +188,12 @@ public class Dashboard extends Composite<VerticalLayout> {
         updateJobPostList(searchedJobPosts);
     }
 
+    /**
+     * Checks if a job post matches the provided search text.
+     * @param jobPost the job post to check.
+     * @param searchText the search text to compare against.
+     * @return true if the job post matches the search text, false otherwise.
+     */
     private boolean jobPostMatchesSearchText(JobPostDTO jobPost, String searchText) {
         return jobPost.getTitel().toLowerCase().contains(searchText.toLowerCase()) ||
                 jobPost.getBeschreibung().toLowerCase().contains(searchText.toLowerCase()) ||
@@ -169,11 +201,20 @@ public class Dashboard extends Composite<VerticalLayout> {
                 jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
     }
 
+    /**
+     * Updates the displayed job posts by refreshing the layout with the provided job posts.
+     * @param jobPostToDisplay the list of job posts to display.
+     */
     private void updateJobPostList(List<JobPostDTO> jobPostToDisplay) {
         layout.removeAll();
         jobPostToDisplay.forEach(jobPostDTO -> layout.add(createCard(jobPostDTO)));
     }
 
+    /**
+     * Creates a vertical card layout for displaying a job post with its details.
+     * @param jobPost the job post to display in the card.
+     * @return a vertical layout containing the job post details.
+     */
     public VerticalLayout createCard(JobPostDTO jobPost) {
         VerticalLayout cardLayout = new VerticalLayout();
         Avatar avatar = new Avatar();
@@ -222,13 +263,23 @@ public class Dashboard extends Composite<VerticalLayout> {
         return cardLayout;
     }
 
+    /**
+     * Creates a contact layout with the given label and value.
+     * @param labelText the label text
+     * @param valueText the value text
+     * @return the created contact layout
+     */
     private HorizontalLayout createContactLayout(String labelText, String valueText) {
         Span label = new Span(labelText);
         label.getStyle().set(FONT_WEIGHT, "bold");
         return new HorizontalLayout(label, new Span(valueText));
     }
 
-    private void openDialog(JobPostDTO vacancy) {
+    /**
+     * Opens a dialog with the details of the given job post.
+     * @param jobPost the job post to display
+     */
+    private void openDialog(JobPostDTO jobPost) {
         Dialog dialog = new Dialog();
         dialog.setWidth("800px");
         dialog.setHeight("600px");
@@ -238,20 +289,20 @@ public class Dashboard extends Composite<VerticalLayout> {
         dialogLayout.setSpacing(true);
 
         Avatar avatar = new Avatar();
-        avatar.setImage("data:image/jpeg;base64," + vacancy.getUnternehmen().getUser().getProfile().getAvatar());
-        H2 title = new H2(vacancy.getTitel());
-        Button type = new Button(vacancy.getAnstellungsart());
+        avatar.setImage("data:image/jpeg;base64," + jobPost.getUnternehmen().getUser().getProfile().getAvatar());
+        H2 title = new H2(jobPost.getTitel());
+        Button type = new Button(jobPost.getAnstellungsart());
         type.setWidth("min-content");
         type.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         type.setEnabled(true);
 
-        HorizontalLayout dateLayout = new HorizontalLayout(new H4("Datum: "), new Span(vacancy.getVeroeffentlichungsdatum().toString()));
-        HorizontalLayout locationLayout = new HorizontalLayout(new H4("Standort: "), new Span(vacancy.getStandort()));
+        HorizontalLayout dateLayout = new HorizontalLayout(new H4("Datum: "), new Span(jobPost.getVeroeffentlichungsdatum().toString()));
+        HorizontalLayout locationLayout = new HorizontalLayout(new H4("Standort: "), new Span(jobPost.getStandort()));
         HorizontalLayout infoLayout = new HorizontalLayout(dateLayout, locationLayout);
 
         H4 description = new H4("Beschreibung: ");
         Div desParagraph = new Div();
-        desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(vacancy.getBeschreibung()));
+        desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(jobPost.getBeschreibung()));
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button bewerben = new Button("Jetzt bewerben");

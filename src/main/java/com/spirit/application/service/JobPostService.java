@@ -13,87 +13,95 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * JobPostService - Verwaltet Stellenausschreibungs-bezogene Operationen
- * Verantwortlichkeiten:
- * - Speichern neuer Stellenausschreibungen
- * - Abrufen von Stellenausschreibungen nach Unternehmen
- * - Löschen von Stellenausschreibungen
- * - Verwaltung von Stellenausschreibungs-Metadaten
+ * Service class for managing job postings.
  */
-
 @Service
 public class JobPostService {
 
-    // Repositories für Datenbankzugriff
     private final JobPostRepository jobPostRepository;
     private final BewerbungRepository bewerbungRepository;
     private final Map<Long, Long> viewCountMap = new HashMap<>();
 
-    // Konstruktor zur Initialisierung der Repositories
     public JobPostService(JobPostRepository jobPostRepository, BewerbungRepository bewerbungRepository) {
         this.jobPostRepository = jobPostRepository;
         this.bewerbungRepository = bewerbungRepository;
     }
 
     /**
-     * Speichert eine Stellenausschreibung in der Datenbank
-     * @param jobPost Die zu speichernde Stellenausschreibung
+     * Saves a new job post.
+     * @param jobPost the job post to save
      */
     public void saveJobPost(JobPost jobPost) {
         this.jobPostRepository.save(jobPost);
     }
 
     /**
-     * Findet alle Stellenausschreibungen eines bestimmten Unternehmens
-     * @param unternehmenId ID des Unternehmens
-     * @return Liste der Stellenausschreibungen des Unternehmens
+     * Retrieves all job posts by a specific company.
+     * @param unternehmenId the ID of the company
+     * @return a list of job posts by the company
      */
     public List<JobPost> getJobPostByUnternehmenId(Long unternehmenId) {
         return jobPostRepository.findJobPostByUnternehmenUnternehmenID(unternehmenId);
     }
 
     /**
-     * Holt alle Stellenausschreibungen aus der Datenbank
-     * @return Liste aller Stellenausschreibungen
+     * Retrieves all job posts.
+     * @return a list of all job posts
      */
     public List<JobPost> getAllJobPost() {
         return jobPostRepository.findAll();
     }
 
     /**
-     * Löscht eine Stellenausschreibung inklusive aller zugehörigen Bewerbungen
-     * @param jobPostId ID der zu löschenden Stellenausschreibung
+     * Deletes a specific job post and its associated applications.
+     * @param jobPostId the ID of the job post to delete
      */
-    @Transactional // Stellt sicher, dass alle Datenbankoperationen atomar ausgeführt werden
+    @Transactional
     public void deleteJobPost(Long jobPostId) {
-        // Zuerst alle zugehörigen Bewerbungen löschen
         bewerbungRepository.deleteBewerbungByJobPost_JobPostID(jobPostId);
-        // Dann die Stellenausschreibung selbst löschen
         jobPostRepository.deleteByJobPostID(jobPostId);
     }
 
+    /**
+     * Increments the view count of a specific job post.
+     * @param jobPost the job post whose view count is to be incremented
+     */
     @Transactional
     public void incrementViewCount(JobPost jobPost) {
         Long currentCount = viewCountMap.getOrDefault(jobPost.getJobPostID(), 0L);
         viewCountMap.put(jobPost.getJobPostID(), currentCount + 1);
     }
 
+    /**
+     * Retrieves the view count of a specific job post.
+     * @param jobPost the job post whose view count is to be retrieved
+     * @return the view count
+     */
     public Long getViewCount(JobPost jobPost) {
         return viewCountMap.getOrDefault(jobPost.getJobPostID(), 0L);
     }
 
     /**
-     * Prüft, ob keine Stellenausschreibungen in der Datenbank existieren
-     * @return true, wenn keine Stellenausschreibungen vorhanden sind
+     * Checks if there are any job posts.
+     * @return true if there are no job posts, false otherwise
      */
     public boolean isEmpty() {
         return jobPostRepository.count() == 0;
     }
 
+    /**
+     * Retrieves a job post by its ID.
+     * @param jobPostID the ID of the job post
+     * @return the job post
+     */
     public JobPost getJobPostByJobPostID(long jobPostID) {
         return jobPostRepository.getJobPostByJobPostID(jobPostID);
     }
 
+    /**
+     * Retrieves unique employment types from all job posts.
+     * @return a list of unique employment types
+     */
     public List<String> getUniqueEmploymentTypes() {
         return jobPostRepository.findAll()
                 .stream()
@@ -102,6 +110,10 @@ public class JobPostService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves unique locations from all job posts.
+     * @return a list of unique locations
+     */
     public List<String> getUniqueLocations() {
         return jobPostRepository.findAll()
                 .stream()
@@ -110,6 +122,10 @@ public class JobPostService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves unique company names from all job posts.
+     * @return a list of unique company names
+     */
     public List<String> getUniqueCompanyNameTypes() {
         return jobPostRepository.findAll()
                 .stream()
@@ -118,6 +134,10 @@ public class JobPostService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves unique job titles from all job posts.
+     * @return a list of unique job titles
+     */
     public List<String> getUniqueJobTitleTypes() {
         return jobPostRepository.findAll()
                 .stream()

@@ -7,9 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Diese Klasse repräsentiert ein UnternehmenDTO-Objekt, das als Datenübertragungsobjekt für die Unternehmen-Entität dient.
+ * Data Transfer Object (DTO) for representing a Unternehmen (Business).
  */
-
 @Setter
 @Getter
 public class UnternehmenDTO extends UserDTO {
@@ -22,6 +21,11 @@ public class UnternehmenDTO extends UserDTO {
     private String zipCode;
     private String country;
 
+    /**
+     * Constructor to initialize UnternehmenDTO from a Unternehmen entity.
+     *
+     * @param entity the Unternehmen entity to convert into DTO.
+     */
     public UnternehmenDTO(Unternehmen entity) {
         super(entity.getUser());
         this.user = entity.getUser();
@@ -33,6 +37,11 @@ public class UnternehmenDTO extends UserDTO {
         this.country = entity.getCountry();
     }
 
+    /**
+     * Converts this DTO back to a Unternehmen entity.
+     *
+     * @return a Unternehmen entity corresponding to this DTO.
+     */
     public Unternehmen getUnternehmen() {
         Unternehmen unternehmen = new Unternehmen();
         unternehmen.setUnternehmenID(unternehmenID);

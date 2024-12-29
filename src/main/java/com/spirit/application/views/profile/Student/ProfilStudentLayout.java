@@ -6,11 +6,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import lombok.Getter;
 
-/*
-    Dialog View Layout
+/**
+ * A layout component that displays and manages the student's profile form.
+ * Contains fields for first name, last name, interests, skills, degree, website, profile description, and avatar URL.
+ * <p>This class defines the form layout and organizes the components into horizontal sections.</p>
  */
-// TODO Studenten Profil
-
 @Getter
 public class ProfilStudentLayout extends VerticalLayout {
 
@@ -21,9 +21,12 @@ public class ProfilStudentLayout extends VerticalLayout {
     private final TextField degreeField = new TextField("Studiengang: ");
     private final TextField webseiteField = new TextField("Webseite:");
     private final TextField profileDescriptionField = new TextField("Profilbeschreibung:");
-
     private final TextField avatarUrlField = new TextField("Avatar URL:");
 
+    /**
+     * Constructs a ProfilStudentLayout with input fields for student profile information.
+     * The fields are organized into horizontal layouts and added to the main vertical layout.
+     */
     public ProfilStudentLayout() {
         addClassName("profile-form");
 

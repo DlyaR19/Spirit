@@ -35,6 +35,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * This view allows students to search for job postings based on various criteria,
+ * such as job type and search text (e.g., location, description, etc.).
+ * It displays a list of job postings and provides the option to view more details
+ * and apply for a position.
+ */
 @Route(value = Globals.Pages.SUCHE_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
 public class SuchView extends Composite<VerticalLayout> {
@@ -54,6 +60,13 @@ public class SuchView extends Composite<VerticalLayout> {
             "Masterprojekt", "Büro", "Homeoffice",
     };
 
+    /**
+     * Constructor for initializing the search view.
+     * It fetches all available job posts and updates the list displayed on the page.
+     * @param jobPostService service to interact with job posts
+     * @param sessionService service for session management
+     * @param bewerbungService service for managing applications
+     */
     @Autowired
     public SuchView(JobPostService jobPostService, SessionService sessionService,
                     BewerbungService bewerbungService) {
@@ -71,6 +84,11 @@ public class SuchView extends Composite<VerticalLayout> {
         getContent().add(searchbar(), layout);
     }
 
+    /**
+     * Creates and returns the search bar layout for filtering job posts.
+     * Includes a combo box for employment type and a text field for search terms.
+     * @return the search bar layout
+     */
     public HorizontalLayout searchbar() {
         HorizontalLayout search = new HorizontalLayout();
         ComboBox<String> employmentType = new ComboBox<>();
@@ -95,6 +113,11 @@ public class SuchView extends Composite<VerticalLayout> {
         return search;
     }
 
+    /**
+     * Performs a search for job posts based on the provided search text and employment type.
+     * @param searchText the text to search for (location, description, etc.)
+     * @param anstellungsart the selected employment type
+     */
     private void performSearch(String searchText, String anstellungsart) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
                 .filter(jobPost -> (anstellungsart == null || anstellungsart.isEmpty() || jobPost.getAnstellungsart().equalsIgnoreCase(anstellungsart)) &&
@@ -103,12 +126,23 @@ public class SuchView extends Composite<VerticalLayout> {
         updateJobPostList(searchedJobPosts);
     }
 
+    /**
+     * Checks whether a job post matches the provided search text.
+     * @param jobPost the job post to check
+     * @param searchText the search text to match
+     * @return true if the job post matches the search criteria, false otherwise
+     */
     private boolean jobPostMatchesSearchText(JobPostDTO jobPost, String searchText) {
         return jobPost.getTitel().toLowerCase().contains(searchText.toLowerCase()) ||
                 jobPost.getBeschreibung().toLowerCase().contains(searchText.toLowerCase()) ||
                 jobPost.getUnternehmen().getName().toLowerCase().contains(searchText.toLowerCase())
                 || jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
     }
+
+    /**
+     * Updates the displayed list of job posts.
+     * @param jobPostToDisplay the job posts to display
+     */
     private void updateJobPostList(List<JobPostDTO> jobPostToDisplay) {
         layout.removeAll();
         jobPostToDisplay.forEach(jobPostDTO -> {
@@ -117,6 +151,12 @@ public class SuchView extends Composite<VerticalLayout> {
 
     }
 
+    /**
+     * Creates a card layout for a job post.
+     * The card contains job details like the title, company, job type, location, and description.
+     * @param jobPost the job post to create the card for
+     * @return the card layout for the job post
+     */
     public VerticalLayout createCard(JobPostDTO jobPost) {
         VerticalLayout cardLayout = new VerticalLayout();
         Avatar avatar = new Avatar();
@@ -165,14 +205,25 @@ public class SuchView extends Composite<VerticalLayout> {
         return cardLayout;
     }
 
+    /**
+     * Creates a horizontal layout containing contact information for the company.
+     * @param labelText the label text (e.g., "Email")
+     * @param valueText the contact value (e.g., "example@company.com")
+     * @return the horizontal layout with contact information
+     */
     private HorizontalLayout createContactLayout(String labelText, String valueText) {
         Span label = new Span(labelText);
         label.getStyle().set(FONT_WEIGHT, "bold");
         return new HorizontalLayout(label, new Span(valueText));
     }
 
-    private void openDialog(JobPostDTO vacancy) {
-        jobPostService.incrementViewCount(vacancy.getJobPost());
+    /**
+     * Opens a dialog displaying more details about the selected job post.
+     * The dialog allows the student to apply for the position by uploading their CV and cover letter.
+     * @param jobPost the selected job post
+     */
+    private void openDialog(JobPostDTO jobPost) {
+        jobPostService.incrementViewCount(jobPost.getJobPost());
         Dialog dialog = new Dialog();
         dialog.setWidth("800px");
         dialog.setHeight("600px");
@@ -182,26 +233,26 @@ public class SuchView extends Composite<VerticalLayout> {
         dialogLayout.setSpacing(true);
 
         Avatar avatar = new Avatar();
-        avatar.setImage("data:image/jpeg;base64," + vacancy.getUnternehmen().getUser().getProfile().getAvatar());
-        H2 title = new H2(vacancy.getTitel());
-        Button type = new Button(vacancy.getAnstellungsart());
+        avatar.setImage("data:image/jpeg;base64," + jobPost.getUnternehmen().getUser().getProfile().getAvatar());
+        H2 title = new H2(jobPost.getTitel());
+        Button type = new Button(jobPost.getAnstellungsart());
         type.setWidth("min-content");
         type.addThemeVariants(ButtonVariant.LUMO_CONTRAST);
         type.setEnabled(true);
 
-        HorizontalLayout dateLayout = new HorizontalLayout(new H4("Datum: "), new Span(vacancy.getVeroeffentlichungsdatum().toString()));
-        HorizontalLayout locationLayout = new HorizontalLayout(new H4("Standort: "), new Span(vacancy.getStandort()));
+        HorizontalLayout dateLayout = new HorizontalLayout(new H4("Datum: "), new Span(jobPost.getVeroeffentlichungsdatum().toString()));
+        HorizontalLayout locationLayout = new HorizontalLayout(new H4("Standort: "), new Span(jobPost.getStandort()));
         HorizontalLayout infoLayout = new HorizontalLayout(dateLayout, locationLayout);
 
         H4 description = new H4("Beschreibung: ");
         Div desParagraph = new Div();
-        desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(vacancy.getBeschreibung()));
+        desParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(jobPost.getBeschreibung()));
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button bewerben = new Button("Jetzt bewerben");
         bewerben.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         bewerben.addClickListener(e -> {
-            openApplyDialog(vacancy);
+            openApplyDialog(jobPost);
             dialog.close();
         });
 
@@ -215,6 +266,11 @@ public class SuchView extends Composite<VerticalLayout> {
         dialog.open();
     }
 
+    /**
+     * Opens a dialog for the student to apply for a job post.
+     * The dialog allows the student to upload their CV and cover letter.
+     * @param jobPost the job post to apply for
+     */
     private void openApplyDialog(JobPostDTO jobPost) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");
@@ -308,6 +364,13 @@ public class SuchView extends Composite<VerticalLayout> {
         dialog.open();
     }
 
+    /**
+     * Creates a div containing a title and a list of items.
+     * Each item is displayed as a paragraph with markdown formatting.
+     * @param title the title of the div
+     * @param items the list of items to display
+     * @return the div containing the title and items
+     */
     private Div createMarkdownDiv(String title, List<String> items) {
         Div container = new Div();
         container.add(new H3(title));

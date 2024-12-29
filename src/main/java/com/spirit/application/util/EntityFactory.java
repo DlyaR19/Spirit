@@ -8,26 +8,26 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 /**
- * Factory-Klasse zur Erstellung von Entitäten
- * Implementiert das Factory-Pattern
+ * Factory class for creating entity objects.
  */
-
 @Component
 public class EntityFactory {
 
     /**
-     * Erstellt ein neues Profile-Objekt
+     * Creates a new empty Profile object.
+     * @return a new Profile instance
      */
     public Profile createProfile() {
         return new Profile();
     }
 
     /**
-     * Erstellt ein neues User-Objekt mit den angegebenen Parametern
-     * @param profile Zugehöriges Profil
-     * @param username Benutzername
-     * @param password Passwort
-     * @param email E-Mail-Adresse
+     * Creates a new User object with the provided profile, username, password, and email.
+     * @param profile   the associated profile
+     * @param username  the username
+     * @param password  the password
+     * @param email     the email address
+     * @return a new User instance
      */
     public User createUser(Profile profile, String username, String password, String email) {
         User user = new User();
@@ -40,10 +40,12 @@ public class EntityFactory {
     }
 
     /**
-     * Erstellt ein neues Student-Objekt mit den angegebenen Parametern
-     * @param user Zugehöriger Benutzer
-     * @param lastName Nachname
-     * @param firstName Vorname
+     * Creates a new Student object with the provided user, last name, first name, and birthdate.
+     * @param user      the associated user
+     * @param lastName  the last name of the student
+     * @param firstName the first name of the student
+     * @param birth     the birthdate of the student
+     * @return a new Student instance
      */
     public Student createStudent(User user, String lastName, String firstName, LocalDate birth) {
         Student student = new Student();
@@ -55,9 +57,10 @@ public class EntityFactory {
     }
 
     /**
-     * Erstellt ein neues Unternehmen-Objekt mit den angegebenen Parametern
-     * @param name Name des Unternehmens
-     * @param user Zugehöriger Benutzer
+     * Creates a new Unternehmen (Company) object with the provided name and user.
+     * @param name  the company name
+     * @param user  the associated user
+     * @return a new Unternehmen instance
      */
     public Unternehmen createUnternehmen(String name, User user) {
         Unternehmen unternehmen = new Unternehmen();
@@ -67,13 +70,14 @@ public class EntityFactory {
     }
 
     /**
-     * Erstellt ein neues JobPost-Objekt mit den angegebenen Parametern
-     * @param anstellungsart Art der Anstellung
-     * @param title Titel
-     * @param standort Standort
-     * @param description Beschreibung
-     * @param unternehmen Zugehöriges Unternehmen
-     * @param date Datum der Veröffentlichung
+     * Creates a new JobPost object with the provided details.
+     * @param anstellungsart the type of employment
+     * @param title          the title of the job post
+     * @param standort       the location of the job
+     * @param description    the description of the job post
+     * @param unternehmen    the associated company
+     * @param date           the publication date
+     * @return a new JobPost instance
      */
     public JobPost createJobPost(String anstellungsart, String title, String standort, String description, Unternehmen unternehmen, Date date) {
         JobPost jobPost = new JobPost();
@@ -87,12 +91,12 @@ public class EntityFactory {
     }
 
     /**
-     * Erstellt ein neues Bewerbung-Objekt mit den angegebenen Parametern
-     *
-     * @param jobPost           Zugehöriger JobPost
-     * @param student           Zugehöriger Student
-     * @param base64CoverLetter Anschreiben als Base64-String
-     * @param base64CV        Lebenslauf als Base64-String
+     * Creates a new Bewerbung (Application) object with the provided details.
+     * @param jobPost           the associated job post
+     * @param student           the student applying
+     * @param base64CoverLetter the cover letter in Base64 format
+     * @param base64CV          the CV in Base64 format
+     * @return a new Bewerbung instance
      */
     public Bewerbung createBewerbung(JobPost jobPost, Student student, String base64CoverLetter, String base64CV) {
         Bewerbung bewerbung = new Bewerbung();

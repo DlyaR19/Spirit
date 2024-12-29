@@ -36,11 +36,15 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Dies ist die Hauptansicht der Anwendung nach erfolgreicher Anmeldung
- * Erbt von AppLayout, um das grundlegende Layout-Framework von Vaadin zu nutzen
+ * Main view of the application extending {@link AppLayout}. It sets up the UI with a side navigation menu,
+ * a header with a logout button, and a footer. The view content changes dynamically based on the user role
+ * (either Student or Company).
+ * <p><b>Annotations:</b></p>
+ * <ul>
+ *   <li>{@code @Route}: Specifies the route URL for this view, mapped to {@link Globals.Pages#APP}.</li>
+ *   <li>{@code @CssImport}: Imports custom CSS for styling the view components.</li>
+ * </ul>
  */
-
-
 @CssImport("./themes/spirit/views/AppView.css")
 @Route(Globals.Pages.APP)
 public class AppView extends AppLayout {
@@ -49,7 +53,8 @@ public class AppView extends AppLayout {
     private final transient SessionService sessionService;
 
     /**
-     * Konstruktor initialisiert die Ansicht
+     * Constructor initializes the view with the provided {@link SessionService}.
+     * @param sessionService the service for managing user sessions
      */
     @Autowired
     public AppView(SessionService sessionService) {
@@ -58,10 +63,11 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Erstellt ein Tab-Element für die Navigation mit Icon und Text
-     * @param s Text für den Tab
-     * @param icon Icon für den Tab
-     * @param navigationTarget Zielkomponente für Navigation
+     * Creates a {@link Tab} for the navigation menu with an icon and text.
+     * @param s the text for the tab
+     * @param icon the icon for the tab
+     * @param navigationTarget the class of the component to navigate to
+     * @return the created {@link Tab}
      */
     private static Tab createTab(String s, VaadinIcon icon, Class<? extends Component> navigationTarget) {
         // Icon-Setup
@@ -88,7 +94,7 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Initialisiert die Benutzeroberfläche
+     * Sets up the user interface by configuring the layout components.
      */
     private void setUpUI() {
         Tabs sideMenu;
@@ -99,8 +105,8 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Erstellt den Inhalt des Headers
-     * @return Header-Element
+     * Creates the header content, including a toggle button and title, and a logout button.
+     * @return the header component
      */
     private Component createHeaderContent() {
 
@@ -130,8 +136,8 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Erstellt den Logout-Button
-     * @return Layout mit Logout-Button
+     * Creates the logout button layout.
+     * @return the layout with the logout button
      */
     private HorizontalLayout createLogoutButton() {
         Icon icon = VaadinIcon.SIGN_OUT.create();
@@ -146,8 +152,8 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Erstellt das Menü für die Navigation
-     * @return Tabs-Element mit Menüpunkten
+     * Creates the navigation menu.
+     * @return the tabs element containing the menu items
      */
     private Tabs createMenu() {
         final Tabs tabs = new Tabs();
@@ -157,8 +163,8 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Erstellt die Menüpunkte für die Navigation
-     * @return Array mit Menüpunkten
+     * Creates the menu items based on the user's role.
+     * @return an array of menu items (tabs)
      */
     private Component[] createMenuItems() {
 
@@ -182,16 +188,16 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Beendet die Benutzersitzung
+     * Logs out the user by ending the session.
      */
     private void logoutUser() {
         sessionService.endSession();
     }
 
     /**
-     * Fügt Komponenten zum Navbar hinzu
-     * @param touchOptimized Touch-optimierte Ansicht
-     * @param components Komponenten
+     * Adds components to the navbar.
+     * @param touchOptimized whether the view is optimized for touch
+     * @param components the components to add
      */
     @Override
     public void addToNavbar(boolean touchOptimized, Component... components) {
@@ -200,8 +206,8 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Fügt Komponenten zum Drawer hinzu
-     * @param components Komponenten
+     * Adds components to the drawer.
+     * @param components the components to add
      */
     @Override
     public void addToDrawer(Component... components) {
@@ -209,9 +215,9 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Erstellt den Inhalt des Drawers
-     * @param menu Menü für den Drawer
-     * @return Drawer-Inhalt
+     * Creates the drawer content with the provided menu.
+     * @param menu the menu to display in the drawer
+     * @return the drawer content component
      */
     private Component createDrawerContent(Tabs menu) {
         VerticalLayout verticalLayout = new VerticalLayout();
@@ -222,8 +228,8 @@ public class AppView extends AppLayout {
     }
 
     /**
-     * Erstellt den Footer
-     * @return Footer-Element
+     * Creates the footer component.
+     * @return the footer element
      */
     private Footer createFooter() {
         Footer footer = new Footer();

@@ -5,17 +5,32 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Diese Klasse stellt ein Repository für die Unternehmen-Entität dar.
- * Sie erbt von der JpaRepository-Klasse, die die grundlegenden CRUD-Operationen bereitstellt.
- * Das UnternehmenRepository ermöglicht das Speichern, Löschen und Suchen von Unternehmen.
- * Es bietet Methoden zum Suchen von Unternehmen anhand der ID des Benutzers.
+ * Repository for managing Unternehmen entities.
  */
 
 @Repository
 public interface UnternehmenRepository extends JpaRepository<Unternehmen, Long> {
+
+    /**
+     * Finds an Unternehmen entity by the ID of the associated User.
+     *
+     * @param userID the ID of the User.
+     * @return the Unternehmen entity.
+     */
     Unternehmen findUnternehmenByUserUserID(Long userID);
 
+    /**
+     * Checks if an Unternehmen entity exists for a given User ID.
+     *
+     * @param userID the User ID.
+     * @return true if an Unternehmen entity exists, false otherwise.
+     */
     boolean existsByUserUserID(Long userID);
 
+    /**
+     * Deletes an Unternehmen entity by its associated User ID.
+     *
+     * @param userID the User ID.
+     */
     void deleteByUserUserID(Long userID);
 }

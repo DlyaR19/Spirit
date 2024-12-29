@@ -8,14 +8,20 @@ import com.spirit.application.views.profile.ProfileBaseView;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
-// TODO anstelle von webseite vielleicht Textfelder dynamisch generieren (siehe ProfileBaseView)
-// TODO andere Informationen hinzufügen wie z.B. Studiengang, Geburtsdatum, Vor- und Nachname, etc.
-
+/**
+ * View for the student profile page. Inherits from ProfileBaseView.
+ * This class handles the display and interaction with the student's profile.
+ * @see ProfileBaseView
+ */
 @Route(value = Globals.Pages.PROFIL_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
 public class ProfilStudentView extends ProfileBaseView {
 
-
+    /**
+     * Constructs a ProfilStudentView.
+     * @param profileService   The service for handling profile-related operations.
+     * @param sessionService   The service for session management and authentication.
+     */
     public ProfilStudentView(ProfileService profileService, SessionService sessionService) {
         super(profileService, sessionService);
     }

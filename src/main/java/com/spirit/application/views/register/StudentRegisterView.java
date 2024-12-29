@@ -15,6 +15,16 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+/**
+ * View for registering a new "Student" account in the application.
+ * <p>This view extends {@link BaseRegisterView} and customizes the registration form
+ * for students by including fields specific to students, such as first name, last name,
+ * and date of birth.</p>
+ * <p><b>Annotations:</b></p>
+ * <ul>
+ *   <li>{@code @Component}: Marks this class as a Spring-managed component.</li>
+ * </ul>
+ */
 @Component
 public class StudentRegisterView extends BaseRegisterView {
 
@@ -22,12 +32,21 @@ public class StudentRegisterView extends BaseRegisterView {
     private TextField textFieldLastName;
     private DatePicker birth;
 
+    /**
+     * Constructs a new {@code StudentRegisterView}.
+     *
+     * @param registerInterface the interface handling registration logic.
+     */
     @Autowired
     public StudentRegisterView(@Qualifier("registerProxy") RegisterInterface registerInterface) {
         super(registerInterface);
         setupStudentForm();
     }
 
+    /**
+     * Configures the registration form for a student account by adding relevant fields,
+     * such as first name, last name, date of birth, and program of study.
+     */
     private void setupStudentForm() {
         textFieldFirstName = new TextField("Vorname");
         textFieldLastName = new TextField("Nachname");
@@ -59,6 +78,10 @@ public class StudentRegisterView extends BaseRegisterView {
         this.birth = geburtsdatum;
     }
 
+    /**
+     * Handles the registration process by collecting user input and calling the
+     * appropriate method in {@link RegisterInterface}.
+     */
     @Override
     protected void register() {
         String username = usernameField.getValue();

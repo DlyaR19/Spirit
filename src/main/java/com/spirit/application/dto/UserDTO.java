@@ -7,9 +7,8 @@ import lombok.Setter;
 import com.spirit.application.entitiy.Profile;
 
 /**
- * Diese Klasse repräsentiert ein UserDTO-Objekt, das als Datenübertragungsobjekt für die User-Entität dient.
+ * Data Transfer Object (DTO) for representing a User.
  */
-
 @Setter
 @Getter
 public class UserDTO {
@@ -21,7 +20,11 @@ public class UserDTO {
     private int blacklisted;
     private String email;
 
-
+    /**
+     * Constructor to initialize UserDTO from a User entity.
+     *
+     * @param entity the User entity to convert into DTO.
+     */
     public UserDTO(User entity) {
         this.userID = entity.getUserID();
         this.profile = entity.getProfile();
@@ -31,6 +34,11 @@ public class UserDTO {
         this.email = entity.getEmail();
     }
 
+    /**
+     * Converts this DTO back to a User entity.
+     *
+     * @return a User entity corresponding to this DTO.
+     */
     public User getUser() {
         User user = new User();
         user.setUserID(userID);
@@ -42,6 +50,7 @@ public class UserDTO {
         return user;
     }
 
+    @Override
     public String toString() {
         return "UserDTO{" +
                 "userID=" + userID +

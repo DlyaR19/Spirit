@@ -27,6 +27,11 @@ import com.vaadin.flow.dom.Style;
 import java.io.InputStream;
 import java.util.Base64;
 
+/**
+ * The ProfileBaseView class is an abstract base class that provides shared functionality
+ * for displaying and managing user profiles. It handles profile details such as avatar,
+ * description, and social links, and supports editing, uploading images, and deleting profiles.
+ */
 public abstract class ProfileBaseView extends Composite<VerticalLayout> {
 
     protected final transient ProfileService profileService;
@@ -40,6 +45,11 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
     protected MemoryBuffer buffer;
     protected static final String OPACITY = "opacity";
 
+    /**
+     * Constructor for ProfileBaseView.
+     * @param profileService the service for profile-related operations.
+     * @param sessionService the service for session-related data.
+     */
     protected ProfileBaseView(ProfileService profileService, SessionService sessionService) {
         this.profileService = profileService;
         this.sessionService = sessionService;
@@ -51,7 +61,11 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         getContent().add(layout);
     }
 
-
+    /**
+     * Creates a header layout containing the avatar, user details, and action buttons.
+     * @param user the current user's data transfer object.
+     * @return a HorizontalLayout containing the header components.
+     */
     private HorizontalLayout header(UserDTO user) {
         HorizontalLayout header = new HorizontalLayout();
         VerticalLayout infoLayout = new VerticalLayout();
@@ -101,6 +115,11 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         return header;
     }
 
+    /**
+     * Creates a description layout displaying the user's profile description.
+     * @param user the current user's data transfer object.
+     * @return a VerticalLayout containing the profile description.
+     */
     private VerticalLayout description(UserDTO user) {
         description = new Div();
         description.getElement().setProperty(
@@ -115,6 +134,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         );
     }
 
+    /**
+     * Opens a dialog for editing the user's profile description and website URL.
+     * @param user the current user's data transfer object.
+     */
     private void openEditDialog(UserDTO user) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");
@@ -157,6 +180,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         dialog.open();
     }
 
+    /**
+     * Opens a dialog for uploading or deleting the user's profile avatar.
+     * @param user the current user's data transfer object.
+     */
     private void openAvatarDialog(UserDTO user) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");
@@ -197,7 +224,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         dialog.open();
     }
 
-
+    /**
+     * Updates the profile data displayed in the view.
+     * @param user the current user's data transfer object.
+     */
     private void updateProfileData(UserDTO user) {
         webseite.setText(user.getProfile().getWebseite());
         description.getElement().setProperty(
@@ -207,6 +237,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         avatar.setImage("data:image/jpeg;base64," + user.getProfile().getAvatar());
     }
 
+    /**
+     * Returns a greeting text based on the type of the current user.
+     * @return a String containing the greeting message.
+     */
     private String setGreetingText() {
         if (isBusinessUser()) {
             return "Hallo " + sessionService.getCurrentUnternehmen().getUsername() + "!";
@@ -216,6 +250,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         return "";
     }
 
+    /**
+     * Checks if the current user is a business user.
+     * @return true if the current user is a business user, false otherwise.
+     */
     private boolean isBusinessUser() {
         try {
             return sessionService.getCurrentUnternehmen() != null;
@@ -224,6 +262,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         }
     }
 
+    /**
+     * Checks if the current user is a student user.
+     * @return true if the current user is a student user, false otherwise.
+     */
     private boolean isStudentUser() {
         try {
             return sessionService.getCurrentStudent() != null;
@@ -232,6 +274,11 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         }
     }
 
+    /**
+     * Creates a layout displaying the student's birthdate.
+     * @param studentDTO the data transfer object for the student user.
+     * @return a HorizontalLayout containing the birthdate information.
+     */
     private HorizontalLayout birthdateLayout(StudentDTO studentDTO){
         HorizontalLayout birthdateLayout = new HorizontalLayout();
         H6 birthdate = new H6("Geburtsdatum: " + studentDTO.getBirthdate());

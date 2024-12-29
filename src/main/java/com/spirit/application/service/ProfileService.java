@@ -10,21 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * ProfileService - Verwaltet Profilbezogene Operationen
- * Verantwortlichkeiten:
- * - Speichern und Verwalten von Profilbildern
- * - Aktualisieren von Profil-Metadaten
- * - Behandeln von Profilbild-Operationen
+ * Service class for managing user profiles.
+ * Includes methods for saving, retrieving, and deleting profile information.
  */
-
 @Service
 public class ProfileService {
 
-    // Konstanten für Fehlermeldungen
     private static final String PROFILE_NOT_FOUND = "Profile with ID ";
     private static final String NOT_FOUND = " not found";
 
-    // Repository für Profilzugriff
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
@@ -32,7 +26,6 @@ public class ProfileService {
     private final UnternehmenRepository unternehmenRepository;
     private final JobPostRepository jobPostRepository;
 
-    // Konstruktor zur Initialisierung des ProfileRepository
     public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, StudentRepository studentRepository, BewerbungRepository bewerbungRepository, UnternehmenRepository unternehmenRepository, JobPostRepository jobPostRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
@@ -43,10 +36,9 @@ public class ProfileService {
     }
 
     /**
-     * Speichert ein Profilbild für ein gegebenes Profil
-     * @param profileId ID des Profils
-     * @param base64Image Base64-kodiertes Profilbild
-     * @throws IllegalArgumentException wenn Profil nicht gefunden wird
+     * Saves a profile image.
+     * @param profileId the profile ID
+     * @param base64Image the image in Base64 format
      */
     public void saveProfileImage(Long profileId, String base64Image) {
         Optional<Profile> optionalProfile = profileRepository.findById(profileId);
@@ -60,13 +52,12 @@ public class ProfileService {
     }
 
     /**
-     * Speichert Social-Media-Informationen für ein Profil
-     * @param profile Das zu aktualisierende Profil
-     * @param webseite Webseite
-     * @param description Profil-Beschreibung
+     * Saves the social information of a profile (e.g., website, description).
+     * @param profile the profile
+     * @param webseite the website URL
+     * @param description the profile description
      */
     public void saveSocials(Profile profile, String webseite, String description) {
-        // Leere Webseite-URLs werden auf null gesetzt
         if (webseite != null && webseite.isEmpty()){
             webseite = null;
         }
@@ -76,10 +67,9 @@ public class ProfileService {
     }
 
     /**
-     * Holt das Profilbild für eine gegebene Profil-ID
-     * @param profileId ID des Profils
-     * @return Base64-kodiertes Profilbild
-     * @throws IllegalArgumentException wenn Profil nicht gefunden wird
+     * Retrieves the profile image of a profile.
+     * @param profileId the profile ID
+     * @return the profile image in Base64 format
      */
     public String getProfileImage(Long profileId) {
         return profileRepository.findById(profileId)
@@ -88,9 +78,8 @@ public class ProfileService {
     }
 
     /**
-     * Löscht das Profilbild für eine gegebene Profil-ID
-     * @param profileId ID des Profils
-     * @throws IllegalArgumentException wenn Profil nicht gefunden wird
+     * Deletes the profile image of a profile.
+     * @param profileId the profile ID
      */
     public void deleteProfileImage(Long profileId) {
         Optional<Profile> optionalProfile = profileRepository.findById(profileId);
@@ -103,15 +92,16 @@ public class ProfileService {
         }
     }
 
-    // profil löschen
+    /**
+     * Deletes a user profile and all associated data.
+     * @param profileId the profile ID
+     */
     @Transactional
     public void deleteProfile(Long profileId) {
 
-        // Zuerst holen wir das User Objekt, das auf das Profil verweist
         User user = userRepository.findUserByProfile_ProfileID(profileId);
         Long userId = user.getUserID();
 
-        // Zuerst holen wir den Studenten/Unternehmen, der auf den Benutzer verweist
         Student student = studentRepository.findStudentByUserUserID(userId);
         Unternehmen unternehmen = unternehmenRepository.findUnternehmenByUserUserID(userId);
 
@@ -126,10 +116,8 @@ public class ProfileService {
             throw new IllegalArgumentException(NOT_FOUND);
         }
 
-        // Dann löschen wir den Benutzer
         userRepository.deleteByUserID(userId);
 
-        // Schließlich löschen wir das Profil, falls es auf den Benutzer verweist
         profileRepository.deleteByProfileID(profileId);
     }
 

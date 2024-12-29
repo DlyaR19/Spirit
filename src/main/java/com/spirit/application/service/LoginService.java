@@ -16,13 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service-Klasse zur Verwaltung der Login-Logik und Session-Handling
+ * Service class for managing user logins.
+ * Includes methods for authentication, session management, and password handling.
  */
-
 @Service
 public class LoginService {
 
-    // Dependency Injection der benötigten Repositories
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final UnternehmenRepository unternehmenRepository;
@@ -36,12 +35,11 @@ public class LoginService {
     }
 
     /**
-     * Startet eine neue Session für den eingeloggten User
-     * Unterscheidet zwischen Student und Unternehmen
-     * @param user Der eingeloggte User
+     * Starts a user session based on the user type (Student or Company).
+     * @param user the UserDTO of the logged-in user
      */
     public void startSession(UserDTO user) {
-        // Prüft User-Typ und Blacklist-Status
+
         if (isUserStudent(user) && !isBlacklisted(user)) {
             startStudentSession(user);
         } else if (isUserUnternehmen(user) && !isBlacklisted(user)) {
@@ -52,8 +50,8 @@ public class LoginService {
     }
 
     /**
-     * Startet eine Unternehmen-Session
-     * @param user Der eingeloggte User
+     * Starts a session for a company.
+     * @param user the UserDTO of the company
      */
     private void startUnternehmenSession(UserDTO user) {
         VaadinSession.getCurrent().setAttribute(
@@ -63,8 +61,8 @@ public class LoginService {
     }
 
     /**
-     * Startet eine Student-Session
-     * @param user Der eingeloggte User
+     * Starts a session for a student.
+     * @param user the UserDTO of the student
      */
     private void startStudentSession(UserDTO user) {
         VaadinSession.getCurrent().setAttribute(
@@ -74,28 +72,28 @@ public class LoginService {
     }
 
     /**
-     * Überprüft, ob der eingeloggte User ein Student ist
-     * @param user Der eingeloggte User
-     * @return true, wenn der User ein Student ist, sonst false
+     * Checks if a user is a student.
+     * @param user the UserDTO of the user
+     * @return true if the user is a student, false otherwise
      */
     private boolean isUserStudent(UserDTO user) {
         return studentRepository.existsByUserUserID(user.getUserID());
     }
 
     /**
-     * Überprüft, ob der eingeloggte User ein Unternehmen ist
-     * @param user Der eingeloggte User
-     * @return true, wenn der User ein Unternehmen ist, sonst false
+     * Checks if a user is a company.
+     * @param user the UserDTO of the user
+     * @return true if the user is a company, false otherwise
      */
     private boolean isUserUnternehmen(UserDTO user) {
         return unternehmenRepository.existsByUserUserID(user.getUserID());
     }
 
     /**
-     * Prüft Login-Credentials und gibt User zurück falls valid
-     * @param username Der eingegebene Benutzername
-     * @param password Das eingegebene Passwort
-     * @return Der User, falls die Credentials valid sind, sonst null
+     * Authenticates a user based on username and password.
+     * @param username the username
+     * @param password the password
+     * @return the authenticated user, or null if authentication fails
      */
     public User login(String username, String password) {
         User user = userRepository.findByUsernameIgnoreCase(username);
@@ -106,15 +104,21 @@ public class LoginService {
     }
 
     /**
-     * Prüft ob User auf der Blacklist steht
-     * @param user Der eingeloggte User
-     * @return true, wenn der User auf der Blacklist steht, sonst false
+     * Checks if a user is blacklisted.
+     * @param user the UserDTO of the user
+     * @return true if the user is blacklisted, false otherwise
      */
     public boolean isBlacklisted(UserDTO user) {
 //        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()).getBlacklisted() == 1;
         return userRepository.findByUsernameIgnoreCase(user.getUsername()).getBlacklisted() == 1;
     }
 
+    /**
+     * Retrieves a user based on username and password.
+     * @param username the username
+     * @param password the password
+     * @return the user, or null if no match is found
+     */
     public User getUser(String username, String password) {
         User user = userRepository.findByUsernameIgnoreCase(username);
         if (user != null && passwordEncoder.matches(password, user.getPassword())) {
@@ -123,10 +127,21 @@ public class LoginService {
         return null;
     }
 
+    /**
+     * Verifies if a raw password matches the user's encoded password.
+     * @param user the user
+     * @param rawPassword the raw password
+     * @return true if the passwords match, false otherwise
+     */
     public boolean checkPassword(User user, String rawPassword) {
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
+    /**
+     * Updates the password of a user.
+     * @param user the user
+     * @param newPassword the new password
+     */
     public void updatePassword(User user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);

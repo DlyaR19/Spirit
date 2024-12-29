@@ -37,6 +37,10 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+/**
+ * View for displaying applications submitted for the job posts of the currently logged-in company.
+ * This view is accessible only to users with the "UNTERNEHMEN" role.
+ */
 @Route(value = Globals.Pages.SHOW_BEWERBUNG, layout = AppView.class)
 @PageTitle("Bewerbungen")
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
@@ -50,6 +54,13 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
     private final transient SessionService sessionService;
     private final transient JobPostService jobPostService;
 
+    /**
+     * Constructs the `ShowBewerbungView` with the required services and initializes the layout.
+     * @param markdownConverter Service for converting Markdown to HTML.
+     * @param bewerbungService  Service for managing applications.
+     * @param sessionService    Service for managing user session data.
+     * @param jobPostService    Service for managing job posts.
+     */
     public ShowBewerbungView(
             MarkdownConverter markdownConverter,
             BewerbungService bewerbungService,
@@ -64,6 +75,12 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         getContent().add(layout);
     }
 
+    /**
+     * Creates a card layout for displaying information about a student and their application.
+     * @param bewerbung The `BewerbungDTO` representing the student's application.
+     * @param jobPost   The `JobPostDTO` representing the job post for which the application was submitted.
+     * @return A `VerticalLayout` containing the student card.
+     */
     public VerticalLayout studentCard(BewerbungDTO bewerbung, JobPostDTO jobPost) {
         VerticalLayout studentCardLayout = new VerticalLayout();
 
@@ -139,14 +156,9 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
             profileDialog.open();
         });
 
-
         Button downloadAnschreibenButton = getDownloadAnschreibenButton(bewerbung);
-
         Button downloadLebenslaufButton = getDownloadLebenslaufButton(bewerbung);
-
-
         buttonLayout.add(showProfileButton, downloadLebenslaufButton, downloadAnschreibenButton);
-
 
         studentCardLayout.add(jobPostInfo, type, avaterLayout, profileDescription, profileDescriptionParagraph, buttonLayout);
         studentCardLayout.setWidth("100%");
@@ -157,6 +169,11 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         return studentCardLayout;
     }
 
+    /**
+     * Creates a button for downloading the cover letter of a student's application.
+     * @param bewerbung The `BewerbungDTO` containing the cover letter data.
+     * @return A `Button` to initiate the cover letter download.
+     */
     private @NotNull Button getDownloadAnschreibenButton(BewerbungDTO bewerbung) {
         Button downloadAnschreibenButton = new Button("Anschreiben herunterladen");
         downloadAnschreibenButton.addClickListener(e -> {
@@ -186,6 +203,11 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         return downloadAnschreibenButton;
     }
 
+    /**
+     * Creates a button for downloading the CV of a student's application.
+     * @param bewerbung The `BewerbungDTO` containing the CV data.
+     * @return A `Button` to initiate the CV download.
+     */
     private @NotNull Button getDownloadLebenslaufButton(BewerbungDTO bewerbung) {
         Button downloadLebenslaufButton = new Button("Lebenslauf herunterladen");
         downloadLebenslaufButton.addClickListener(e -> {
@@ -215,11 +237,20 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         return downloadLebenslaufButton;
     }
 
+    /**
+     * Triggered after navigation to this view, loads and displays applications
+     * for all job posts created by the currently logged-in company.
+     * @param event The navigation event triggering this method.
+     */
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         loadAndDisplayBerwerbung(sessionService.getCurrentUnternehmen().getUnternehmenID());
     }
 
+    /**
+     * Loads applications for the company's job posts and updates the layout to display them.
+     * @param unternehmenId The ID of the currently logged-in company.
+     */
     private void loadAndDisplayBerwerbung(Long unternehmenId) {
         List<JobPost> jobPosts = jobPostService.getJobPostByUnternehmenId(unternehmenId);
         layout.getStyle().setAlignItems(Style.AlignItems.CENTER);

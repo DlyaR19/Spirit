@@ -30,6 +30,12 @@ import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * View for displaying and managing the job posts created by the currently logged-in company user.
+ * This view is accessible only to users with the "UNTERNEHMEN" role.
+ * <p>Users can view their job posts, see details such as title, employment type, location, description,
+ * and publish date, and delete job posts if necessary.</p>
+ */
 @PageTitle("JobPost Details")
 @Route(value = Globals.Pages.MY_JOBPOSTS, layout = AppView.class)
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
@@ -42,6 +48,12 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
     private final VerticalLayout layout;
     private final transient MarkdownConverter markdownConverter;
 
+    /**
+     * Constructs the `MyJobPostView` with the necessary services and sets up the main layout.
+     * @param sessionService    Service for managing user session data.
+     * @param jobPostService    Service for managing job posts.
+     * @param markdownConverter Converter for rendering Markdown content into HTML.
+     */
     @Autowired
     public MyJobPostView(SessionService sessionService,
                            JobPostService jobPostService,
@@ -53,10 +65,27 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
         getContent().add(layout);
     }
 
+    /**
+     * Converts a `JobPost` entity into a `JobPostDTO`.
+     * @param jobPost The `JobPost` entity to convert.
+     * @return A `JobPostDTO` containing the relevant job post details.
+     */
     public static JobPostDTO getJobPost(JobPost jobPost) {
         return new JobPostDTO(jobPost);
     }
 
+    /**
+     * Creates a card layout to display details of a single job post.
+     * @param id              The ID of the job post.
+     * @param baseImage       The base64-encoded image of the company's avatar.
+     * @param businessName    The name of the company that created the job post.
+     * @param titleValue      The title of the job post.
+     * @param typeValue       The employment type (e.g., full-time, part-time).
+     * @param locationValue   The location of the job post.
+     * @param descriptionValue The Markdown-formatted description of the job post.
+     * @param publishDate     The date the job post was published.
+     * @return A `VerticalLayout` containing the job post card.
+     */
     public VerticalLayout createJobPostCard(long id, String baseImage, String businessName, String titleValue,
                                             String typeValue, String locationValue, String descriptionValue,
                                             Date publishDate
@@ -111,6 +140,11 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
         return cardLayout;
     }
 
+    /**
+     * Creates a layout containing all job post cards for the current company.
+     * @param jobPosts A list of `JobPostDTO` objects representing the company's job posts.
+     * @return A `VerticalLayout` containing all job post cards.
+     */
     public VerticalLayout createJobPostCards(List<JobPostDTO> jobPosts) {
         VerticalLayout cardsLayout = new VerticalLayout();
         cardsLayout.setWidth("100%");
@@ -135,6 +169,11 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
         return cardsLayout;
     }
 
+    /**
+     * Retrieves and displays the job posts created by the currently logged-in company
+     * after navigation to this view.
+     * @param afterNavigationEvent The navigation event triggering this method.
+     */
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
 
