@@ -1,0 +1,16 @@
+Unbenanntes Package
+com.spirit.application
+com.spirit.application.dto
+com.spirit.application.entitiy
+com.spirit.application.repository
+com.spirit.application.service
+com.spirit.application.service.impl
+com.spirit.application.util
+com.spirit.application.views
+com.spirit.application.views.dashboard
+com.spirit.application.views.login
+com.spirit.application.views.main
+com.spirit.application.views.profile
+com.spirit.application.views.profile.Student
+com.spirit.application.views.profile.Unternehmen
+com.spirit.application.views.register

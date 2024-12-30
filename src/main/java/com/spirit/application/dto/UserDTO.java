@@ -56,7 +56,6 @@ public class UserDTO {
                 "userID=" + userID +
                 ", profile=" + profile +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", blacklisted=" + blacklisted +
                 ", email='" + email + '\'' +
                 '}';

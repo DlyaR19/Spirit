@@ -4,6 +4,7 @@ package com.spirit.application.entitiy;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Objects;
 
@@ -40,6 +41,7 @@ public class User {
     /**
      * The hashed password of the user.
      */
+    @ToString.Exclude
     @Column(name = "passwort", nullable = false, length = 64, unique = true)
     private String password;
 
