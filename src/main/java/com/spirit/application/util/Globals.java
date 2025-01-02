@@ -1,14 +1,11 @@
 package com.spirit.application.util;
 
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 /**
  * Utility class for managing global constants, such as URLs and roles.
  */
 public class Globals {
 
     public static final String CURRENT_USER = "current_user";
-    public static final String BASE_URL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
     private static final String EXCEPTION_1 = "This is a utility class and cannot be instantiated";
 
 
@@ -37,8 +34,8 @@ public class Globals {
         public static final String BEWERBUNG_STUDENT = "student/bewerbung";
         public static final String ABOUTUS = "about";
         public static final String DASHBOARD = "dashboard";
-        public static final String CHATLIST = "student/profile/chatlist";
-        public static final String CHAT = "student/profile/chat";
+        public static final String CHATLIST = "chatlist";
+        public static final String CHAT = "chat";
 
         private Pages() {
             throw new UnsupportedOperationException(EXCEPTION_1);

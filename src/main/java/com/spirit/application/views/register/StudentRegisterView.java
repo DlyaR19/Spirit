@@ -34,7 +34,6 @@ public class StudentRegisterView extends BaseRegisterView {
 
     /**
      * Constructs a new {@code StudentRegisterView}.
-     *
      * @param registerInterface the interface handling registration logic.
      */
     @Autowired
