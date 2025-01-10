@@ -26,11 +26,11 @@ public class User {
     private long userID;
 
     /**
-     * The profile associated with the user.
+     * The profil associated with the user.
      */
     @OneToOne
     @JoinColumn(name = "profilid", nullable = false, unique = true)
-    private Profile profile;
+    private Profil profil;
 
     /**
      * The username of the user.
@@ -64,13 +64,13 @@ public class User {
         User user = (User) o;
         return userID == user.userID &&
                 blacklisted == user.blacklisted &&
-                Objects.equals(profile, user.profile) &&
+                Objects.equals(profil, user.profil) &&
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password);
     }
 
     public int hashCode() {
-        return Objects.hash(userID, profile, username, password, blacklisted);
+        return Objects.hash(userID, profil, username, password, blacklisted);
     }
 
     /**

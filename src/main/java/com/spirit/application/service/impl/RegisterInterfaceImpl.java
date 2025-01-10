@@ -4,12 +4,10 @@ import com.spirit.application.entitiy.*;
 import com.spirit.application.repository.*;
 import com.spirit.application.repository.RegisterInterface;
 import com.spirit.application.util.EntityFactory;
-import net.bytebuddy.asm.Advice;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +21,7 @@ public class RegisterInterfaceImpl implements RegisterInterface {
 
     private final UserRepository userRepository;
 
-    private final ProfileRepository profileRepository;
+    private final ProfilRepository profilRepository;
 
     private final StudentRepository studentRepository;
 
@@ -31,10 +29,10 @@ public class RegisterInterfaceImpl implements RegisterInterface {
 
     private final PasswordEncoder passwordEncoder; // Encoder für Passwort-Hashing
 
-    public RegisterInterfaceImpl(EntityFactory entityFactory, UserRepository userRepository, ProfileRepository profileRepository, StudentRepository studentRepository, UnternehmenRepository unternehmenRepository, PasswordEncoder passwordEncoder) {
+    public RegisterInterfaceImpl(EntityFactory entityFactory, UserRepository userRepository, ProfilRepository profilRepository, StudentRepository studentRepository, UnternehmenRepository unternehmenRepository, PasswordEncoder passwordEncoder) {
         this.entityFactory = entityFactory;
         this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
+        this.profilRepository = profilRepository;
         this.studentRepository = studentRepository;
         this.unternehmenRepository = unternehmenRepository;
         this.passwordEncoder = passwordEncoder;
@@ -105,24 +103,24 @@ public class RegisterInterfaceImpl implements RegisterInterface {
             throw new EmailAlreadyTakenException("Email schon vergeben");
         }
 
-        Profile profile = entityFactory.createProfile();
+        Profil profil = entityFactory.createProfile();
 
         String passwordHash = passwordEncoder.encode(password);
 
-        User user = entityFactory.createUser(profile, normalizedUsername, passwordHash, email);
+        User user = entityFactory.createUser(profil, normalizedUsername, passwordHash, email);
 
-        saveProfile(profile);
+        saveProfile(profil);
         saveUser(user);
         return user;
     }
 
     /**
-     * Saves a profile entity.
-     * @param profile the profile to save
+     * Saves a profil entity.
+     * @param profil the profil to save
      */
     @Override
-    public void saveProfile(Profile profile) {
-        profileRepository.save(profile);
+    public void saveProfile(Profil profil) {
+        profilRepository.save(profil);
     }
 
     /**

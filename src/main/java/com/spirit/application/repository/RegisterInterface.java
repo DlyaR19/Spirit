@@ -51,11 +51,11 @@ public interface RegisterInterface {
     void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation, LocalDate birth);
 
     /**
-     * Saves a Profile entity.
+     * Saves a Profil entity.
      *
-     * @param profile the Profile entity to save.
+     * @param profil the Profil entity to save.
      */
-    void saveProfile(Profile profile);
+    void saveProfile(Profil profil);
 
     /**
      * Saves a Student entity.

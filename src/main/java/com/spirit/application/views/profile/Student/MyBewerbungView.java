@@ -78,7 +78,7 @@ public class MyBewerbungView extends Composite<VerticalLayout> {
         Avatar avatar = new Avatar();
         avatar.setImage(
                 "data:image/jpeg;base64," +
-                        bewerbung.getJobPost().getUnternehmen().getUser().getProfile().getAvatar()
+                        bewerbung.getJobPost().getUnternehmen().getUser().getProfil().getAvatar()
         );
         unternehmenLayout.add(avatar, new H4(bewerbung.getJobPost().getUnternehmen().getName()));
         HorizontalLayout infoLayout = new HorizontalLayout();

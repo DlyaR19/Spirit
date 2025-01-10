@@ -4,7 +4,7 @@ package com.spirit.application.dto;
 import com.spirit.application.entitiy.User;
 import lombok.Getter;
 import lombok.Setter;
-import com.spirit.application.entitiy.Profile;
+import com.spirit.application.entitiy.Profil;
 
 /**
  * Data Transfer Object (DTO) for representing a User.
@@ -14,11 +14,14 @@ import com.spirit.application.entitiy.Profile;
 public class UserDTO {
 
     private long userID;
-    private Profile profile;
+    private Profil profil;
     private String username;
     private String password;
     private int blacklisted;
     private String email;
+
+    public UserDTO() {
+    }
 
     /**
      * Constructor to initialize UserDTO from a User entity.
@@ -27,7 +30,7 @@ public class UserDTO {
      */
     public UserDTO(User entity) {
         this.userID = entity.getUserID();
-        this.profile = entity.getProfile();
+        this.profil = entity.getProfil();
         this.username = entity.getUsername();
         this.password = entity.getPassword();
         this.blacklisted = entity.getBlacklisted();
@@ -42,7 +45,7 @@ public class UserDTO {
     public User getUser() {
         User user = new User();
         user.setUserID(userID);
-        user.setProfile(profile);
+        user.setProfil(profil);
         user.setUsername(username);
         user.setPassword(password);
         user.setBlacklisted(blacklisted);
@@ -54,7 +57,7 @@ public class UserDTO {
     public String toString() {
         return "UserDTO{" +
                 "userID=" + userID +
-                ", profile=" + profile +
+                ", profil=" + profil +
                 ", username='" + username + '\'' +
                 ", blacklisted=" + blacklisted +
                 ", email='" + email + '\'' +

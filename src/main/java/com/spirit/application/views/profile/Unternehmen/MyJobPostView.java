@@ -155,7 +155,7 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
 
             VerticalLayout card = createJobPostCard(
                     jobPost.getJobPostID(),
-                    jobPost.getUnternehmen().getUser().getProfile().getAvatar(),
+                    jobPost.getUnternehmen().getUser().getProfil().getAvatar(),
                     jobPost.getUnternehmen().getName(),
                     jobPost.getTitel(),
                     jobPost.getAnstellungsart(),

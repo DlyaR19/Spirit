@@ -1,7 +1,7 @@
 package backendTests.dtoTests;
 
 import com.spirit.application.dto.UserDTO;
-import com.spirit.application.entitiy.Profile;
+import com.spirit.application.entitiy.Profil;
 import com.spirit.application.entitiy.User;
 import org.junit.jupiter.api.Test;
 
@@ -11,17 +11,17 @@ class UserDTOTest {
 
     @Test
     void testConstructorAndGetters() {
-        // Profile-Objekt
-        Profile profile = new Profile();
-        profile.setProfileID(1L);
-        profile.setAvatar("https://example.com/avatar.png");
-        profile.setProfileDescription("Testprofilbeschreibung");
-        profile.setWebseite("https://example.com");
+        // Profil-Objekt
+        Profil profil = new Profil();
+        profil.setProfilID(1L);
+        profil.setAvatar("https://example.com/avatar.png");
+        profil.setProfileDescription("Testprofilbeschreibung");
+        profil.setWebseite("https://example.com");
 
         // User-Objekt
         User user = new User();
         user.setUserID(1L);
-        user.setProfile(profile);
+        user.setProfil(profil);
         user.setUsername("testuser");
         user.setPassword("password123");
         user.setBlacklisted(0);
@@ -32,7 +32,7 @@ class UserDTOTest {
 
         // Test
         assertEquals(1L, dto.getUserID());
-        assertEquals(profile, dto.getProfile());
+        assertEquals(profil, dto.getProfil());
         assertEquals("testuser", dto.getUsername());
         assertEquals("password123", dto.getPassword());
         assertEquals(0, dto.getBlacklisted());
@@ -41,16 +41,16 @@ class UserDTOTest {
 
     @Test
     void testToEntity() {
-        // Profile-Objekt
-        Profile profile = new Profile();
-        profile.setProfileID(2L);
-        profile.setAvatar("https://example.com/avatar2.png");
-        profile.setProfileDescription("Profilbeschreibung 2");
-        profile.setWebseite("https://example2.com");
+        // Profil-Objekt
+        Profil profil = new Profil();
+        profil.setProfilID(2L);
+        profil.setAvatar("https://example.com/avatar2.png");
+        profil.setProfileDescription("Profilbeschreibung 2");
+        profil.setWebseite("https://example2.com");
 
         // UserDTO
         User user = new User();
-        user.setProfile(profile);
+        user.setProfil(profil);
 
         UserDTO dto = new UserDTO(user);
         dto.setUserID(2L);
@@ -64,7 +64,7 @@ class UserDTOTest {
 
         // Test
         assertEquals(2L, result.getUserID());
-        assertEquals(profile, result.getProfile());
+        assertEquals(profil, result.getProfil());
     }
 
     @Test
@@ -79,13 +79,13 @@ class UserDTOTest {
 
     @Test
     void testNullProfileInEntity() {
-        // User ohne Profile
+        // User ohne Profil
         User user = new User();
 
-        // Test ob das Profile-Feld im DTO null ist (keine Ausnahme erwartet)
+        // Test ob das Profil-Feld im DTO null ist (keine Ausnahme erwartet)
         UserDTO dto = new UserDTO(user);
 
-        // Test: Profile sollte null sein
-        assertNull(dto.getProfile());
+        // Test: Profil sollte null sein
+        assertNull(dto.getProfil());
     }
 }

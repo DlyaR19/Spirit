@@ -1,24 +1,24 @@
 package backendTests.dtoTests;
 
-import com.spirit.application.dto.ProfileDTO;
-import com.spirit.application.entitiy.Profile;
+import com.spirit.application.dto.ProfilDTO;
+import com.spirit.application.entitiy.Profil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProfileDTOTest {
+class ProfilDTOTest {
 
     @Test
     void testConstructorAndGetters() {
-        // Profile-Objekt
-        Profile profile = new Profile();
-        profile.setProfileID(1L);
-        profile.setAvatar("https://example.com/avatar.png");
-        profile.setProfileDescription("Dies ist eine Profilbeschreibung.");
-        profile.setWebseite("https://example.com");
+        // Profil-Objekt
+        Profil profil = new Profil();
+        profil.setProfilID(1L);
+        profil.setAvatar("https://example.com/avatar.png");
+        profil.setProfileDescription("Dies ist eine Profilbeschreibung.");
+        profil.setWebseite("https://example.com");
 
-        // Profile => ProfileDTO
-        ProfileDTO dto = new ProfileDTO(profile);
+        // Profil => ProfilDTO
+        ProfilDTO dto = new ProfilDTO(profil);
 
         // Test
         assertEquals(1L, dto.getProfileID());
@@ -29,18 +29,18 @@ class ProfileDTOTest {
 
     @Test
     void testToString() {
-        // Profile-Objekt
-        Profile profile = new Profile();
-        profile.setProfileID(2L);
-        profile.setAvatar("https://example.com/avatar2.png");
-        profile.setProfileDescription("Eine andere Profilbeschreibung.");
-        profile.setWebseite("https://example2.com");
+        // Profil-Objekt
+        Profil profil = new Profil();
+        profil.setProfilID(2L);
+        profil.setAvatar("https://example.com/avatar2.png");
+        profil.setProfileDescription("Eine andere Profilbeschreibung.");
+        profil.setWebseite("https://example2.com");
 
-        // Profile => ProfileDTO
-        ProfileDTO dto = new ProfileDTO(profile);
+        // Profil => ProfilDTO
+        ProfilDTO dto = new ProfilDTO(profil);
 
         // Erwarteter String
-        String expectedString = "ProfileDTO{profileID=2, avatarUrl='https://example.com/avatar2.png', " +
+        String expectedString = "ProfilDTO{profilID=2, avatarUrl='https://example.com/avatar2.png', " +
                 "profileDescription='Eine andere Profilbeschreibung.', webseite='https://example2.com'}";
 
         // Test
@@ -51,7 +51,7 @@ class ProfileDTOTest {
     void testNullEntity() {
         // Test ob eine NullPointerException geworfen wird, wenn null übergeben wird
         Exception exception = assertThrows(NullPointerException.class, () -> {
-            new ProfileDTO(null);
+            new ProfilDTO(null);
         });
 
         assertTrue(exception.getMessage().contains("Cannot invoke"));
@@ -59,11 +59,11 @@ class ProfileDTOTest {
 
     @Test
     void testEmptyFieldsInEntity() {
-        // Leeres Profile-Objekt
-        Profile profile = new Profile();
+        // Leeres Profil-Objekt
+        Profil profil = new Profil();
 
-        // Profile => ProfileDTO
-        ProfileDTO dto = new ProfileDTO(profile);
+        // Profil => ProfilDTO
+        ProfilDTO dto = new ProfilDTO(profil);
 
         // Test: Alle Felder sollten null sein
         assertNull(dto.getAvatarUrl());

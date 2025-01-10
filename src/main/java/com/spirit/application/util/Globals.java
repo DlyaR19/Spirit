@@ -25,8 +25,8 @@ public class Globals {
         //public static final String RESET_PASSWORD = "reset/password";
         //public static final String UPDATE_PASSWORD = "update/password";
         public static final String SIGNUP = "register";
-        public static final String PROFIL_STUDENT = "student/profile";
-        public static final String PROFIL_UNTERNEHMEN = "unternehmen/profile";
+        public static final String PROFIL_STUDENT = "student/profil";
+        public static final String PROFIL_UNTERNEHMEN = "unternehmen/profil";
         public static final String MY_JOBPOSTS = "unternehmen/my-jobposts";
         public static final String SHOW_BEWERBUNG = "unternehmen/show/bewerbung";
         public static final String JOBPOST = "unternehmen/jobpost";
@@ -36,6 +36,7 @@ public class Globals {
         public static final String DASHBOARD = "dashboard";
         public static final String CHATLIST = "chatlist";
         public static final String CHAT = "chat";
+        public static final String PROFIL_SEARCH = "profilsearch";
 
         private Pages() {
             throw new UnsupportedOperationException(EXCEPTION_1);

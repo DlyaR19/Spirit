@@ -1,6 +1,7 @@
 package com.spirit.application.service;
 
 
+import com.spirit.application.dto.BewertungDTO;
 import com.spirit.application.entitiy.*;
 import com.spirit.application.repository.*;
 import org.springframework.stereotype.Service;
@@ -14,20 +15,20 @@ import java.util.Optional;
  * Includes methods for saving, retrieving, and deleting profile information.
  */
 @Service
-public class ProfileService {
+public class ProfilService {
 
-    private static final String PROFILE_NOT_FOUND = "Profile with ID ";
+    private static final String PROFILE_NOT_FOUND = "Profil with ID ";
     private static final String NOT_FOUND = " not found";
 
-    private final ProfileRepository profileRepository;
+    private final ProfilRepository profilRepository;
     private final UserRepository userRepository;
     private final StudentRepository studentRepository;
     private final BewerbungRepository bewerbungRepository;
     private final UnternehmenRepository unternehmenRepository;
     private final JobPostRepository jobPostRepository;
 
-    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, StudentRepository studentRepository, BewerbungRepository bewerbungRepository, UnternehmenRepository unternehmenRepository, JobPostRepository jobPostRepository) {
-        this.profileRepository = profileRepository;
+    public ProfilService(ProfilRepository profilRepository, UserRepository userRepository, StudentRepository studentRepository, BewerbungRepository bewerbungRepository, UnternehmenRepository unternehmenRepository, JobPostRepository jobPostRepository) {
+        this.profilRepository = profilRepository;
         this.userRepository = userRepository;
         this.studentRepository = studentRepository;
         this.bewerbungRepository = bewerbungRepository;
@@ -41,29 +42,29 @@ public class ProfileService {
      * @param base64Image the image in Base64 format
      */
     public void saveProfileImage(Long profileId, String base64Image) {
-        Optional<Profile> optionalProfile = profileRepository.findById(profileId);
+        Optional<Profil> optionalProfile = profilRepository.findById(profileId);
         if (optionalProfile.isPresent()) {
-            Profile profile = optionalProfile.get();
-            profile.setAvatar(base64Image);
-            profileRepository.save(profile);
+            Profil profil = optionalProfile.get();
+            profil.setAvatar(base64Image);
+            profilRepository.save(profil);
         } else {
             throw new IllegalArgumentException(PROFILE_NOT_FOUND + profileId + NOT_FOUND);
         }
     }
 
     /**
-     * Saves the social information of a profile (e.g., website, description).
-     * @param profile the profile
+     * Saves the social information of a profil (e.g., website, description).
+     * @param profil the profil
      * @param webseite the website URL
-     * @param description the profile description
+     * @param description the profil description
      */
-    public void saveSocials(Profile profile, String webseite, String description) {
+    public void saveSocials(Profil profil, String webseite, String description) {
         if (webseite != null && webseite.isEmpty()){
             webseite = null;
         }
-        profile.setWebseite(webseite);
-        profile.setProfileDescription(description);
-        profileRepository.save(profile);
+        profil.setWebseite(webseite);
+        profil.setProfileDescription(description);
+        profilRepository.save(profil);
     }
 
     /**
@@ -72,8 +73,8 @@ public class ProfileService {
      * @return the profile image in Base64 format
      */
     public String getProfileImage(Long profileId) {
-        return profileRepository.findById(profileId)
-                .map(Profile::getAvatar)
+        return profilRepository.findById(profileId)
+                .map(Profil::getAvatar)
                 .orElseThrow(() -> new IllegalArgumentException(PROFILE_NOT_FOUND + profileId + NOT_FOUND));
     }
 
@@ -82,11 +83,11 @@ public class ProfileService {
      * @param profileId the profile ID
      */
     public void deleteProfileImage(Long profileId) {
-        Optional<Profile> optionalProfile = profileRepository.findById(profileId);
+        Optional<Profil> optionalProfile = profilRepository.findById(profileId);
         if (optionalProfile.isPresent()) {
-            Profile profile = optionalProfile.get();
-            profile.setAvatar(null);
-            profileRepository.save(profile);
+            Profil profil = optionalProfile.get();
+            profil.setAvatar(null);
+            profilRepository.save(profil);
         } else {
             throw new IllegalArgumentException(PROFILE_NOT_FOUND + profileId + NOT_FOUND);
         }
@@ -99,7 +100,7 @@ public class ProfileService {
     @Transactional
     public void deleteProfile(Long profileId) {
 
-        User user = userRepository.findUserByProfile_ProfileID(profileId);
+        User user = userRepository.findUserByProfil_ProfilID(profileId);
         Long userId = user.getUserID();
 
         Student student = studentRepository.findStudentByUserUserID(userId);
@@ -118,7 +119,6 @@ public class ProfileService {
 
         userRepository.deleteByUserID(userId);
 
-        profileRepository.deleteByProfileID(profileId);
+        profilRepository.deleteByProfilID(profileId);
     }
-
 }

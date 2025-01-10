@@ -93,7 +93,7 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         HorizontalLayout avaterLayout = new HorizontalLayout();
         Avatar studentAvatar = new Avatar();
         studentAvatar.setImage(
-                "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
+                "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfil().getAvatar()
         );
         Button type = new Button(jobPost.getAnstellungsart());
         type.setWidth("min-content");
@@ -105,7 +105,7 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         Div profileDescriptionParagraph = new Div();
         profileDescriptionParagraph.getElement().setProperty(
                 INNER_HTML, markdownConverter.convertToHtml(
-                        bewerbung.getStudent().getUser().getProfile().getProfileDescription())
+                        bewerbung.getStudent().getUser().getProfil().getProfileDescription())
         );
         HorizontalLayout buttonLayout = new HorizontalLayout();
 
@@ -126,7 +126,7 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
             Avatar avatar = new Avatar();
             avatar.setImage(
-                    "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
+                    "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfil().getAvatar()
             );
 
             H3 name = new H3(
@@ -141,7 +141,7 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
             TextArea profileDescriptionDialog = new TextArea("Profilbeschreibung");
             profileDescriptionDialog.setValue(
-                    bewerbung.getStudent().getUser().getProfile().getProfileDescription()
+                    bewerbung.getStudent().getUser().getProfil().getProfileDescription()
             );
             profileDescriptionDialog.setReadOnly(true);
 

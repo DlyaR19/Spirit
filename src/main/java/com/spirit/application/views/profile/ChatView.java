@@ -195,11 +195,11 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
                         messageItem.setUserColorIndex(isCurrentUser ? 1 : 2);
 
                         // Optionally add an avatar for recipient messages
-                        if (!isCurrentUser && message.getSender().getProfile() != null &&
-                                message.getSender().getProfile().getAvatar() != null &&
-                                !message.getSender().getProfile().getAvatar().isEmpty()) {
+                        if (!isCurrentUser && message.getSender().getProfil() != null &&
+                                message.getSender().getProfil().getAvatar() != null &&
+                                !message.getSender().getProfil().getAvatar().isEmpty()) {
                             Avatar avatar = new Avatar();
-                            avatar.setImage(message.getSender().getProfile().getAvatar());
+                            avatar.setImage(message.getSender().getProfil().getAvatar());
                             avatar.setName(message.getSender().getUsername());
                             messageItem.setUserImage(String.valueOf(avatar));
                         }

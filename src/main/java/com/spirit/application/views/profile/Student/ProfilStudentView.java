@@ -1,6 +1,6 @@
 package com.spirit.application.views.profile.Student;
 
-import com.spirit.application.service.ProfileService;
+import com.spirit.application.service.ProfilService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
 import com.spirit.application.views.AppView;
@@ -19,10 +19,10 @@ public class ProfilStudentView extends ProfileBaseView {
 
     /**
      * Constructs a ProfilStudentView.
-     * @param profileService   The service for handling profile-related operations.
+     * @param profilService   The service for handling profile-related operations.
      * @param sessionService   The service for session management and authentication.
      */
-    public ProfilStudentView(ProfileService profileService, SessionService sessionService) {
-        super(profileService, sessionService);
+    public ProfilStudentView(ProfilService profilService, SessionService sessionService) {
+        super(profilService, sessionService);
     }
 }

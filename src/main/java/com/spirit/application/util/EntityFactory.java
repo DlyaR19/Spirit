@@ -14,24 +14,24 @@ import java.time.LocalDate;
 public class EntityFactory {
 
     /**
-     * Creates a new empty Profile object.
-     * @return a new Profile instance
+     * Creates a new empty Profil object.
+     * @return a new Profil instance
      */
-    public Profile createProfile() {
-        return new Profile();
+    public Profil createProfile() {
+        return new Profil();
     }
 
     /**
-     * Creates a new User object with the provided profile, username, password, and email.
-     * @param profile   the associated profile
+     * Creates a new User object with the provided profil, username, password, and email.
+     * @param profil   the associated profil
      * @param username  the username
      * @param password  the password
      * @param email     the email address
      * @return a new User instance
      */
-    public User createUser(Profile profile, String username, String password, String email) {
+    public User createUser(Profil profil, String username, String password, String email) {
         User user = new User();
-        user.setProfile(profile);
+        user.setProfil(profil);
         user.setUsername(username);
         user.setPassword(password);
         user.setBlacklisted(0);

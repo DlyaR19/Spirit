@@ -57,5 +57,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param profileProfileID the ID of the Profil.
      * @return the User entity.
      */
-    User findUserByProfile_ProfileID(long profileProfileID);
+    User findUserByProfil_ProfilID(long profileProfileID);
 }

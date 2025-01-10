@@ -7,7 +7,6 @@ import com.spirit.application.util.RegisterUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -60,8 +59,8 @@ public class RegisterProxy implements RegisterInterface {
     }
 
     @Override
-    public void saveProfile(Profile profile) {
-        registerService.saveProfile(profile);
+    public void saveProfile(Profil profil) {
+        registerService.saveProfile(profil);
     }
 
     @Override

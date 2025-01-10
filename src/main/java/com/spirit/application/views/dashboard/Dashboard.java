@@ -218,7 +218,7 @@ public class Dashboard extends Composite<VerticalLayout> {
     public VerticalLayout createCard(JobPostDTO jobPost) {
         VerticalLayout cardLayout = new VerticalLayout();
         Avatar avatar = new Avatar();
-        avatar.setImage("data:image/jpeg;base64," + jobPost.getUnternehmen().getUser().getProfile().getAvatar());
+        avatar.setImage("data:image/jpeg;base64," + jobPost.getUnternehmen().getUser().getProfil().getAvatar());
         HorizontalLayout avatarLayout = new HorizontalLayout();
         avatarLayout.add(avatar, new H5(jobPost.getUnternehmen().getName()));
         H3 title = new H3(jobPost.getTitel());
@@ -238,11 +238,11 @@ public class Dashboard extends Composite<VerticalLayout> {
         H4 profileDescription = new H4("Über uns ");
         Div profileDescriptionParagraph = new Div();
         profileDescriptionParagraph.getElement().setProperty(INNER_HTML, markdownConverter.convertToHtml(
-                jobPost.getUnternehmen().getUser().getProfile().getProfileDescription())
+                jobPost.getUnternehmen().getUser().getProfil().getProfileDescription())
         );
         VerticalLayout contactLayout = new VerticalLayout();
         contactLayout.add(createContactLayout("Email: ", jobPost.getUnternehmen().getUser().getEmail()));
-        contactLayout.add(createContactLayout("Webseite: ", jobPost.getUnternehmen().getUser().getProfile().getWebseite()));
+        contactLayout.add(createContactLayout("Webseite: ", jobPost.getUnternehmen().getUser().getProfil().getWebseite()));
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button learnMore = new Button("Mehr erfahren");
         buttonLayout.add(learnMore);
@@ -289,7 +289,7 @@ public class Dashboard extends Composite<VerticalLayout> {
         dialogLayout.setSpacing(true);
 
         Avatar avatar = new Avatar();
-        avatar.setImage("data:image/jpeg;base64," + jobPost.getUnternehmen().getUser().getProfile().getAvatar());
+        avatar.setImage("data:image/jpeg;base64," + jobPost.getUnternehmen().getUser().getProfil().getAvatar());
         H2 title = new H2(jobPost.getTitel());
         Button type = new Button(jobPost.getAnstellungsart());
         type.setWidth("min-content");
