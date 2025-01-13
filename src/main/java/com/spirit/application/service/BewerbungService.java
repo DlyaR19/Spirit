@@ -9,69 +9,76 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * BewerbungService - Verwaltet Bewerbungs-bezogene Operationen
- * Verantwortlichkeiten:
- * - Speichern neuer Bewerbungen
- * - Abrufen von Bewerbungen nach verschiedenen Kriterien
- * - Löschen von Bewerbungen
- * - Zugriff auf Bewerbungsdetails
+ * Service class for managing applications (Bewerbungen).
  */
-
 @Service
 public class BewerbungService {
 
-    // Repository für Datenbankzugriff
     private final BewerbungRepository bewerbungRepository;
 
-    // Konstruktor zur Initialisierung des Repositories
     public BewerbungService(BewerbungRepository bewerbungRepository) {
         this.bewerbungRepository = bewerbungRepository;
     }
 
     /**
-     * Speichert eine Bewerbung in der Datenbank
-     * @param bewerbung Die zu speichernde Bewerbung
+     * Saves a new application.
+     * @param bewerbung the application to save
      */
-    @Transactional // Stellt Konsistenz der Datenbankoperation sicher
+    @Transactional
     public void saveBewerbung(Bewerbung bewerbung) {
         bewerbungRepository.save(bewerbung);
     }
 
     /**
-     * Findet alle Bewerbungen für eine spezifische Stellenausschreibung
-     * @param jobPostId ID der Stellenausschreibung
-     * @return Liste der Bewerbungen für diese Stellenausschreibung
+     * Retrieves all applications for a specific job post.
+     * @param jobPostId the ID of the job post
+     * @return a list of applications for the specified job post
      */
     public List<Bewerbung> getAllBewerbung(Long jobPostId) {
         return bewerbungRepository.findBewerbungByJobPost_JobPostID(jobPostId);
     }
 
     /**
-     * Findet alle Bewerbungen eines bestimmten Studenten
-     * @param studentId ID des Studenten
-     * @return Liste aller Bewerbungen des Studenten
+     * Retrieves all applications submitted by a specific student.
+     * @param studentId the ID of the student
+     * @return a list of applications submitted by the student
      */
     public List<Bewerbung> getAllBewerbungByStudent(Long studentId) {
         return bewerbungRepository.findBewerbungByStudent_StudentID(studentId);
     }
 
     /**
-     * Löscht eine Bewerbung aus der Datenbank
-     * @param bewerbung Die zu löschende Bewerbung
+     * Deletes a specific application.
+     * @param bewerbung the application to delete
      */
     public void deleteBewerbung(Bewerbung bewerbung) {
         bewerbungRepository.delete(bewerbung);
     }
 
+
     /**
-     * Holt das Anschreiben einer spezifischen Bewerbung
-     * @param bewerbungID ID der Bewerbung
-     * @return Text des Anschreibens
+     * Retrieves the cover letter of a specific application.
+     * @param bewerbungID the ID of the application
+     * @return the cover letter as a string
      */
     public String getAnschreiben(long bewerbungID) {
         return bewerbungRepository.findBewerbungByBewerbungID(bewerbungID).getAnschreiben();
     }
 
+    /**
+     * Retrieves the resume of a specific application.
+     * @param bewerbungID the ID of the application
+     * @return the resume as a string
+     */
+    public String getLebenslauf(long bewerbungID) {
+        return bewerbungRepository.findBewerbungByBewerbungID(bewerbungID).getLebenslauf();
+    }
+
+    /**
+     * Counts the number of applications for a specific job post.
+     * @param jobPostId the ID of the job post
+     * @return the number of applications
+     */
     public Long countBewerbungByJobPostId(Long jobPostId) {
         return bewerbungRepository.countBewerbungByJobPost_JobPostID(jobPostId);
     }

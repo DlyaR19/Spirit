@@ -9,9 +9,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 /**
- * Diese Klasse repräsentiert ein StudentDTO-Objekt, das als Datenübertragungsobjekt für die Student-Entität dient.
+ * Data Transfer Object (DTO) for representing a Student.
  */
-
 @Setter
 @Getter
 public class StudentDTO extends UserDTO {
@@ -21,6 +20,11 @@ public class StudentDTO extends UserDTO {
     private String lastName;
     private LocalDate birthdate;
 
+    /**
+     * Constructor to initialize StudentDTO from a Student entity.
+     *
+     * @param entity the Student entity to convert into DTO.
+     */
     public StudentDTO(Student entity) {
         super(entity.getUser());
         this.user = entity.getUser();
@@ -29,6 +33,11 @@ public class StudentDTO extends UserDTO {
         this.birthdate = entity.getBirthdate();
     }
 
+    /**
+     * Converts this DTO back to a Student entity.
+     *
+     * @return a Student entity corresponding to this DTO.
+     */
     public Student getStudent() {
         Student student = new Student();
         student.setStudentID(studentID);

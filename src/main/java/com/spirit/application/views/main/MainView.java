@@ -11,11 +11,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * The main view of the application that handles the user role-based redirection.
+ * The `beforeEnter` method checks the role of the currently authenticated user and forwards to the appropriate profile view.
+ */
 @Route(Globals.Pages.MAIN)
 @PermitAll
-//@Menu(order = 0)
 public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
+    /**
+     * This method is called before the view is entered. It checks the role of the authenticated user and
+     * redirects to the corresponding profile page based on the user's role.
+     * @param event The event that is triggered before the view is entered.
+     *              It contains information about the navigation and the route.
+     */
     @Override
     public synchronized void beforeEnter(BeforeEnterEvent event) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

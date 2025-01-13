@@ -71,6 +71,20 @@
             <scope>runtime</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>sockjs-client</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>stomp-websocket</artifactId>
+            <version>2.3.4</version>
+        </dependency>
 
 
         <dependency>
@@ -104,8 +118,10 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
             <artifactId>flexmark</artifactId>
@@ -180,7 +196,7 @@
     </build>
 
     <profiles>
-        <profile>
+        <profil>
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
             <dependencies>
@@ -213,9 +229,9 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
+        </profil>
 
-        <profile>
+        <profil>
             <id>it</id>
             <build>
                 <plugins>
@@ -259,7 +275,7 @@
 <!--                    </plugin>-->
                 </plugins>
             </build>
-        </profile>
+        </profil>
 
     </profiles>
 </project>

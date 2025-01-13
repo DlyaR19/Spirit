@@ -17,6 +17,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+/**
+ * The view for the login page, providing a user interface for user authentication.
+ * This view contains a login form, links to register a new account, and an "About Spirit" footer.
+ * It also handles the login process and session management.
+ */
 @CssImport("./themes/spirit/views/LoginView.css")
 @PageTitle("Login")
 @Route(Globals.Pages.LOGIN)
@@ -27,6 +32,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private final LoginForm loginForm;
     private final transient LoginService loginService;
 
+    /**
+     * Constructor for initializing the login view with a login form and necessary layout.
+     * It sets up the login form, layout, and additional components such as registration link and footer.
+     * @param loginService The service to handle user login and session management.
+     */
     public LoginView(LoginService loginService) {
         this.loginService = loginService;
 
@@ -80,6 +90,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         add(container);
     }
 
+    /**
+     * Creates the login form with localized text for form fields and actions.
+     * @return The login form component.
+     */
     private LoginForm createLoginForm() {
         LoginForm component = new LoginForm();
         LoginI18n i18n = LoginI18n.createDefault();
@@ -96,6 +110,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         return component;
     }
 
+    /**
+     * Creates an anchor (hyperlink) element for navigation.
+     * @param href The URL to link to.
+     * @param text The text to display for the link.
+     * @return The configured anchor element.
+     */
     private Anchor createAnchor(String href, String text) {
         Anchor anchor = new Anchor(href, text);
         anchor.getStyle()
@@ -106,6 +126,12 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         return anchor;
     }
 
+    /**
+     * Handles the login event triggered by the login form submission.
+     * Attempts to log the user in using the provided username and password. If successful, starts a new session.
+     * If the login fails, shows an error notification.
+     * @param input The login event containing the entered username and password.
+     */
     private void handleLogin(AbstractLogin.LoginEvent input) {
         try {
             loginService.startSession(new UserDTO(loginService.login(input.getUsername(), input.getPassword())));
@@ -115,6 +141,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         }
     }
 
+    /**
+     * Called before navigation to this view. Checks if there was a login error indicated by the query parameter "error".
+     * If an error is present, shows a notification and sets the login form to error state.
+     * @param event The before enter event.
+     */
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         if (event.getLocation()

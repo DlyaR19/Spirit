@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Diese Klasse repräsentiert ein BewerbungDTO-Objekt, das als Datenübertragungsobjekt für die Bewerbung-Entität dient.
+ * Data Transfer Object (DTO) for representing an Application (Bewerbung)
  */
 
 @Setter
@@ -20,6 +20,11 @@ public class BewerbungDTO {
     private JobPost jobPost;
     private String anschreiben;
 
+
+    /**
+     * Constructor to initialize the BewerbungDTO from a Bewerbung entity
+     * @param bewerbung Bewerbung entity to convert to BewerbungDTO
+     */
     public BewerbungDTO(Bewerbung bewerbung) {
         this.bewerbungID = bewerbung.getBewerbungID();
         this.student = bewerbung.getStudent();
@@ -27,6 +32,12 @@ public class BewerbungDTO {
         this.anschreiben = bewerbung.getAnschreiben();
     }
 
+
+    /**
+     * Converts this DTO back to a Bewerbung entity.
+     *
+     * @return a Bewerbung entity corresponding to this DTO.
+     */
     public Bewerbung getBewerbung() {
         Bewerbung bewerbung = new Bewerbung();
         bewerbung.setBewerbungID(bewerbungID);
@@ -36,6 +47,7 @@ public class BewerbungDTO {
         return bewerbung;
     }
 
+    @Override
     public String toString() {
         return "BewerbungDTO{" +
                 "bewerbungID=" + bewerbungID +

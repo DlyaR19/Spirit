@@ -8,26 +8,22 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.parser.Parser;
 
 /**
- * Komponente zur Konvertierung von Markdown in HTML
+ * Component for converting Markdown text into HTML.
  */
-
 @Component
 public class MarkdownConverter {
     private final Parser parser; // Parser für Markdown
     private final HtmlRenderer renderer; // Renderer für HTML
 
-    /**
-     * Konstruktor initialisiert Parser und Renderer
-     */
     public MarkdownConverter() {
         this.parser = Parser.builder().build();
         this.renderer = HtmlRenderer.builder().build();
     }
 
     /**
-     * Konvertiert einen einzelnen Markdown-String in HTML
-     * @param markdown Der zu konvertierende Markdown-Text
-     * @return Der resultierende HTML-String
+     * Converts a single Markdown string into HTML.
+     * @param markdown the Markdown string to convert
+     * @return the converted HTML string
      */
     public String convertToHtml(String markdown) {
         if (markdown == null) {
@@ -37,9 +33,9 @@ public class MarkdownConverter {
     }
 
     /**
-     * Konvertiert eine Liste von Markdown-Strings in HTML
-     * @param markdownList Liste der zu konvertierenden Markdown-Texte
-     * @return Liste der konvertierten HTML-Strings
+     * Converts a list of Markdown strings into a list of HTML strings.
+     * @param markdownList the list of Markdown strings to convert
+     * @return the list of converted HTML strings
      */
     public List<String> convertToHtml(List<String> markdownList) {
         List<String> htmlList = new ArrayList<>();

@@ -9,68 +9,55 @@ import com.vaadin.flow.server.VaadinSession;
 import org.springframework.stereotype.Service;
 
 /**
- * SessionService - Verwaltet Benutzersitzungen in der Anwendung
- * Verantwortlichkeiten:
- * - Beenden der aktuellen Benutzersitzung
- * - Abrufen des aktuellen Benutzers
- * - Bereitstellen von Benutzerdaten und Rollen
+ * Service class for managing user sessions.
+ * Includes methods for starting and ending sessions, as well as retrieving user information.
  */
-
 @Service
 public class SessionService {
 
-    // Dependency Injection des SecurityService
     private final SecurityService securityService;
 
-    // Konstruktor zur Initialisierung des SecurityService
     public SessionService(SecurityService securityService) {
         this.securityService = securityService;
     }
 
     /**
-     * Beendet die aktuelle Benutzersitzung
-     * - Leitet zur Login-Seite weiter
-     * - Invalidiert die aktuelle Session
-     * - Schließt die Vaadin-Sitzung
+     * Ends the current user session.
      */
     public void endSession() {
-        // Weiterleitung zur Login-Seite
         UI.getCurrent().getPage().setLocation(Globals.Pages.LOGIN);
-        // Invalidierung der aktuellen HTTP-Session
         VaadinSession.getCurrent().getSession().invalidate();
 
         VaadinSession.getCurrent().close();
     }
 
     /**
-     * Holt den aktuellen Benutzer aus der Vaadin-Sitzung
-     * @return UserDTO des aktuellen Benutzers
+     * Retrieves the currently logged-in user.
+     * @return the current user as UserDTO
      */
     public UserDTO getCurrentUser() {
         return (UserDTO) VaadinSession.getCurrent().getAttribute(Globals.CURRENT_USER);
     }
 
     /**
-     * Holt den aktuellen Studenten
-     * Cast des aktuellen Benutzers zu StudentDTO
-     * @return StudentDTO des aktuellen Benutzers
+     * Retrieves the currently logged-in student.
+     * @return the current student as StudentDTO
      */
     public StudentDTO getCurrentStudent() {
         return (StudentDTO) getCurrentUser();
     }
 
     /**
-     * Holt das aktuelle Unternehmen
-     * Cast des aktuellen Benutzers zu UnternehmenDTO
-     * @return UnternehmenDTO des aktuellen Benutzers
+     * Retrieves the currently logged-in company.
+     * @return the current company as UnternehmenDTO
      */
     public UnternehmenDTO getCurrentUnternehmen() {
         return (UnternehmenDTO) getCurrentUser();
     }
 
     /**
-     * Ermittelt die Rolle des aktuellen Benutzers
-     * @return Rollen-String des Benutzers
+     * Retrieves the role of the currently logged-in user.
+     * @return the user's role
      */
     public String getUserRole() {
         return securityService.loadUserByUsername(getCurrentUser().getUsername())

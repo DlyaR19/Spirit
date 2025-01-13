@@ -7,23 +7,21 @@ import com.spirit.application.util.EntityFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * Implementation des RegisterInterface zur Verwaltung der Benutzerregistrierung.
- * Diese Klasse handhabt die Registrierung von Studenten und Unternehmen.
+ * Service implementation for handling user registration logic.
  */
-
 @Service
 public class RegisterInterfaceImpl implements RegisterInterface {
 
-    // Dependency Injection der benötigten Komponenten
     private final EntityFactory entityFactory; // Factory für Entity-Erstellung
 
     private final UserRepository userRepository;
 
-    private final ProfileRepository profileRepository;
+    private final ProfilRepository profilRepository;
 
     private final StudentRepository studentRepository;
 
@@ -31,21 +29,18 @@ public class RegisterInterfaceImpl implements RegisterInterface {
 
     private final PasswordEncoder passwordEncoder; // Encoder für Passwort-Hashing
 
-    /**
-     * Konstruktor für Dependency Injection aller benötigten Repositories und Services
-     */
-    public RegisterInterfaceImpl(EntityFactory entityFactory, UserRepository userRepository, ProfileRepository profileRepository, StudentRepository studentRepository, UnternehmenRepository unternehmenRepository, PasswordEncoder passwordEncoder) {
+    public RegisterInterfaceImpl(EntityFactory entityFactory, UserRepository userRepository, ProfilRepository profilRepository, StudentRepository studentRepository, UnternehmenRepository unternehmenRepository, PasswordEncoder passwordEncoder) {
         this.entityFactory = entityFactory;
         this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
+        this.profilRepository = profilRepository;
         this.studentRepository = studentRepository;
         this.unternehmenRepository = unternehmenRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     /**
-     * Speichert einen neuen User in der Datenbank
-     * @param user der zu speichernde User
+     * Saves a user entity.
+     * @param user the user to save
      */
     @Override
     public void saveUser(User user) {
@@ -53,8 +48,8 @@ public class RegisterInterfaceImpl implements RegisterInterface {
     }
 
     /**
-     * Gibt alle registrierten User zurück
-     * @return Liste aller User
+     * Retrieves all users from the repository.
+     * @return list of users
      */
     @Override
     public List<User> getUsers() {
@@ -62,14 +57,12 @@ public class RegisterInterfaceImpl implements RegisterInterface {
     }
 
     /**
-     * Registriert ein neues Unternehmen mit den angegebenen Daten
-     * @throws UsernameAlreadyTakenException wenn Username bereits existiert
-     * @throws EmailAlreadyTakenException wenn Email bereits existiert
-     * @param username der gewählte Username
-     * @param password das gewählte Passwort
-     * @param email die gewählte Email
-     * @param unternehmenName der Name des Unternehmens
-     * @param passwordConfirmation die Bestätigung des Passworts
+     * Registers a company.
+     * @param username the username of the company account
+     * @param password the password for the account
+     * @param email the email address of the company
+     * @param unternehmenName the name of the company
+     * @param passwordConfirmation confirmation of the password
      */
     @Override
     public void registerUnternehmen(String username, String password, String email, String unternehmenName, String passwordConfirmation) {
@@ -77,36 +70,31 @@ public class RegisterInterfaceImpl implements RegisterInterface {
     }
 
     /**
-     * Registriert einen neuen Studenten mit den angegebenen Daten
-     * @throws UsernameAlreadyTakenException wenn Username bereits existiert
-     * @throws EmailAlreadyTakenException wenn Email bereits existiert
-     * @param username der gewählte Username
-     * @param password das gewählte Passwort
-     * @param email die gewählte Email
-     * @param firstName der Vorname des Studenten
-     * @param lastName der Nachname des Studenten
-     * @param passwordConfirmation die Bestätigung des Passworts
+     * Registers a student.
+     * @param username the username of the student
+     * @param password the password for the account
+     * @param email the email address of the student
+     * @param firstName the first name of the student
+     * @param lastName the last name of the student
+     * @param passwordConfirmation confirmation of the password
+     * @param birth the birth date of the student
      */
     @Override
-    public void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation) {
-        Student student = entityFactory.createStudent(registerUser(username, password, email), lastName, firstName);
+    public void registerStudent(String username, String password, String email, String firstName, String lastName, String passwordConfirmation, LocalDate birth) {
+        Student student = entityFactory.createStudent(registerUser(username, password, email), lastName, firstName, birth);
         saveStudent(student);
     }
 
     /**
-     * Private Hilfsmethode zur Registrierung eines neuen Users
-     * Prüft ob Username/Email verfügbar sind und erstellt neuen User mit Profil
-     * @throws UsernameAlreadyTakenException wenn Username bereits existiert
-     * @throws EmailAlreadyTakenException wenn Email bereits existiert
-     * @return den neu erstellten User
-     * @param username der gewählte Username
-     * @param password das gewählte Passwort
-     * @param email die gewählte Email
+     * Internal helper method to register a user and validate their details.
+     * @param username the username
+     * @param password the password
+     * @param email the email
+     * @return the created User object
      */
     private User registerUser(String username, String password, String email) {
         String normalizedUsername = username.toLowerCase();
 
-        // Überprüfung auf existierende Username/Email
         if (getUsers().stream().anyMatch(user -> Objects.equals(user.getUsername(), normalizedUsername))) {
             throw new UsernameAlreadyTakenException("Username schon vergeben");
         }
@@ -115,29 +103,29 @@ public class RegisterInterfaceImpl implements RegisterInterface {
             throw new EmailAlreadyTakenException("Email schon vergeben");
         }
 
-        Profile profile = entityFactory.createProfile();
+        Profil profil = entityFactory.createProfile();
 
         String passwordHash = passwordEncoder.encode(password);
 
-        User user = entityFactory.createUser(profile, normalizedUsername, passwordHash, email);
+        User user = entityFactory.createUser(profil, normalizedUsername, passwordHash, email);
 
-        saveProfile(profile);
+        saveProfile(profil);
         saveUser(user);
         return user;
     }
 
     /**
-     * Speichert ein Profil in der Datenbank
-     * @param profile das zu speichernde Profil
+     * Saves a profil entity.
+     * @param profil the profil to save
      */
     @Override
-    public void saveProfile(Profile profile) {
-        profileRepository.save(profile);
+    public void saveProfile(Profil profil) {
+        profilRepository.save(profil);
     }
 
     /**
-     * Speichert einen Studenten in der Datenbank
-     * @param student der zu speichernde Student
+     * Saves a student entity.
+     * @param student the student to save
      */
     @Override
     public void saveStudent(Student student) {
@@ -145,8 +133,8 @@ public class RegisterInterfaceImpl implements RegisterInterface {
     }
 
     /**
-     * Speichert ein Unternehmen in der Datenbank
-     * @param unternehmen das zu speichernde Unternehmen
+     * Saves a company entity.
+     * @param unternehmen the company to save
      */
     @Override
     public void saveUnternehmen(Unternehmen unternehmen) {
@@ -154,8 +142,8 @@ public class RegisterInterfaceImpl implements RegisterInterface {
     }
 
     /**
-     * Überprüft ob die Datenbank leer ist
-     * @return true wenn die Datenbank leer ist, sonst false
+     * Checks if the user repository is empty.
+     * @return true if empty, false otherwise
      */
     @Override
     public Boolean isEmpty() {
@@ -163,8 +151,7 @@ public class RegisterInterfaceImpl implements RegisterInterface {
     }
 
     /**
-     * Custom Exceptions für Fehlerfälle bei der Registrierung
-     * UsernameAlreadyTakenException wird geworfen, wenn der Username bereits vergeben ist
+     * Exception for already taken usernames.
      */
     public static class UsernameAlreadyTakenException extends RuntimeException {
         public UsernameAlreadyTakenException(String message) {
@@ -173,8 +160,7 @@ public class RegisterInterfaceImpl implements RegisterInterface {
     }
 
     /**
-     * Custom Exceptions für Fehlerfälle bei der Registrierung
-     * EmailAlreadyTakenException wird geworfen, wenn die Email bereits vergeben ist
+     * Exception for already taken emails.
      */
     public static class EmailAlreadyTakenException extends RuntimeException {
         public EmailAlreadyTakenException(String message) {

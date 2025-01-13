@@ -1,0 +1,26 @@
+/* Align messages from the current user to the right */
+.message-list-item.me {
+    text-align: right;
+    background-color: var(--lumo-primary-color-10pct);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+/* Align messages from the other user to the left */
+.message-list-item.other {
+    text-align: left;
+    background-color: var(--lumo-contrast-10pct);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+}
+/* Align outgoing messages (current user) to the right */
+.message-list .user-color-1 {
+    text-align: right;
+}
+
+/* Align incoming messages (other user) to the left */
+.message-list .user-color-2 {
+    text-align: left;
+}

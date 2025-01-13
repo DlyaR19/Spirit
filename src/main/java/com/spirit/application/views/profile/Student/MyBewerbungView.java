@@ -24,6 +24,11 @@ import jakarta.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * View for displaying a student's job applications (Bewerbung).
+ * This view lists all applications for the logged-in student, with each application displayed in a card format.
+ * The student can also withdraw their applications.
+ */
 @Route(value="student/meine-bewerbungen", layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
 public class MyBewerbungView extends Composite<VerticalLayout> {
@@ -31,7 +36,12 @@ public class MyBewerbungView extends Composite<VerticalLayout> {
     private final VerticalLayout layout;
     private final transient BewerbungService bewerbungService;
 
-
+    /**
+     * Constructor for initializing the view and displaying the student's job applications.
+     * The layout is centered, and all applications for the current student are retrieved and displayed.
+     * @param bewerbungService The service for retrieving job applications.
+     * @param sessionService The session service to get the current logged-in student.
+     */
     public MyBewerbungView(BewerbungService bewerbungService, SessionService sessionService) {
         this.bewerbungService = bewerbungService;
         this.layout = new VerticalLayout();
@@ -41,6 +51,11 @@ public class MyBewerbungView extends Composite<VerticalLayout> {
         getContent().add(layout);
     }
 
+    /**
+     * Displays all job applications of a student.
+     * Retrieves the applications from the BewerbungService and adds them to the layout.
+     * @param studentId The ID of the student whose applications are to be displayed.
+     */
     private void displayStudentBewerbung(Long studentId) {
         List<BewerbungDTO> bewerbungList = new ArrayList<>();
         for (Bewerbung bewerbung : bewerbungService.getAllBewerbungByStudent(studentId)) {
@@ -51,13 +66,19 @@ public class MyBewerbungView extends Composite<VerticalLayout> {
         }
     }
 
+    /**
+     * Creates a card layout for a given job application.
+     * The card displays the company name, job title, job description, and a button to withdraw the application.
+     * @param bewerbung The job application to be displayed.
+     * @return A vertical layout containing the application's details in a card format.
+     */
     public VerticalLayout bewerbungCard(BewerbungDTO bewerbung) {
         VerticalLayout bewerbungCard = new VerticalLayout();
         HorizontalLayout unternehmenLayout = new HorizontalLayout();
         Avatar avatar = new Avatar();
         avatar.setImage(
                 "data:image/jpeg;base64," +
-                        bewerbung.getJobPost().getUnternehmen().getUser().getProfile().getAvatar()
+                        bewerbung.getJobPost().getUnternehmen().getUser().getProfil().getAvatar()
         );
         unternehmenLayout.add(avatar, new H4(bewerbung.getJobPost().getUnternehmen().getName()));
         HorizontalLayout infoLayout = new HorizontalLayout();
@@ -78,6 +99,12 @@ public class MyBewerbungView extends Composite<VerticalLayout> {
         return bewerbungCard;
     }
 
+    /**
+     * Opens a dialog to confirm the withdrawal of a job application.
+     * If the student confirms, the application is deleted and the card is removed from the layout.
+     * @param bewerbung The job application to be withdrawn.
+     * @param bewerbungCard The card to be removed upon withdrawal.
+     */
     public void openDialog(BewerbungDTO bewerbung, VerticalLayout bewerbungCard) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");

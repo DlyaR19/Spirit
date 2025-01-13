@@ -19,6 +19,7 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -36,6 +37,10 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+/**
+ * View for displaying applications submitted for the job posts of the currently logged-in company.
+ * This view is accessible only to users with the "UNTERNEHMEN" role.
+ */
 @Route(value = Globals.Pages.SHOW_BEWERBUNG, layout = AppView.class)
 @PageTitle("Bewerbungen")
 @RolesAllowed(Globals.Roles.UNTERNEHMEN)
@@ -49,6 +54,13 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
     private final transient SessionService sessionService;
     private final transient JobPostService jobPostService;
 
+    /**
+     * Constructs the `ShowBewerbungView` with the required services and initializes the layout.
+     * @param markdownConverter Service for converting Markdown to HTML.
+     * @param bewerbungService  Service for managing applications.
+     * @param sessionService    Service for managing user session data.
+     * @param jobPostService    Service for managing job posts.
+     */
     public ShowBewerbungView(
             MarkdownConverter markdownConverter,
             BewerbungService bewerbungService,
@@ -63,6 +75,12 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         getContent().add(layout);
     }
 
+    /**
+     * Creates a card layout for displaying information about a student and their application.
+     * @param bewerbung The `BewerbungDTO` representing the student's application.
+     * @param jobPost   The `JobPostDTO` representing the job post for which the application was submitted.
+     * @return A `VerticalLayout` containing the student card.
+     */
     public VerticalLayout studentCard(BewerbungDTO bewerbung, JobPostDTO jobPost) {
         VerticalLayout studentCardLayout = new VerticalLayout();
 
@@ -75,7 +93,7 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         HorizontalLayout avaterLayout = new HorizontalLayout();
         Avatar studentAvatar = new Avatar();
         studentAvatar.setImage(
-                "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
+                "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfil().getAvatar()
         );
         Button type = new Button(jobPost.getAnstellungsart());
         type.setWidth("min-content");
@@ -87,7 +105,7 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         Div profileDescriptionParagraph = new Div();
         profileDescriptionParagraph.getElement().setProperty(
                 INNER_HTML, markdownConverter.convertToHtml(
-                        bewerbung.getStudent().getUser().getProfile().getProfileDescription())
+                        bewerbung.getStudent().getUser().getProfil().getProfileDescription())
         );
         HorizontalLayout buttonLayout = new HorizontalLayout();
 
@@ -95,26 +113,52 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         showProfileButton.addClickListener(e -> {
             Dialog profileDialog = new Dialog();
             profileDialog.setWidth("600px");
+            profileDialog.setCloseOnEsc(true);
+            profileDialog.setCloseOnOutsideClick(true);
+
             VerticalLayout profileLayout = new VerticalLayout();
-            Avatar studentAvatarDialog = new Avatar();
-            studentAvatarDialog.setImage(
-                    "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfile().getAvatar()
+            profileLayout.setSpacing(true);
+            profileLayout.setPadding(true);
+
+            // Avatar and Name
+            HorizontalLayout avatarNameLayout = new HorizontalLayout();
+            avatarNameLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+            Avatar avatar = new Avatar();
+            avatar.setImage(
+                    "data:image/jpeg;base64," + bewerbung.getStudent().getUser().getProfil().getAvatar()
             );
-            H6 profileName = new H6(bewerbung.getStudent().getFirstName() + " " + bewerbung.getStudent().getLastName());
-            // TODO get Interessen und co from profilStudentLayout
+
+            H3 name = new H3(
+                    bewerbung.getStudent().getFirstName() + " " + bewerbung.getStudent().getLastName()
+            );
+            avatarNameLayout.add(avatar, name);
+
+            // Additional Information
+            TextArea birth = new TextArea("Geburtsdatum");
+            birth.setValue(String.valueOf(bewerbung.getStudent().getBirthdate()));
+            birth.setReadOnly(true);
+
             TextArea profileDescriptionDialog = new TextArea("Profilbeschreibung");
-            profileDescriptionDialog.setValue(bewerbung.getStudent().getUser().getProfile().getProfileDescription());
+            profileDescriptionDialog.setValue(
+                    bewerbung.getStudent().getUser().getProfil().getProfileDescription()
+            );
             profileDescriptionDialog.setReadOnly(true);
-            profileLayout.add(studentAvatarDialog, profileName, profileDescriptionDialog);
+
+            // Add additional sections (e.g., Interests, Skills, etc.)
+            Div additionalInfo = new Div();
+            additionalInfo.getStyle().set("margin-top", "10px");
+            additionalInfo.setText("Interessen und Fähigkeiten:"); // Placeholder for future content
+
+            profileLayout.add(avatarNameLayout, birth, profileDescriptionDialog, additionalInfo);
+
             profileDialog.add(profileLayout);
             profileDialog.open();
         });
 
         Button downloadAnschreibenButton = getDownloadAnschreibenButton(bewerbung);
-
-
-        buttonLayout.add(showProfileButton, downloadAnschreibenButton);
-
+        Button downloadLebenslaufButton = getDownloadLebenslaufButton(bewerbung);
+        buttonLayout.add(showProfileButton, downloadLebenslaufButton, downloadAnschreibenButton);
 
         studentCardLayout.add(jobPostInfo, type, avaterLayout, profileDescription, profileDescriptionParagraph, buttonLayout);
         studentCardLayout.setWidth("100%");
@@ -125,14 +169,23 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
         return studentCardLayout;
     }
 
+    /**
+     * Creates a button for downloading the cover letter of a student's application.
+     * @param bewerbung The `BewerbungDTO` containing the cover letter data.
+     * @return A `Button` to initiate the cover letter download.
+     */
     private @NotNull Button getDownloadAnschreibenButton(BewerbungDTO bewerbung) {
-        Button downloadAnschreibenButton = new Button("Download Bewerbung");
+        Button downloadAnschreibenButton = new Button("Anschreiben herunterladen");
         downloadAnschreibenButton.addClickListener(e -> {
             String base64coverLetter = bewerbungService.getAnschreiben(bewerbung.getBewerbungID());
             if (base64coverLetter != null && !base64coverLetter.isEmpty()) {
 
                 byte[] pdfBytes = Base64.getDecoder().decode(base64coverLetter);
-                StreamResource resource = new StreamResource("Bewerbung.pdf", () -> new ByteArrayInputStream(pdfBytes));
+                String filename = String.format("%s_%s_Anschreiben.pdf",
+                        bewerbung.getStudent().getLastName(),
+                        bewerbung.getStudent().getFirstName()
+                );
+                StreamResource resource = new StreamResource(filename, () -> new ByteArrayInputStream(pdfBytes));
                 resource.setContentType("application/pdf");
 
                 Anchor downloadLink = new Anchor(resource, "Download");
@@ -142,20 +195,62 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
 
                 downloadLink.getElement().executeJs("this.click();");
 
-                Notification.show("Bewerbung-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                Notification.show("Anschreiben-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
             } else {
-                Notification.show("Keine Bewerbung gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
-                downloadAnschreibenButton.setEnabled(false);
+                Notification.show("Kein Anschreiben gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
         return downloadAnschreibenButton;
     }
 
+    /**
+     * Creates a button for downloading the CV of a student's application.
+     * @param bewerbung The `BewerbungDTO` containing the CV data.
+     * @return A `Button` to initiate the CV download.
+     */
+    private @NotNull Button getDownloadLebenslaufButton(BewerbungDTO bewerbung) {
+        Button downloadLebenslaufButton = new Button("Lebenslauf herunterladen");
+        downloadLebenslaufButton.addClickListener(e -> {
+            String base64cv = bewerbungService.getLebenslauf(bewerbung.getBewerbungID());
+            if (base64cv != null && !base64cv.isEmpty()) {
+
+                byte[] pdfBytes = Base64.getDecoder().decode(base64cv);
+                String filename = String.format("%s_%s_Lebenslauf.pdf",
+                        bewerbung.getStudent().getLastName(),
+                        bewerbung.getStudent().getFirstName()
+                );
+                StreamResource resource = new StreamResource(filename, () -> new ByteArrayInputStream(pdfBytes));
+                resource.setContentType("application/pdf");
+
+                Anchor downloadLink = new Anchor(resource, "Download");
+                downloadLink.getElement().setAttribute("download", true);
+                downloadLink.getStyle().set("display", "none");
+                getContent().add(downloadLink);
+
+                downloadLink.getElement().executeJs("this.click();");
+
+                Notification.show("Lebenslauf-Download gestartet.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            } else {
+                Notification.show("Kein Lebenslauf gefunden.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            }
+        });
+        return downloadLebenslaufButton;
+    }
+
+    /**
+     * Triggered after navigation to this view, loads and displays applications
+     * for all job posts created by the currently logged-in company.
+     * @param event The navigation event triggering this method.
+     */
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         loadAndDisplayBerwerbung(sessionService.getCurrentUnternehmen().getUnternehmenID());
     }
 
+    /**
+     * Loads applications for the company's job posts and updates the layout to display them.
+     * @param unternehmenId The ID of the currently logged-in company.
+     */
     private void loadAndDisplayBerwerbung(Long unternehmenId) {
         List<JobPost> jobPosts = jobPostService.getJobPostByUnternehmenId(unternehmenId);
         layout.getStyle().setAlignItems(Style.AlignItems.CENTER);

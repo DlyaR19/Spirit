@@ -5,6 +5,8 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.sidenav.SideNav;
 import com.vaadin.flow.component.sidenav.SideNavItem;
@@ -16,10 +18,15 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
 import java.util.List;
 
 /**
- * Definiert das Hauptlayout der Anwendung vor der Anmeldung
- * Implementiert die grundlegende Navigationsstruktur
+ * The main layout for the application, extending {@link AppLayout}. This layout is used as the
+ * foundation of the application UI, with a drawer, header, and footer. It supports navigation
+ * between different views and dynamically updates the title based on the current view.
+ * <p><b>Annotations:</b></p>
+ * <ul>
+ *   <li>{@code @Layout}: Marks this class as the main layout for the application.</li>
+ *   <li>{@code @AnonymousAllowed}: Allows access to this layout without authentication.</li>
+ * </ul>
  */
-
 @Layout
 @AnonymousAllowed // Erlaubt Zugriff ohne Authentifizierung
 public class MainLayout extends AppLayout {
@@ -27,7 +34,7 @@ public class MainLayout extends AppLayout {
     private H1 viewTitle; // Titel der aktuellen Ansicht
 
     /**
-     * Konstruktor initialisiert das Layout mit Drawer und Header
+     * Constructor initializes the layout with a drawer and a header.
      */
     public MainLayout() {
         setPrimarySection(Section.DRAWER);
@@ -36,7 +43,7 @@ public class MainLayout extends AppLayout {
     }
 
     /**
-     * Erstellt den Header mit Toggle-Button und Titel
+     * Creates the header with a toggle button and title.
      */
     private void addHeaderContent() {
         DrawerToggle toggle = new DrawerToggle();
@@ -49,12 +56,25 @@ public class MainLayout extends AppLayout {
     }
 
     /**
-     * Erstellt den Drawer mit Menüpunkten und Footer
+     * Creates the drawer with menu items and a footer.
      */
     private void addDrawerContent() {
+        Image logo = new Image("https://i.ibb.co/YWqXFWz/Erstelle-ein-Logo-mit-Titel-Spirit-f-r-mein-Software-Engineering-Projekt.jpg", "Spirit Logo"); // Use your actual logo URL here
+        logo.setWidth("40px"); // Adjust the size of the logo as needed
+        logo.addClassNames(LumoUtility.Margin.NONE, LumoUtility.Padding.Horizontal.SMALL); // Adjust spacing
+        logo.addClickListener(e -> {
+            getUI().ifPresent(ui -> ui.navigate("/"));
+        });
+
         Span appName = new Span("Spirit");
         appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
-        Header header = new Header(appName);
+
+        // Combine the logo and appName in the header
+        HorizontalLayout headerLayout = new HorizontalLayout(logo, appName);
+        headerLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        headerLayout.addClassNames(LumoUtility.Padding.NONE);
+
+        Header header = new Header(headerLayout);
 
         Scroller scroller = new Scroller(createNavigation());
 
@@ -62,8 +82,8 @@ public class MainLayout extends AppLayout {
     }
 
     /**
-     * Erstellt die Navigationsstruktur
-     * @return SideNav-Element mit Menüpunkten
+     * Creates the navigation structure with menu items.
+     * @return a {@link SideNav} component with the menu items.
      */
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
@@ -81,29 +101,24 @@ public class MainLayout extends AppLayout {
     }
 
     /**
-     * Liefert das passende Icon für einen Menüpunkt
-     * @param title Titel des Menüpunkts
-     * @return Icon-Element
+     * Returns the appropriate icon for a menu entry based on its title.
+     * @param title the title of the menu entry.
+     * @return the corresponding {@link Icon} for the menu entry.
      */
     private Icon getIconForMenuEntry(String title) {
         // Hier die passenden Icons für die Menüpunkte definieren
-        switch (title.toLowerCase()) {
-            case "dashboard":
-                return VaadinIcon.HOME.create();
-            case "login":
-                return VaadinIcon.SIGN_IN.create();
-            case "register":
-                return VaadinIcon.USER.create();
-            case "über uns":
-                return VaadinIcon.INFO_CIRCLE.create();
-            default:
-                return null; // Kein Icon für unbekannte Menüpunkte
-        }
+        return switch (title.toLowerCase()) {
+            case "dashboard" -> VaadinIcon.HOME.create();
+            case "login" -> VaadinIcon.SIGN_IN.create();
+            case "registrierung" -> VaadinIcon.USER.create();
+            case "über uns" -> VaadinIcon.INFO_CIRCLE.create();
+            default -> null; // Kein Icon für unbekannte Menüpunkte
+        };
     }
 
     /**
-     * Erstellt den Footer mit Urheberrechtshinweis
-     * @return Footer-Element
+     * Creates the footer with a copyright notice.
+     * @return a {@link Footer} component with the copyright notice.
      */
     private Footer createFooter() {
         Footer layout = new Footer();
@@ -114,7 +129,7 @@ public class MainLayout extends AppLayout {
     }
 
     /**
-     * Setzt den Titel der aktuellen Ansicht
+     * Sets the title of the current view.
      */
     @Override
     protected void afterNavigation() {
@@ -123,8 +138,8 @@ public class MainLayout extends AppLayout {
     }
 
     /**
-     * Liefert den Titel der aktuellen Ansicht
-     * @return Titel der aktuellen Ansicht
+     * Returns the title of the current view.
+     * @return the title of the current view.
      */
     private String getCurrentPageTitle() {
         return MenuConfiguration.getPageHeader(getContent()).orElse("");

@@ -1,8 +1,9 @@
 package com.spirit.application.views.profile;
 
 
+import com.spirit.application.dto.StudentDTO;
 import com.spirit.application.dto.UserDTO;
-import com.spirit.application.service.ProfileService;
+import com.spirit.application.service.ProfilService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
 import com.spirit.application.util.MarkdownConverter;
@@ -15,6 +16,7 @@ import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -26,9 +28,14 @@ import com.vaadin.flow.dom.Style;
 import java.io.InputStream;
 import java.util.Base64;
 
+/**
+ * The ProfileBaseView class is an abstract base class that provides shared functionality
+ * for displaying and managing user profiles. It handles profile details such as avatar,
+ * description, and social links, and supports editing, uploading images, and deleting profiles.
+ */
 public abstract class ProfileBaseView extends Composite<VerticalLayout> {
 
-    protected final transient ProfileService profileService;
+    protected final transient ProfilService profilService;
     protected final transient SessionService sessionService;
     protected final transient VerticalLayout layout = new VerticalLayout();
     protected transient MarkdownConverter markdownConverter = new MarkdownConverter();
@@ -39,8 +46,13 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
     protected MemoryBuffer buffer;
     protected static final String OPACITY = "opacity";
 
-    protected ProfileBaseView(ProfileService profileService, SessionService sessionService) {
-        this.profileService = profileService;
+    /**
+     * Constructor for ProfileBaseView.
+     * @param profilService the service for profile-related operations.
+     * @param sessionService the service for session-related data.
+     */
+    protected ProfileBaseView(ProfilService profilService, SessionService sessionService) {
+        this.profilService = profilService;
         this.sessionService = sessionService;
         layout.getStyle().setAlignItems(Style.AlignItems.FLEX_START);
         layout.getStyle().set("max-width", "1000px");
@@ -50,18 +62,22 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         getContent().add(layout);
     }
 
-
+    /**
+     * Creates a header layout containing the avatar, user details, and action buttons.
+     * @param user the current user's data transfer object.
+     * @return a HorizontalLayout containing the header components.
+     */
     private HorizontalLayout header(UserDTO user) {
         HorizontalLayout header = new HorizontalLayout();
         VerticalLayout infoLayout = new VerticalLayout();
         avatar = new Avatar();
-        avatar.setImage("data:image/jpeg;base64,"+user.getProfile().getAvatar());
+        avatar.setImage("data:image/jpeg;base64,"+user.getProfil().getAvatar());
         avatar.setHeight("150px");
         avatar.setWidth("150px");
         H2 username = new H2(setGreetingText());
         H6 email = new H6(user.getEmail());
         email.getStyle().set(OPACITY, "0.8");
-        webseite = new H6(user.getProfile().getWebseite());
+        webseite = new H6(user.getProfil().getWebseite());
         webseite.getStyle().set(OPACITY, "0.8");
         HorizontalLayout emailLayout = new HorizontalLayout(
                 new H6("Email: "), email);
@@ -75,7 +91,7 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
 
             // "Löschen"-Button
             dialog.setConfirmButton("Löschen", confirmEvent -> {
-                profileService.deleteProfile(user.getProfile().getProfileID());
+                profilService.deleteProfile(user.getProfil().getProfilID());
                 Notification.show("Profil erfolgreich gelöscht.", 3000, Notification.Position.MIDDLE);
                 UI.getCurrent().navigate(Globals.Pages.LOGIN); // Zur Startseite navigieren
             });
@@ -89,16 +105,27 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
 
         HorizontalLayout buttonLayout = new HorizontalLayout(new Button("bearbeiten", event ->
                 openEditDialog(user)), new Button("Bild hochladen", event -> openAvatarDialog(user)), deleteButton);
-        infoLayout.add(username, emailLayout, webseiteLayout, buttonLayout);
+
+        if (isStudentUser()) {
+            StudentDTO studentDTO = sessionService.getCurrentStudent();
+            infoLayout.add(username, emailLayout, webseiteLayout, birthdateLayout(studentDTO), createRatingSection(user), buttonLayout);
+        } else {
+            infoLayout.add(username, emailLayout, webseiteLayout, createRatingSection(user), buttonLayout);
+        }
         header.add(avatar, infoLayout);
         return header;
     }
 
+    /**
+     * Creates a description layout displaying the user's profile description.
+     * @param user the current user's data transfer object.
+     * @return a VerticalLayout containing the profile description.
+     */
     private VerticalLayout description(UserDTO user) {
         description = new Div();
         description.getElement().setProperty(
                 "innerHTML",
-                markdownConverter.convertToHtml(user.getProfile().getProfileDescription())
+                markdownConverter.convertToHtml(user.getProfil().getProfileDescription())
         );
 
 
@@ -108,6 +135,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         );
     }
 
+    /**
+     * Opens a dialog for editing the user's profile description and website URL.
+     * @param user the current user's data transfer object.
+     */
     private void openEditDialog(UserDTO user) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");
@@ -123,15 +154,15 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         Button save = new Button("Speichern");
         Button cancel = new Button("Abbrechen");
         if (webseiteTexField.getValue().isEmpty()) {
-            webseiteTexField.setValue(user.getProfile().getWebseite() != null ? user.getProfile().getWebseite() : "");
+            webseiteTexField.setValue(user.getProfil().getWebseite() != null ? user.getProfil().getWebseite() : "");
         }
         if (descriptionTextField.getValue().isEmpty()) {
-            descriptionTextField.setValue(user.getProfile().getProfileDescription() != null ? user.getProfile().getProfileDescription() : "");
+            descriptionTextField.setValue(user.getProfil().getProfileDescription() != null ? user.getProfil().getProfileDescription() : "");
         }
         save.addClickListener(event -> {
             try {
-                profileService.saveSocials(
-                        sessionService.getCurrentUser().getProfile(),
+                profilService.saveSocials(
+                        sessionService.getCurrentUser().getProfil(),
                         webseiteTexField.getValue(),
                         descriptionTextField.getValue()
                 );
@@ -150,6 +181,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         dialog.open();
     }
 
+    /**
+     * Opens a dialog for uploading or deleting the user's profile avatar.
+     * @param user the current user's data transfer object.
+     */
     private void openAvatarDialog(UserDTO user) {
         Dialog dialog = new Dialog();
         dialog.setWidth("600px");
@@ -163,9 +198,9 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
             try (InputStream inputStream = buffer.getInputStream()) {
                 byte[] bytes = inputStream.readAllBytes();
                 String base64Image = Base64.getEncoder().encodeToString(bytes);
-                profileService.deleteProfileImage(user.getProfile().getProfileID());
-                profileService.saveProfileImage(user.getProfile().getProfileID(), base64Image);
-                user.getProfile().setAvatar(base64Image); // Hier das Avatar-Bild im UserDTO aktualisieren
+                profilService.deleteProfileImage(user.getProfil().getProfilID());
+                profilService.saveProfileImage(user.getProfil().getProfilID(), base64Image);
+                user.getProfil().setAvatar(base64Image); // Hier das Avatar-Bild im UserDTO aktualisieren
                 Notification.show("Bild erfolgreich hochgeladen");
             } catch (Exception e) {
                 Notification.show("Fehler beim Hochladen des Bildes");
@@ -176,8 +211,8 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
 
         // Bild löschen
         Button deleteButton = new Button("Bild löschen", buttonClickEvent -> {
-            profileService.deleteProfileImage(user.getProfile().getProfileID());
-            user.getProfile().setAvatar(null);
+            profilService.deleteProfileImage(user.getProfil().getProfilID());
+            user.getProfil().setAvatar(null);
             Notification.show("Bild erfolgreich gelöscht");
             updateProfileData(user);
             dialog.close();
@@ -190,16 +225,23 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         dialog.open();
     }
 
-
+    /**
+     * Updates the profile data displayed in the view.
+     * @param user the current user's data transfer object.
+     */
     private void updateProfileData(UserDTO user) {
-        webseite.setText(user.getProfile().getWebseite());
+        webseite.setText(user.getProfil().getWebseite());
         description.getElement().setProperty(
                 "innerHTML",
-                markdownConverter.convertToHtml(user.getProfile().getProfileDescription())
+                markdownConverter.convertToHtml(user.getProfil().getProfileDescription())
         );
-        avatar.setImage("data:image/jpeg;base64," + user.getProfile().getAvatar());
+        avatar.setImage("data:image/jpeg;base64," + user.getProfil().getAvatar());
     }
 
+    /**
+     * Returns a greeting text based on the type of the current user.
+     * @return a String containing the greeting message.
+     */
     private String setGreetingText() {
         if (isBusinessUser()) {
             return "Hallo " + sessionService.getCurrentUnternehmen().getUsername() + "!";
@@ -209,6 +251,10 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         return "";
     }
 
+    /**
+     * Checks if the current user is a business user.
+     * @return true if the current user is a business user, false otherwise.
+     */
     private boolean isBusinessUser() {
         try {
             return sessionService.getCurrentUnternehmen() != null;
@@ -217,11 +263,61 @@ public abstract class ProfileBaseView extends Composite<VerticalLayout> {
         }
     }
 
+    /**
+     * Checks if the current user is a student user.
+     * @return true if the current user is a student user, false otherwise.
+     */
     private boolean isStudentUser() {
         try {
             return sessionService.getCurrentStudent() != null;
         } catch (ClassCastException e) {
             return false;
         }
+    }
+
+    /**
+     * Creates a layout displaying the student's birthdate.
+     * @param studentDTO the data transfer object for the student user.
+     * @return a HorizontalLayout containing the birthdate information.
+     */
+    private HorizontalLayout birthdateLayout(StudentDTO studentDTO){
+        HorizontalLayout birthdateLayout = new HorizontalLayout();
+        H6 birthdate = new H6("Geburtsdatum: " + studentDTO.getBirthdate());
+        birthdate.getStyle().set(OPACITY, "0.8");
+        birthdateLayout.add(birthdate);
+        return birthdateLayout;
+    }
+
+    private HorizontalLayout createRatingSection(UserDTO user) {
+        HorizontalLayout ratingLayout = new HorizontalLayout();
+        ratingLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+
+        // Create rating display
+        Div ratingDiv = new Div();
+        ratingDiv.getStyle()
+                .set("display", "flex")
+                .set("align-items", "center")
+                .set("gap", "8px");
+
+        // Show average rating
+        H6 avgRating = new H6();
+        if (user.getProfil().getAvgRating() != null) {
+            avgRating.setText(String.format("%.1f ★", user.getProfil().getAvgRating()));
+        } else {
+            avgRating.setText("Noch keine Bewertungen");
+        }
+        avgRating.getStyle().set(OPACITY, "0.8");
+
+        // Show total ratings
+        Span totalRatings = new Span();
+        if (user.getProfil().getTotalRating() != null && user.getProfil().getTotalRating() > 0) {
+            totalRatings.setText(String.format("(%d Bewertungen)", user.getProfil().getTotalRating()));
+        }
+        totalRatings.getStyle().set(OPACITY, "0.6");
+
+        ratingDiv.add(avgRating, totalRatings);
+        ratingLayout.add(ratingDiv);
+
+        return ratingLayout;
     }
 }

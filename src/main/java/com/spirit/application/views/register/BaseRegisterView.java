@@ -15,6 +15,10 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.RouterLayout;
 
+/**
+ * Abstract base class for registration views. Provides a shared layout and common form fields.
+ * <p>Subclasses must implement the {@link #register()} method to handle registration logic.</p>
+ */
 public abstract class BaseRegisterView extends FormLayout implements RouterLayout {
 
     protected final transient RegisterInterface registerInterface;
@@ -25,8 +29,11 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
     protected Button submitButton;
     protected Button cancelButton;
     protected Span errorMessageField;
-    protected VerticalLayout verticalLayout;
 
+    /**
+     * Constructs the base registration view with the given {@link RegisterInterface}.
+     * @param registerInterface the interface handling registration logic.
+     */
     protected BaseRegisterView(RegisterInterface registerInterface) {
         this.registerInterface = registerInterface;
         setupLayout();
@@ -34,6 +41,9 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
         addButtons();
     }
 
+    /**
+     * Sets up the responsive layout for the form.
+     */
     private void setupLayout() {
         setResponsiveSteps(
                 new ResponsiveStep("0", 1),
@@ -42,6 +52,9 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
         addClassName("registration-form");
     }
 
+    /**
+     * Sets up the common form fields, including username, email, and password fields.
+     */
     private void setupForm() {
         usernameField = new TextField("Benutzername");
         passwordField = new PasswordField("Passwort");
@@ -59,6 +72,9 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
         add(passwordConfirmationField, 1);
     }
 
+    /**
+     * Adds the submit and cancel buttons to the form.
+     */
     private void addButtons() {
         submitButton.addClickListener(e -> register());
         submitButton.addClickShortcut(Key.ENTER);
@@ -67,5 +83,8 @@ public abstract class BaseRegisterView extends FormLayout implements RouterLayou
         add(new HorizontalLayout(cancelButton, submitButton));
     }
 
+    /**
+     * Abstract method to be implemented by subclasses to handle registration logic.
+     */
     protected abstract void register();
 }

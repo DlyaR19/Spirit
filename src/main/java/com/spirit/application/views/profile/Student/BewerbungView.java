@@ -14,11 +14,20 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import jakarta.annotation.security.RolesAllowed;
 
+/**
+ * This class represents a view where students can apply for a job position.
+ * It provides an interface for students to view a job and interact with buttons
+ * to perform actions related to the application process.
+ */
 @Route(value = Globals.Pages.BEWERBUNG_STUDENT, layout = AppView.class)
 @RolesAllowed(Globals.Roles.STUDENT)
 public class BewerbungView extends Composite<VerticalLayout> {
     private static final String MIN_CONTENT = "min-content";
 
+    /**
+     * Default constructor that sets up the layout and components of the Bewerbung view.
+     * The layout contains a header, two buttons, and positions them properly within the layout.
+     */
     public BewerbungView() {
         H2 h2 = new H2();
         HorizontalLayout layoutRow = new HorizontalLayout();

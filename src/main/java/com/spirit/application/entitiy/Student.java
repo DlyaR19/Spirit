@@ -9,30 +9,54 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Represents a student in the system.
+ */
 @Setter
 @Getter
 @Entity
 @Table(name = "student", schema = "public")
 public class Student implements Serializable {
+
+    /**
+     * The unique ID of the student.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "studentid", length = 64, nullable = false)
     private long studentID;
+
+    /**
+     * The user account associated with the student.
+     */
     @OneToOne
     @JoinColumn(name = "userid", nullable = false, unique = true)
     private User user;
+
+    /**
+     * The last name of the student.
+     */
     @Basic
     @Column(name = "nachname", length = 128, nullable = false)
     private String lastName;
+
+    /**
+     * The date of birth of the student.
+     */
     @Basic
     @Column(name = "geburtsdatum")
     private LocalDate birthdate;
-    @Basic
-    @Column(name = "lebenslauf", columnDefinition = "TEXT")
-    private String resume;
+
+    /**
+     * The first name of the student.
+     */
     @Basic
     @Column(name = "vorname", length = 128, nullable = false)
     private String firstName;
+
+    /**
+     * The skills of the student, stored as a string.
+     */
     @Column(name="skills")
     private String skills;
 
