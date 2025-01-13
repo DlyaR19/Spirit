@@ -115,6 +115,12 @@ public class RegisterUtils {
                 return false;
             }
         }
+
+        // Zusätzlich: keine doppelten Punkte oder @
+        if (email.contains("..") || email.contains("@@")) {
+            return false;
+        }
+
         return true;
     }
 

@@ -30,6 +30,9 @@ public class MarkdownConverter {
      * @return Der resultierende HTML-String
      */
     public String convertToHtml(String markdown) {
+        if (markdown == null) {
+            throw new NullPointerException("Markdown input cannot be null");
+        }
         return renderer.render(parser.parse(markdown));
     }
 
