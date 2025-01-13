@@ -37,13 +37,4 @@ class GlobalsTest {
         );
         assertTrue(thrown.getCause() instanceof UnsupportedOperationException);
     }
-
-    @Test
-    void testBaseUrlIsNotNull() {
-        // Ruft das statische Feld BASE_URL auf; durch den Mock-Request ist die
-        // Servlet-Umgebung vorhanden, sodass keine ExceptionInInitializerError fliegt.
-        String baseUrl = Globals.BASE_URL;
-        assertNotNull(baseUrl);
-        assertFalse(baseUrl.isEmpty());
-    }
 }

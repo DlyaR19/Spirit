@@ -326,7 +326,6 @@ public class SuchView extends Composite<VerticalLayout> {
         });
 
         Button applyButton = new Button("Bewerben", event -> {
-
             // Validate that both CV and cover letter are uploaded
             if (!cvUploaded.get() || !coverLetterUploaded.get()) {
                 Notification.show("Bitte laden Sie sowohl Lebenslauf als auch Anschreiben als PDF-Dateien hoch",
@@ -359,7 +358,9 @@ public class SuchView extends Composite<VerticalLayout> {
                         .addThemeVariants(NotificationVariant.LUMO_ERROR);
             }
         });
-        dialogLayout.add(title, coverLetterUpload, coverLetterFileNameDisplay, cvUpload, cvFileNameDisplay, applyButton);
+        Button closeButton = new Button("Abbrechen", event -> dialog.close());
+        HorizontalLayout buttonLayout = new HorizontalLayout(applyButton, closeButton);
+        dialogLayout.add(title, coverLetterUpload, coverLetterFileNameDisplay, cvUpload, cvFileNameDisplay, buttonLayout);
         dialog.add(dialogLayout);
         dialog.open();
     }

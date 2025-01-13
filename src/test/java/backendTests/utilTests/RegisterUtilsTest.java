@@ -5,6 +5,8 @@ import com.vaadin.flow.component.UI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -40,7 +42,8 @@ class RegisterUtilsTest {
                 "Mustermann",  // lastName
                 "test@test.de",// email
                 "Abc12345",    // password
-                "Abc12345"     // passwordConfirmation
+                "Abc12345",     // passwordConfirmation
+                LocalDate.of(2000, 1, 1) // birthDate
         );
         assertTrue(result);
     }
@@ -53,7 +56,8 @@ class RegisterUtilsTest {
                 "Mustermann",
                 "test@test.de",
                 "Abc12345",
-                "Abc12345"
+                "Abc12345",
+                LocalDate.of(2000, 1, 1) // birthDate
         );
         assertFalse(result);
     }
@@ -66,7 +70,8 @@ class RegisterUtilsTest {
                 "Mustermann",
                 "test@test.de",
                 "Abc12345",
-                "WrongPwd"
+                "WrongPwd",
+                LocalDate.of(2000, 1, 1) // birthDate
         );
         assertFalse(result);
     }

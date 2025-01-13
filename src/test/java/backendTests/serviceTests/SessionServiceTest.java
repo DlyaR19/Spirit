@@ -6,7 +6,7 @@ import com.spirit.application.dto.UserDTO;
 import com.spirit.application.entitiy.Student;
 import com.spirit.application.entitiy.Unternehmen;
 import com.spirit.application.entitiy.User;
-import com.spirit.application.entitiy.Profile;
+import com.spirit.application.entitiy.Profil;
 import com.spirit.application.service.SecurityService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
@@ -65,13 +65,13 @@ class SessionServiceTest {
 
     @Test
     void testGetCurrentUser() {
-        Profile profile = new Profile();
-        profile.setProfileID(1L);
+        Profil profile = new Profil();
+        profile.setProfilID(1L);
 
         User user = new User();
         user.setUserID(1L);
         user.setUsername("testuser");
-        user.setProfile(profile);
+        user.setProfil(profile);
 
         UserDTO userDTO = new UserDTO(user);
 
@@ -85,12 +85,12 @@ class SessionServiceTest {
 
     @Test
     void testGetCurrentStudent() {
-        Profile profile = new Profile();
-        profile.setProfileID(2L);
+        Profil profile = new Profil();
+        profile.setProfilID(2L);
 
         User user = new User();
         user.setUserID(2L);
-        user.setProfile(profile);
+        user.setProfil(profile);
 
         Student student = new Student();
         student.setStudentID(1L);
@@ -108,12 +108,12 @@ class SessionServiceTest {
 
     @Test
     void testGetCurrentUnternehmen() {
-        Profile profile = new Profile();
-        profile.setProfileID(3L);
+        Profil profile = new Profil();
+        profile.setProfilID(3L);
 
         User user = new User();
         user.setUserID(3L);
-        user.setProfile(profile);
+        user.setProfil(profile);
 
         Unternehmen unternehmen = new Unternehmen();
         unternehmen.setUnternehmenID(2L);
@@ -131,13 +131,13 @@ class SessionServiceTest {
 
     @Test
     void testGetUserRole() {
-        Profile profile = new Profile();
-        profile.setProfileID(4L);
+        Profil profile = new Profil();
+        profile.setProfilID(4L);
 
         User user = new User();
         user.setUserID(4L);
         user.setUsername("testuser");
-        user.setProfile(profile);
+        user.setProfil(profile);
 
         UserDTO userDTO = new UserDTO(user);
 

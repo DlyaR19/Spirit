@@ -36,7 +36,7 @@ public class Globals {
         public static final String DASHBOARD = "dashboard";
         public static final String CHATLIST = "chatlist";
         public static final String CHAT = "chat";
-        public static final String PROFIL_SEARCH = "profilsearch";
+        public static final String PROFIL_SUCHE = "profilsuche";
 
         private Pages() {
             throw new UnsupportedOperationException(EXCEPTION_1);

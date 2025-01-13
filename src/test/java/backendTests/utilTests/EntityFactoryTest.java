@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -39,7 +40,7 @@ class EntityFactoryTest {
     @Test
     void testCreateProfile() {
         // 
-        Profile profile = serviceUnderTest.createProfile(); // EntityFactory erstellt Profile [1]
+        Profil profile = serviceUnderTest.createProfile(); // EntityFactory erstellt Profile [1]
 
         // 
         assertNotNull(profile);
@@ -48,7 +49,7 @@ class EntityFactoryTest {
     @Test
     void testCreateUser() {
         
-        Profile profile = new Profile();
+        Profil profile = new Profil();
         String username = "testuser";
         String password = "secret";
         String email = "test@example.com";
@@ -58,7 +59,7 @@ class EntityFactoryTest {
 
 
         assertNotNull(user);
-        assertEquals(profile, user.getProfile());
+        assertEquals(profile, user.getProfil());
         assertEquals(username, user.getUsername());
         assertEquals(password, user.getPassword());
         assertEquals(email, user.getEmail());
@@ -71,9 +72,10 @@ class EntityFactoryTest {
         User user = new User();
         String lastName = "Mustermann";
         String firstName = "Max";
+        LocalDate birthDate = LocalDate.of(2000, 1, 1);
 
 
-        Student student = serviceUnderTest.createStudent(user, lastName, firstName); // EntityFactory erstellt Student [1]
+        Student student = serviceUnderTest.createStudent(user, lastName, firstName, birthDate); // EntityFactory erstellt Student [1]
 
 
         assertNotNull(student);
@@ -129,9 +131,10 @@ class EntityFactoryTest {
         JobPost jobPost = new JobPost();
         Student student = new Student();
         String base64Letter = "ZXJlcyBlaW4gQmFzZTY0LXN0cmluZw==";
+        String base64CV = "ZXJlcyBlaW4gQmFzZTY0LXN0cmluZw==";
 
 
-        Bewerbung bewerbung = serviceUnderTest.createBewerbung(jobPost, student, base64Letter); // EntityFactory erstellt Bewerbung [1]
+        Bewerbung bewerbung = serviceUnderTest.createBewerbung(jobPost, student, base64Letter, base64CV); // EntityFactory erstellt Bewerbung [1]
 
 
         assertNotNull(bewerbung);

@@ -113,12 +113,12 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
         });
 
         messageInput = new TextArea();
-        messageInput.setPlaceholder("Enter message...");
+        messageInput.setPlaceholder("Nachricht eingeben...");
         messageInput.setWidthFull();
         messageInput.getStyle().set("border-radius", "8px")
                 .set("padding", "10px");
 
-        Button sendButton = new Button("Send", e -> sendMessage());
+        Button sendButton = new Button("Senden", e -> sendMessage());
         sendButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         sendButton.getStyle().set("background", "var(--lumo-primary-color)")
                 .set("color", "white");

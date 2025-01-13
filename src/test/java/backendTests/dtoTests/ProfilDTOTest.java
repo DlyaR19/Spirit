@@ -41,7 +41,8 @@ class ProfilDTOTest {
 
         // Erwarteter String
         String expectedString = "ProfilDTO{profilID=2, avatarUrl='https://example.com/avatar2.png', " +
-                "profileDescription='Eine andere Profilbeschreibung.', webseite='https://example2.com'}";
+                "profileDescription='Eine andere Profilbeschreibung.', webseite='https://example2.com', " +
+                "avgRating=0.0, totalRating=0}";
 
         // Test
         assertEquals(expectedString, dto.toString());

@@ -94,7 +94,7 @@ public class ChatListView extends VerticalLayout {
      */
     private Component createHeader() {
         H2 title = new H2("Chats");
-        Button newChatBtn = new Button("New Chat", VaadinIcon.PLUS.create());
+        Button newChatBtn = new Button("Neuer Chat", VaadinIcon.PLUS.create());
         newChatBtn.addClickListener(e -> showUserSelectionDialog());
 
         HorizontalLayout header = new HorizontalLayout(title, newChatBtn);
@@ -109,7 +109,7 @@ public class ChatListView extends VerticalLayout {
      */
     private void showUserSelectionDialog() {
         Dialog dialog = new Dialog();
-        dialog.setHeaderTitle("Start New Chat");
+        dialog.setHeaderTitle("Neuen Chat starten");
 
         // Create a user grid
         Grid<User> userGrid = new Grid<>();

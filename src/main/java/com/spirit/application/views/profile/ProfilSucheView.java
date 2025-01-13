@@ -1,13 +1,11 @@
 package com.spirit.application.views.profile;
 
 import com.spirit.application.dto.UserDTO;
-import com.spirit.application.entitiy.User;
 import com.spirit.application.service.ProfilService;
 import com.spirit.application.service.UserService;
 import com.spirit.application.util.Globals;
 import com.spirit.application.util.MarkdownConverter;
 import com.spirit.application.views.AppView;
-import com.spirit.application.views.MainLayout;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -25,13 +23,12 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.RolesAllowed;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * View für die Profilsuche
  */
 @RolesAllowed({Globals.Roles.STUDENT, Globals.Roles.UNTERNEHMEN})
-@Route(value = Globals.Pages.PROFIL_SEARCH, layout = AppView.class)
+@Route(value = Globals.Pages.PROFIL_SUCHE, layout = AppView.class)
 public class ProfilSucheView extends VerticalLayout {
     private final ProfilService profilService;
     private final UserService userService;
