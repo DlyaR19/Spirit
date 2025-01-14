@@ -14,7 +14,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.notification.Notification;
@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -55,16 +56,12 @@ public class SuchView extends Composite<VerticalLayout> {
     private final transient SessionService sessionService;
     private final transient BewerbungService bewerbungService;
     private final transient JobPostService jobPostService;
-    private final String[] comboBoxItems = {
-            "Minijob", "Teilzeit", "Vollzeit", "Praktikum", "Bachelorprojekt",
-            "Masterprojekt", "Büro", "Homeoffice",
-    };
 
     /**
      * Constructor for initializing the search view.
      * It fetches all available job posts and updates the list displayed on the page.
-     * @param jobPostService service to interact with job posts
-     * @param sessionService service for session management
+     * @param jobPostService   service to interact with job posts
+     * @param sessionService   service for session management
      * @param bewerbungService service for managing applications
      */
     @Autowired
@@ -78,77 +75,147 @@ public class SuchView extends Composite<VerticalLayout> {
 
         jobPostService.getAllJobPost().forEach(jobpost -> jobPosts.add(new JobPostDTO(jobpost)));
 
-
         updateJobPostList(jobPosts);
+
+        // Dynamische Werte für die Filter
+        List<String> employmentTypes = jobPostService.getUniqueEmploymentTypes();
+        List<String> locationTypes = jobPostService.getUniqueLocations();
+        List<String> companyNameTypes = jobPostService.getUniqueCompanyNameTypes();
+        List<String> jobTitleTypes = jobPostService.getUniqueJobTitleTypes();
+
+        // Sortieren der Listen
+        employmentTypes.sort(String::compareToIgnoreCase);
+        locationTypes.sort(String::compareToIgnoreCase);
+        companyNameTypes.sort(String::compareToIgnoreCase);
+        jobTitleTypes.sort(String::compareToIgnoreCase);
+
+        HorizontalLayout searchBarLayout = searchbar(employmentTypes, locationTypes, companyNameTypes, jobTitleTypes);
+
         getContent().getStyle().setAlignItems(Style.AlignItems.CENTER);
-        getContent().add(searchbar(), layout);
+        getContent().add(searchBarLayout, layout);
     }
 
     /**
-     * Creates and returns the search bar layout for filtering job posts.
-     * Includes a combo box for employment type and a text field for search terms.
-     * @return the search bar layout
+     * Creates the search bar for the students which includes a text search field and filter selections.
+     * @param employmentTypes  the list of unique employment types.
+     * @param locationTypes    the list of unique location types.
+     * @param companyNameTypes the list of unique company names.
+     * @param jobTitleTypes    the list of unique job titles.
+     * @return A horizontal layout containing the search bar with filters.
      */
-    public HorizontalLayout searchbar() {
-        HorizontalLayout search = new HorizontalLayout();
-        ComboBox<String> employmentType = new ComboBox<>();
-        employmentType.setItems(comboBoxItems);
-        Button searchButton = new Button("Suche");
-        Button clearSearch = new Button("Neue Suche");
+    public HorizontalLayout searchbar(List<String> employmentTypes, List<String> locationTypes, List<String> companyNameTypes, List<String> jobTitleTypes) {
+        VerticalLayout searchBarContainer = new VerticalLayout();
+        searchBarContainer.setWidth("100%");
+        searchBarContainer.setSpacing(false);
+        searchBarContainer.getStyle().set("align-items", "stretch");
+
+        HorizontalLayout topRow = new HorizontalLayout();
+        topRow.setWidth("100%");
+
         TextField searchTextField = new TextField();
-        searchTextField.setPlaceholder("Standort, Beschreibung, usw.");
+        searchTextField.setPlaceholder("Standort | Beschreibung | ...");
         searchTextField.setWidth("100%");
-        search.setWidth("100%");
-        search.setMaxWidth("700px");
-        search.add(employmentType, searchTextField, searchButton, clearSearch);
+
+        Button searchButton = new Button("Suche");
+        searchButton.setWidth("150px");
+
+        Button clearSearch = new Button("Zurücksetzen");
+        clearSearch.setWidth("150px");
+
+        topRow.add(searchTextField, searchButton, clearSearch);
+        topRow.setFlexGrow(1, searchTextField);
+
+        HorizontalLayout bottomRow = new HorizontalLayout();
+        bottomRow.setWidth("100%");
+        bottomRow.getStyle().set("flex-wrap", "wrap");
+
+        MultiSelectComboBox<String> employmentType = new MultiSelectComboBox<>("Anstellungsart");
+        employmentType.setPlaceholder("Teilzeit | Vollzeit | ...");
+        employmentType.setWidth("100%");
+        employmentType.setItems(employmentTypes);
+
+        MultiSelectComboBox<String> locationType = new MultiSelectComboBox<>("Standort");
+        locationType.setPlaceholder("Bonn | Köln | ...");
+        locationType.setWidth("100%");
+        locationType.setItems(locationTypes);
+
+        MultiSelectComboBox<String> companyNameType = new MultiSelectComboBox<>("Unternehmen");
+        companyNameType.setPlaceholder("Telekom | DHL | ...");
+        companyNameType.setWidth("100%");
+        companyNameType.setItems(companyNameTypes);
+
+        MultiSelectComboBox<String> jobTitleType = new MultiSelectComboBox<>("Jobtitel");
+        jobTitleType.setPlaceholder("IT-Security | IT-Support | ...");
+        jobTitleType.setWidth("100%");
+        jobTitleType.setItems(jobTitleTypes);
+
+        bottomRow.add(employmentType, locationType, companyNameType, jobTitleType);
+        bottomRow.setFlexGrow(1, employmentType, locationType, companyNameType, jobTitleType);
+
+        searchBarContainer.add(topRow, bottomRow);
+
         searchButton.addClickListener(event -> {
             String searchText = searchTextField.getValue();
-            String selectedAnstellungsart = employmentType.getValue();
-            performSearch(searchText, selectedAnstellungsart);
+            Set<String> selectedEmploymentTypes = employmentType.getSelectedItems();
+            Set<String> selectedLocationTypes = locationType.getSelectedItems();
+            Set<String> selectedCompanyNameTypes = companyNameType.getSelectedItems();
+            Set<String> selectedJobTitleTypes = jobTitleType.getSelectedItems();
+            performSearch(searchText, selectedEmploymentTypes, selectedLocationTypes, selectedCompanyNameTypes, selectedJobTitleTypes);
         });
+
         clearSearch.addClickListener(event -> {
             searchTextField.clear();
             employmentType.clear();
+            locationType.clear();
+            companyNameType.clear();
+            jobTitleType.clear();
+
+            searchButton.click();
         });
-        return search;
+
+        return new HorizontalLayout(searchBarContainer);
     }
 
     /**
-     * Performs a search for job posts based on the provided search text and employment type.
-     * @param searchText the text to search for (location, description, etc.)
-     * @param anstellungsart the selected employment type
+     * Executes the search using the provided filters and search text.
+     * @param searchText       the text to search in the job posts.
+     * @param employmentTypes  the selected employment types.
+     * @param locationTypes    the selected location types.
+     * @param companyNameTypes the selected company names.
+     * @param jobTitleTypes    the selected job titles.
      */
-    private void performSearch(String searchText, String anstellungsart) {
+    private void performSearch(String searchText, Set<String> employmentTypes, Set<String> locationTypes, Set<String> companyNameTypes, Set<String> jobTitleTypes) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
-                .filter(jobPost -> (anstellungsart == null || anstellungsart.isEmpty() || jobPost.getAnstellungsart().equalsIgnoreCase(anstellungsart)) &&
+                .filter(jobPost -> (employmentTypes.isEmpty() || employmentTypes.contains(jobPost.getAnstellungsart())) &&
+                        (locationTypes.isEmpty() || locationTypes.contains(jobPost.getStandort())) &&
+                        (companyNameTypes.isEmpty() || companyNameTypes.contains(jobPost.getUnternehmen().getName())) &&
+                        (jobTitleTypes.isEmpty() || jobTitleTypes.contains(jobPost.getTitel())) &&
                         (searchText == null || searchText.isEmpty() || jobPostMatchesSearchText(jobPost, searchText)))
                 .toList();
+
         updateJobPostList(searchedJobPosts);
     }
 
     /**
-     * Checks whether a job post matches the provided search text.
-     * @param jobPost the job post to check
-     * @param searchText the search text to match
-     * @return true if the job post matches the search criteria, false otherwise
+     * Checks if a job post matches the provided search text.
+     * @param jobPost    the job post to check.
+     * @param searchText the search text to compare against.
+     * @return true if the job post matches the search text, false otherwise.
      */
     private boolean jobPostMatchesSearchText(JobPostDTO jobPost, String searchText) {
         return jobPost.getTitel().toLowerCase().contains(searchText.toLowerCase()) ||
                 jobPost.getBeschreibung().toLowerCase().contains(searchText.toLowerCase()) ||
-                jobPost.getUnternehmen().getName().toLowerCase().contains(searchText.toLowerCase())
-                || jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
+                jobPost.getUnternehmen().getName().toLowerCase().contains(searchText.toLowerCase()) ||
+                jobPost.getStandort().toLowerCase().contains(searchText.toLowerCase());
     }
 
     /**
-     * Updates the displayed list of job posts.
-     * @param jobPostToDisplay the job posts to display
+     * Updates the displayed job posts by refreshing the layout with the provided job posts.
+     * @param jobPostToDisplay the list of job posts to display.
      */
     private void updateJobPostList(List<JobPostDTO> jobPostToDisplay) {
         layout.removeAll();
-        jobPostToDisplay.forEach(jobPostDTO -> {
-            layout.add(createCard(jobPostDTO));
-        });
-
+        jobPostToDisplay.forEach(jobPostDTO -> layout.add(createCard(jobPostDTO)));
     }
 
     /**
@@ -346,11 +413,11 @@ public class SuchView extends Composite<VerticalLayout> {
                         String base64CoverLetter = Base64.getEncoder().encodeToString(coverLetterBytes);
 
                         bewerbungService.saveBewerbung(entityFactory.createBewerbung(jobPost.getJobPost(),
-                            sessionService.getCurrentStudent().getStudent(), base64CoverLetter, base64CV));
+                                sessionService.getCurrentStudent().getStudent(), base64CoverLetter, base64CV));
                         Notification.show("Bewerbung erfolgreich eingereicht", 3000, Notification.Position.TOP_CENTER)
-                            .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                                .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
                         dialog.close();
-                }
+                    }
                 }
             } catch (Exception e) {
                 Notification.show("Fehler beim Hochladen der Dokumente: " + e.getMessage(),
