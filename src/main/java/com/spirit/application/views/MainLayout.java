@@ -62,6 +62,7 @@ public class MainLayout extends AppLayout {
         Image logo = new Image("https://i.ibb.co/YWqXFWz/Erstelle-ein-Logo-mit-Titel-Spirit-f-r-mein-Software-Engineering-Projekt.jpg", "Spirit Logo"); // Use your actual logo URL here
         logo.setWidth("40px"); // Adjust the size of the logo as needed
         logo.addClassNames(LumoUtility.Margin.NONE, LumoUtility.Padding.Horizontal.SMALL); // Adjust spacing
+        logo.getStyle().set("cursor", "pointer");
         logo.addClickListener(e -> {
             getUI().ifPresent(ui -> ui.navigate("/"));
         });

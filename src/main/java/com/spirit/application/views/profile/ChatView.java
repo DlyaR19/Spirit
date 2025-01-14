@@ -9,9 +9,7 @@ import com.spirit.application.service.ChatService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
 import com.spirit.application.views.AppView;
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.DetachEvent;
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -22,6 +20,7 @@ import com.vaadin.flow.component.messages.MessageListItem;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.component.notification.Notification;
 import jakarta.annotation.security.RolesAllowed;
@@ -45,7 +44,7 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
     private final UserRepository userRepository;
 
     private MessageList messageList;
-    private TextArea messageInput;
+    private TextField messageInput;
     private ComboBox<User> userSelect;
     private User selectedUser;
     private Consumer<ChatMessageDTO> messageListener;
@@ -112,11 +111,13 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
             refreshMessages();
         });
 
-        messageInput = new TextArea();
+        messageInput = new TextField();
         messageInput.setPlaceholder("Nachricht eingeben...");
         messageInput.setWidthFull();
         messageInput.getStyle().set("border-radius", "8px")
                 .set("padding", "10px");
+
+        messageInput.addKeyPressListener(Key.ENTER, e -> sendMessage());
 
         Button sendButton = new Button("Senden", e -> sendMessage());
         sendButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -139,7 +140,6 @@ public class ChatView extends VerticalLayout implements HasUrlParameter<String> 
      */
     private void setupMessageListener() {
         messageListener = message -> {
-            UserDTO currentUser = sessionService.getCurrentUser();
             if (selectedUser != null &&
                     (message.getSender().getUserID() == selectedUser.getUserID() ||
                             message.getRecipient().getUserID() == selectedUser.getUserID())) {
