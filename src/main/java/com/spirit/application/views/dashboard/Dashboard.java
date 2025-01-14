@@ -84,20 +84,18 @@ public class Dashboard extends Composite<VerticalLayout> {
 
     /**
      * Creates the search bar for the dashboard which includes a text search field and filter selections.
-     * @param employmentTypes the list of unique employment types.
-     * @param locationTypes the list of unique location types.
+     * @param employmentTypes  the list of unique employment types.
+     * @param locationTypes    the list of unique location types.
      * @param companyNameTypes the list of unique company names.
-     * @param jobTitleTypes the list of unique job titles.
+     * @param jobTitleTypes    the list of unique job titles.
      * @return A horizontal layout containing the search bar with filters.
      */
     public HorizontalLayout searchbar(List<String> employmentTypes, List<String> locationTypes, List<String> companyNameTypes, List<String> jobTitleTypes) {
-        // Haupt-Container für die Suchleiste
         VerticalLayout searchBarContainer = new VerticalLayout();
         searchBarContainer.setWidth("100%");
         searchBarContainer.setSpacing(false);
         searchBarContainer.getStyle().set("align-items", "stretch");
 
-        // Obere Zeile mit Textfeld und Buttons
         HorizontalLayout topRow = new HorizontalLayout();
         topRow.setWidth("100%");
 
@@ -114,37 +112,35 @@ public class Dashboard extends Composite<VerticalLayout> {
         topRow.add(searchTextField, searchButton, clearSearch);
         topRow.setFlexGrow(1, searchTextField);
 
-        // Untere Zeile mit Filtern
         HorizontalLayout bottomRow = new HorizontalLayout();
-        bottomRow.setWidth("1200px");
+        bottomRow.setWidth("100%");
+        bottomRow.getStyle().set("flex-wrap", "wrap");
 
         MultiSelectComboBox<String> employmentType = new MultiSelectComboBox<>("Anstellungsart");
         employmentType.setPlaceholder("Teilzeit | Vollzeit | ...");
-        employmentType.setWidth("300px");
+        employmentType.setWidth("100%");
         employmentType.setItems(employmentTypes);
 
         MultiSelectComboBox<String> locationType = new MultiSelectComboBox<>("Standort");
         locationType.setPlaceholder("Bonn | Köln | ...");
-        locationType.setWidth("300px");
+        locationType.setWidth("100%");
         locationType.setItems(locationTypes);
 
         MultiSelectComboBox<String> companyNameType = new MultiSelectComboBox<>("Unternehmen");
         companyNameType.setPlaceholder("Telekom | DHL | ...");
-        companyNameType.setWidth("300px");
+        companyNameType.setWidth("100%");
         companyNameType.setItems(companyNameTypes);
 
         MultiSelectComboBox<String> jobTitleType = new MultiSelectComboBox<>("Jobtitel");
         jobTitleType.setPlaceholder("IT-Security | IT-Support | ...");
-        jobTitleType.setWidth("300px");
+        jobTitleType.setWidth("100%");
         jobTitleType.setItems(jobTitleTypes);
 
         bottomRow.add(employmentType, locationType, companyNameType, jobTitleType);
         bottomRow.setFlexGrow(1, employmentType, locationType, companyNameType, jobTitleType);
 
-        // Container füllen
         searchBarContainer.add(topRow, bottomRow);
 
-        // Such-Button Logik
         searchButton.addClickListener(event -> {
             String searchText = searchTextField.getValue();
             Set<String> selectedEmploymentTypes = employmentType.getSelectedItems();
@@ -154,7 +150,6 @@ public class Dashboard extends Composite<VerticalLayout> {
             performSearch(searchText, selectedEmploymentTypes, selectedLocationTypes, selectedCompanyNameTypes, selectedJobTitleTypes);
         });
 
-        // Clear-Button Logik
         clearSearch.addClickListener(event -> {
             searchTextField.clear();
             employmentType.clear();
@@ -170,11 +165,11 @@ public class Dashboard extends Composite<VerticalLayout> {
 
     /**
      * Executes the search using the provided filters and search text.
-     * @param searchText the text to search in the job posts.
-     * @param employmentTypes the selected employment types.
-     * @param locationTypes the selected location types.
+     * @param searchText       the text to search in the job posts.
+     * @param employmentTypes  the selected employment types.
+     * @param locationTypes    the selected location types.
      * @param companyNameTypes the selected company names.
-     * @param jobTitleTypes the selected job titles.
+     * @param jobTitleTypes    the selected job titles.
      */
     private void performSearch(String searchText, Set<String> employmentTypes, Set<String> locationTypes, Set<String> companyNameTypes, Set<String> jobTitleTypes) {
         List<JobPostDTO> searchedJobPosts = jobPosts.stream()
@@ -190,7 +185,7 @@ public class Dashboard extends Composite<VerticalLayout> {
 
     /**
      * Checks if a job post matches the provided search text.
-     * @param jobPost the job post to check.
+     * @param jobPost    the job post to check.
      * @param searchText the search text to compare against.
      * @return true if the job post matches the search text, false otherwise.
      */
