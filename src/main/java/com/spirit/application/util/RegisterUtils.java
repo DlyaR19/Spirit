@@ -45,7 +45,6 @@ public class RegisterUtils {
             return false;
         }
         if (!isValidBirthdate(birth)){
-            Notification.show("Geburtsdatum darf nicht in der Zukunft liegen!");
             return false;
         }
         return checkDefaultInput(username, email, password, passwordConfirmation);
@@ -235,7 +234,22 @@ public class RegisterUtils {
      * @param dateTime the birthdate to validate
      * @return true if the birthdate is valid, false otherwise
      */
-    private static boolean isValidBirthdate(LocalDate dateTime){
-        return !dateTime.isAfter(LocalDate.now(ZoneId.systemDefault()));
+    private static boolean isValidBirthdate(LocalDate dateTime) {
+        if (dateTime == null) {
+            Notification.show("Bitte geben Sie ein gültiges Geburtsdatum ein.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return false;
+        }
+        LocalDate today = LocalDate.now(ZoneId.systemDefault());
+        if (dateTime.isAfter(today)){
+            Notification.show("Das Geburtsdatum darf nicht in der Zukunft liegen.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return false;
+        } else if (dateTime.isBefore(LocalDate.of(1900, 1, 1))){
+            Notification.show("Das Geburtsdatum darf nicht vor 1900 liegen.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return false;
+        } else if (dateTime.isAfter(today.minusYears(16))){
+            Notification.show("Sie müssen mindestens 16 Jahre alt sein.", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_ERROR);
+            return false;
+        }
+        return true;
     }
 }

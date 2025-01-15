@@ -10,7 +10,7 @@ com.spirit.application.views
 com.spirit.application.views.dashboard
 com.spirit.application.views.login
 com.spirit.application.views.main
-com.spirit.application.views.profil
-com.spirit.application.views.profil.Student
-com.spirit.application.views.profil.Unternehmen
+com.spirit.application.views.profile
+com.spirit.application.views.profile.Student
+com.spirit.application.views.profile.Unternehmen
 com.spirit.application.views.register

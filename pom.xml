@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/project/bf8238bc-3da0-4f4c-84c8-3f70fd137d80 -->
     <groupId>com.spirit.bewerbung</groupId>
@@ -9,7 +9,7 @@
     <name>spirit</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-<!--    <packaging>war</packaging>-->
+    <!--    <packaging>war</packaging>-->
 
     <properties>
         <java.version>23</java.version>
@@ -59,11 +59,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.parttio</groupId>-->
-<!--            <artifactId>line-awesome</artifactId>-->
-<!--            <version>2.1.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.parttio</groupId>-->
+        <!--            <artifactId>line-awesome</artifactId>-->
+        <!--            <version>2.1.0</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -118,10 +118,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.36</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>com.vladsch.flexmark</groupId>
             <artifactId>flexmark</artifactId>
@@ -163,7 +161,7 @@
                             <file>${project.basedir}/eclipse-formatter.xml</file>
                         </eclipse>
                     </java>
-                    <!-- Uncomment to format TypeScript files 
+                    <!-- Uncomment to format TypeScript files
                         <typescript>
                         <includes>
                             <include>src/main/frontend/**/*.ts</include>
@@ -196,7 +194,7 @@
     </build>
 
     <profiles>
-        <profil>
+        <profile>
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
             <dependencies>
@@ -229,9 +227,9 @@
                     </plugin>
                 </plugins>
             </build>
-        </profil>
+        </profile>
 
-        <profil>
+        <profile>
             <id>it</id>
             <build>
                 <plugins>
@@ -257,25 +255,25 @@
                     </plugin>
 
                     <!-- Runs the integration tests (*IT) after the server is started -->
-<!--                    <plugin>-->
-<!--                        <groupId>org.apache.maven.plugins</groupId>-->
-<!--                        <artifactId>maven-failsafe-plugin</artifactId>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <goals>-->
-<!--                                    <goal>integration-test</goal>-->
-<!--                                    <goal>verify</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                        <configuration>-->
-<!--                            <trimStackTrace>false</trimStackTrace>-->
-<!--                            <enableAssertions>true</enableAssertions>-->
-<!--                        </configuration>-->
-<!--                    </plugin>-->
+                    <!--                    <plugin>-->
+                    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+                    <!--                        <artifactId>maven-failsafe-plugin</artifactId>-->
+                    <!--                        <executions>-->
+                    <!--                            <execution>-->
+                    <!--                                <goals>-->
+                    <!--                                    <goal>integration-test</goal>-->
+                    <!--                                    <goal>verify</goal>-->
+                    <!--                                </goals>-->
+                    <!--                            </execution>-->
+                    <!--                        </executions>-->
+                    <!--                        <configuration>-->
+                    <!--                            <trimStackTrace>false</trimStackTrace>-->
+                    <!--                            <enableAssertions>true</enableAssertions>-->
+                    <!--                        </configuration>-->
+                    <!--                    </plugin>-->
                 </plugins>
             </build>
-        </profil>
+        </profile>
 
     </profiles>
 </project>
