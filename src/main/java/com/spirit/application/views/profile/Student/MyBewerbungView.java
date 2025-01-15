@@ -15,6 +15,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.dom.Style;
@@ -63,6 +64,12 @@ public class MyBewerbungView extends Composite<VerticalLayout> {
         }
         for (BewerbungDTO bewerbung : bewerbungList) {
             layout.add(bewerbungCard(bewerbung));
+        }
+        if(bewerbungList.isEmpty()) {
+            VerticalLayout noJobPosts = new VerticalLayout();
+            noJobPosts.add(new H4("Keine Bewerbungen gefunden."));
+            noJobPosts.setAlignItems(FlexComponent.Alignment.CENTER);
+            layout.add(noJobPosts);
         }
     }
 

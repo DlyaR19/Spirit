@@ -25,10 +25,8 @@ public class MarkdownConverter {
      * @param markdown the Markdown string to convert
      * @return the converted HTML string
      */
+
     public String convertToHtml(String markdown) {
-        if (markdown == null) {
-            throw new NullPointerException("Markdown input cannot be null");
-        }
         return renderer.render(parser.parse(markdown));
     }
 

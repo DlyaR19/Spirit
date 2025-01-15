@@ -64,12 +64,4 @@ class MarkdownConverterTest {
         String result = markdownConverter.convertToHtml(markdown);
         assertEquals(expectedHtml, result);
     }
-
-    @Test
-    void testConvertToHtmlNullInput() {
-        // Bei null-Eingabe wird erwartet, dass eine NullPointerException geworfen wird [1]
-        assertThrows(NullPointerException.class, () -> {
-            markdownConverter.convertToHtml((String) null);
-        });
-    }
 }

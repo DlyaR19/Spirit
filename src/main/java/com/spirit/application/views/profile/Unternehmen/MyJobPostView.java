@@ -176,15 +176,20 @@ public class MyJobPostView extends Composite<VerticalLayout> implements AfterNav
      */
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
-
         List<JobPostDTO> jobPosts = jobPostService.getJobPostByUnternehmenId(
                         sessionService.getCurrentUnternehmen().getUnternehmenID()
                 )
                 .stream()
                 .map(MyJobPostView::getJobPost)
                 .collect(Collectors.toList());
-        layout.removeAll();
-        layout.add(createJobPostCards(jobPosts));
+        if(jobPosts.isEmpty()) {
+            VerticalLayout noJobPosts = new VerticalLayout();
+            noJobPosts.add(new H4("Keine Stellenanzeigen gefunden."));
+            noJobPosts.setAlignItems(FlexComponent.Alignment.CENTER);
+            layout.add(noJobPosts);
+        } else {
+            layout.removeAll();
+            layout.add(createJobPostCards(jobPosts));
+        }
     }
-
 }

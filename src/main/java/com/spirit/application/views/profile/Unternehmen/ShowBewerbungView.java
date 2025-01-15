@@ -252,23 +252,32 @@ public class ShowBewerbungView extends Composite<VerticalLayout> implements Afte
      * @param unternehmenId The ID of the currently logged-in company.
      */
     private void loadAndDisplayBerwerbung(Long unternehmenId) {
+
         List<JobPost> jobPosts = jobPostService.getJobPostByUnternehmenId(unternehmenId);
-        layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
-        for (JobPost jobPost : jobPosts) {
-            JobPostDTO jobPostDTO = new JobPostDTO(jobPost);
-            Long bewerbungsAnzahl = bewerbungService.countBewerbungByJobPostId(jobPost.getJobPostID());
-            if (bewerbungsAnzahl == 0) {
-                H4 jobPostTitle = new H4(jobPost.getTitel() + " (Keine Bewerbungen)");
-                layout.add(jobPostTitle);
-            } else {
-                H4 jobPostTitle = new H4(jobPost.getTitel() + " (" + bewerbungsAnzahl + " Bewerbungen)");
-                layout.add(jobPostTitle);
-            }
-            List<Bewerbung> bewerbungs = bewerbungService.getAllBewerbung(jobPost.getJobPostID());
-            for (Bewerbung bewerbung : bewerbungs) {
-                BewerbungDTO bewerbungDTO = new BewerbungDTO(bewerbung);
-                bewerbungList.add(bewerbungDTO);
-                layout.add(studentCard(bewerbungDTO, jobPostDTO));
+        if(jobPosts.isEmpty()) {
+            VerticalLayout noJobPosts = new VerticalLayout();
+            noJobPosts.add(new H4("Keine Bewerbungen gefunden."));
+            noJobPosts.setAlignItems(FlexComponent.Alignment.CENTER);
+            layout.add(noJobPosts);
+        }
+        else {
+            layout.getStyle().setAlignItems(Style.AlignItems.CENTER);
+            for (JobPost jobPost : jobPosts) {
+                JobPostDTO jobPostDTO = new JobPostDTO(jobPost);
+                Long bewerbungsAnzahl = bewerbungService.countBewerbungByJobPostId(jobPost.getJobPostID());
+                if (bewerbungsAnzahl == 0) {
+                    H4 jobPostTitle = new H4(jobPost.getTitel() + " (Keine Bewerbungen)");
+                    layout.add(jobPostTitle);
+                } else {
+                    H4 jobPostTitle = new H4(jobPost.getTitel() + " (" + bewerbungsAnzahl + " Bewerbungen)");
+                    layout.add(jobPostTitle);
+                }
+                List<Bewerbung> bewerbungs = bewerbungService.getAllBewerbung(jobPost.getJobPostID());
+                for (Bewerbung bewerbung : bewerbungs) {
+                    BewerbungDTO bewerbungDTO = new BewerbungDTO(bewerbung);
+                    bewerbungList.add(bewerbungDTO);
+                    layout.add(studentCard(bewerbungDTO, jobPostDTO));
+                }
             }
         }
     }
