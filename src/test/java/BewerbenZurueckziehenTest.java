@@ -48,9 +48,9 @@ public class BewerbenZurueckziehenTest {
     public void BewerbungSchreibenZurueckziehen() {
         // Open /login
         driver.get("http://localhost:8080/login");
-        // Log in mit Alligator14 (Student)
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("input-vaadin-text-field-6"))).sendKeys("Alligator14");
-        driver.findElement(By.id("input-vaadin-password-field-7")).sendKeys("Alligator14");
+        // Log in mit Alligator120 (Student)
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("input-vaadin-text-field-7"))).sendKeys("Alligator120");
+        driver.findElement(By.id("input-vaadin-password-field-8")).sendKeys("Alligator120");
         driver.findElement(By.cssSelector("vaadin-button:nth-child(2)")).click();
 
         // job suche und bewerben

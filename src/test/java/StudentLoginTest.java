@@ -35,11 +35,11 @@ public class StudentLoginTest {
 
         //Benutzername-Feld
         WebElement usernameField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("input-vaadin-text-field-7")));
-        usernameField.sendKeys("Alligator14");
+        usernameField.sendKeys("Alligator120");
 
         //Passwort-Feld
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[type='password']")));
-        passwordField.sendKeys("Alligator14");
+        passwordField.sendKeys("Alligator120");
 
         //Login-Button
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("vaadin-button[slot='submit']")));

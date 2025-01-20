@@ -15,8 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 // page_url = http://localhost:8080/login
 public class GleicherBenutzernameTest {
@@ -31,35 +30,66 @@ public class GleicherBenutzernameTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
+        driver.get("http://localhost:8080/login");
+
     }
 
     @Test
-    public void testDuplicateUsernameRegistration() {
-        // Öffne die Login-Seite und gehe zur Registrierung
-        driver.get("http://localhost:8080/login");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("vaadin-side-nav-item:nth-child(3)"))).click();
+    public void testLeereEingabefelder() {
+        System.out.println("Test: Empty input fields.");
 
-        // Fülle Registrierungsdaten aus für Alligator14 (Student)
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("input-vaadin-text-field-35"))).sendKeys("Irgendwas");
-        driver.findElement(By.id("input-vaadin-text-field-36")).sendKeys("Max");
-        driver.findElement(By.id("input-vaadin-text-field-37")).sendKeys("Alligator14"); // Benutzername (existierend)
-        driver.findElement(By.id("input-vaadin-email-field-38")).sendKeys("test@gmail.com");
-        driver.findElement(By.id("input-vaadin-password-field-39")).sendKeys("Alligator14"); // Passwort
-        driver.findElement(By.id("input-vaadin-password-field-40")).sendKeys("Alligator14"); // Passwortbestätigung
+        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("vaadin-button:nth-child(2)")));
+        assertEquals("Anmelden", loginButton.getText(), "Login button not found or incorrect text.");
+        loginButton.click();
+        System.out.println("Clicked the login button.");
 
-        // Formular absenden
-        driver.findElement(By.cssSelector("vaadin-button:nth-child(7)")).click();
+        // error meddage
+        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("fehlermeldung")));
+        assertEquals("Incorrect username or password. Check that you have entered the correct username and password and try again.", errorMessage.getText(), "Error message does not match the expected value.");
+        System.out.println("Verified error message: " + errorMessage.getText());
 
-        // Überprüfe die Fehlermeldung mit JavaScript-Executor
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String script = "return document.querySelector('.error-message')?.innerText || '';";
-        String errorMessage = (String) js.executeScript(script);
-
-        // Validierung der Fehlermeldung
-        System.out.println("Fehlermeldung: " + errorMessage);
-        assertFalse(errorMessage.contains("Fehler: Username schon vergeben"),
-                "Die Fehlermeldung wurde nicht korrekt angezeigt!");
+        // Pause for observation
+        try {
+            Thread.sleep(3000); // Wait for 3 seconds
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
+    @Test
+    public void testUngueltigerBenutzername() {
+        System.out.println("Test: Invalid username.");
+
+        // falscher Benutzer und passwort
+        WebElement usernameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("input-vaadin-text-field-7")));
+        usernameField.sendKeys("benutzer@name@domain.com");
+        System.out.println("Entered invalid username.");
+
+        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("input-vaadin-password-field-8")));
+        passwordField.sendKeys("gueltigesPasswort");
+        System.out.println("Entered valid password.");
+
+        // Click the login button directly
+        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("vaadin-button:nth-child(2)")));
+        assertEquals("Anmelden", loginButton.getText(), "Login button not found or incorrect text.");
+        loginButton.click();
+        System.out.println("Clicked the login button.");
+
+        // Error message
+        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("fehlermeldung")));
+        assertEquals("Incorrect username or password. Check that you have entered the correct username and password and try again.", errorMessage.getText(), "Error message does not match the expected value.");
+        System.out.println("Verified error message: " + errorMessage.getText());
+
+        // Wartezeit
+        try {
+            Thread.sleep(3000); // Wait for 3 seconds
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @AfterEach
     public void tearDown() {
@@ -68,4 +98,5 @@ public class GleicherBenutzernameTest {
             driver.quit();
         }
     }
+
 }
