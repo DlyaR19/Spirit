@@ -1,11 +1,13 @@
 package com.spirit.application.views;
 
+import com.spirit.application.entitiy.User;
+import com.spirit.application.repository.NotificationRepository;
+import com.spirit.application.service.NotificationService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
+import com.spirit.application.util.NotificationDialog;
 import com.spirit.application.util.Utils;
-import com.spirit.application.views.profile.ChatListView;
-import com.spirit.application.views.profile.ChatView;
-import com.spirit.application.views.profile.ProfilSucheView;
+import com.spirit.application.views.profile.*;
 import com.spirit.application.views.profile.Student.MyBewerbungView;
 import com.spirit.application.views.profile.Student.ProfilStudentView;
 import com.spirit.application.views.profile.Student.SuchView;
@@ -13,15 +15,13 @@ import com.spirit.application.views.profile.Unternehmen.AddJobPostView;
 import com.spirit.application.views.profile.Unternehmen.MyJobPostView;
 import com.spirit.application.views.profile.Unternehmen.ProfileUnternehmenView;
 import com.spirit.application.views.profile.Unternehmen.ShowBewerbungView;
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Footer;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Hr;
-import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -35,6 +35,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * Main view of the application extending {@link AppLayout}. It sets up the UI with a side navigation menu,
@@ -50,17 +54,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route(Globals.Pages.APP)
 public class AppView extends AppLayout {
 
+    @Autowired
+    private NotificationView notificationView;
+
     // SessionService für Benutzersitzungsverwaltung
     private final transient SessionService sessionService;
+    private final NotificationService notificationService;
+
+    public static Span notificationCount;
+    public NotificationRepository notificationRepository;
+
 
     /**
      * Constructor initializes the view with the provided {@link SessionService}.
      * @param sessionService the service for managing user sessions
      */
     @Autowired
-    public AppView(SessionService sessionService) {
+    public AppView(SessionService sessionService, NotificationService notificationService) {
         this.sessionService = sessionService;
+        this.notificationService = notificationService;
         setUpUI();
+        startNotificationPolling();
+
     }
 
     /**
@@ -127,14 +142,36 @@ public class AppView extends AppLayout {
         topRightLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
         topRightLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
+        Icon bellIcon = VaadinIcon.BELL.create();
+        bellIcon.setSize("24px");
+        bellIcon.getStyle().set("color", "blue");
+        bellIcon.addClickListener(e -> {
+            NotificationDialog dialog = new NotificationDialog(notificationService, sessionService);
+            dialog.open();
+            dialog.addOpenedChangeListener(event -> {
+                if (!event.isOpened()) {
+                    updateNotificationCount(); // Zähler aktualisieren, wenn der Dialog geschlossen wird
+                }
+            });
+        });
+
+
+        notificationCount = new Span("0");
+        notificationCount.addClassName("notification-count");
+        notificationCount.getStyle().set("font-weight", "bold").set("font-size", "1.2em");
+        topRightLayout.add(notificationCount);
+
+
         MenuBar menuBar = new MenuBar();
         menuBar.addClassName("logout-button");
         menuBar.addItem(createLogoutButton(), e -> logoutUser());
-        topRightLayout.add(menuBar);
+        topRightLayout.add(bellIcon, menuBar);
 
         layout.add(topRightLayout);
         return layout;
     }
+
+
 
     /**
      * Creates the logout button layout.
@@ -242,4 +279,61 @@ public class AppView extends AppLayout {
         return footer;
     }
 
+
+
+    public static void addNotificationCountBadge(Span count) {
+        notificationCount = count;
+    }
+
+
+    /**
+     * Updates the notification count in the header.
+     */
+    private void updateNotificationCount() {
+        User currentUser = sessionService.getCurrentUser().getUser();
+        if (currentUser != null) {
+            long unreadCount = notificationService.countUnreadNotifications(currentUser);
+            notificationCount.setText(String.valueOf(unreadCount));
+
+            // Stil anpassen, wenn es ungelesene Nachrichten gibt
+            if (unreadCount > 0) {
+                notificationCount.addClassName("has-notifications");
+            } else {
+                notificationCount.removeClassName("has-notifications");
+            }
+        }
+    }
+
+
+    /**
+     * Called when the view is attached to the UI.
+     * @param attachEvent the event containing the UI
+     */
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        updateNotificationCount();
+    }
+
+
+    /**
+     * Starts a background thread to poll for new notifications every 5 seconds.
+     */
+    private void startNotificationPolling() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    Thread.sleep(5000); // Alle 5 Sekunden prüfen
+                    getUI().ifPresent(ui -> ui.access(() -> {
+                        updateNotificationCount();
+                    }));
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+    }
 }
+
+

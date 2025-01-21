@@ -2,14 +2,17 @@ package com.spirit.application.service;
 
 import com.spirit.application.dto.ChatMessageDTO;
 import com.spirit.application.entitiy.ChatMessage;
+import com.spirit.application.entitiy.Notification;
 import com.spirit.application.entitiy.User;
 import com.spirit.application.repository.ChatMessageRepository;
+import com.spirit.application.repository.NotificationRepository;
 import com.spirit.application.repository.UserRepository;
 import com.spirit.application.util.ChatHelper;
 import com.vaadin.flow.server.VaadinSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -30,13 +33,15 @@ public class ChatService {
     private final List<Consumer<ChatMessageDTO>> messageConsumers = new ArrayList<>();
     private final ChatHelper chatHelper;
     private static final Logger logger = LoggerFactory.getLogger(ChatService.class);
+    private final NotificationRepository notificationRepository;
 
 
     @Autowired
-    public ChatService(ChatMessageRepository chatMessageRepository, UserRepository userRepository, ChatHelper chatHelper) {
+    public ChatService(ChatMessageRepository chatMessageRepository, UserRepository userRepository, ChatHelper chatHelper, NotificationService notificationService, NotificationRepository notificationRepository) {
         this.chatMessageRepository = chatMessageRepository;
         this.userRepository = userRepository;
         this.chatHelper = chatHelper;
+        this.notificationRepository = notificationRepository;
     }
 
     /**
@@ -85,6 +90,8 @@ public class ChatService {
                 currentSession.access(() -> notifyListeners(chatMessageDTO));
             }
         });
+        createNotificationForRecipient(receiver, sender);
+        getUnreadNotifications(receiver.getUserID());
         return savedMessage;
     }
 
@@ -114,5 +121,32 @@ public class ChatService {
         User user2 = userRepository.findById(otherUserId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return chatMessageRepository.findChatMessagesBetweenUsers(user1.getUserID(), user2.getUserID());
+    }
+
+
+    /**
+     * Creates a notification for the recipient of a chat message.
+     * @param receiver the recipient of the message
+     * @param sender   the sender of the message
+     */
+    private void createNotificationForRecipient(User receiver, User sender) {
+        Notification notification = new Notification();
+        notification.setUser(receiver); // Set the recipient of the notification
+        notification.setMessage("New message from " + sender.getUsername()); // Message content
+        notification.setRead(false); // Mark as unread
+        notificationRepository.save(notification);// Save the notification
+        getUnreadNotifications(receiver.getUserID());
+
+    }
+
+    /**
+     * Retrieves unread notifications for a user.
+     * @param userId The ID of the user to fetch notifications for.
+     * @return List of unread notifications.
+     */
+    private void getUnreadNotifications(Long userId) {
+        List<Notification> unreadNotifications = notificationRepository.findByUser_userIDAndIsRead(userId, false);
+        System.out.println("Unread notifications for user " + userId + ": " + unreadNotifications.size());
+
     }
 }
