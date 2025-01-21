@@ -1,6 +1,5 @@
 package com.spirit.application.service;
 
-import com.spirit.application.dto.BewertungDTO;
 import com.spirit.application.dto.UserDTO;
 import com.spirit.application.entitiy.*;
 import com.spirit.application.repository.*;

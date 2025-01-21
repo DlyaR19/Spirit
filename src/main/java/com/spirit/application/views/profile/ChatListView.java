@@ -133,7 +133,7 @@ public class ChatListView extends VerticalLayout {
         // Add search field
         TextField searchField = new TextField();
         searchField.setWidthFull();
-        searchField.setPlaceholder("Search users...");
+        searchField.setPlaceholder("Nach Users suchen ...");
         searchField.setPrefixComponent(VaadinIcon.SEARCH.create());
         searchField.addValueChangeListener(event -> {
             String searchTerm = event.getValue().toLowerCase();
@@ -145,7 +145,7 @@ public class ChatListView extends VerticalLayout {
         });
 
         // Add close button
-        Button closeButton = new Button("Cancel", e -> dialog.close());
+        Button closeButton = new Button("Abbrechen", e -> dialog.close());
         closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
         // Layout setup

@@ -132,7 +132,7 @@ public class ChatService {
     private void createNotificationForRecipient(User receiver, User sender) {
         Notification notification = new Notification();
         notification.setUser(receiver); // Set the recipient of the notification
-        notification.setMessage("New message from " + sender.getUsername()); // Message content
+        notification.setMessage("Neue Nachricht von " + sender.getUsername()); // Message content
         notification.setRead(false); // Mark as unread
         notificationRepository.save(notification);// Save the notification
         getUnreadNotifications(receiver.getUserID());
@@ -142,7 +142,6 @@ public class ChatService {
     /**
      * Retrieves unread notifications for a user.
      * @param userId The ID of the user to fetch notifications for.
-     * @return List of unread notifications.
      */
     private void getUnreadNotifications(Long userId) {
         List<Notification> unreadNotifications = notificationRepository.findByUser_userIDAndIsRead(userId, false);

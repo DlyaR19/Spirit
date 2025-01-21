@@ -44,6 +44,9 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         loginForm = createLoginForm();
         loginForm.setAction("login");
         loginForm.addLoginListener(this::handleLogin);
+        loginForm.addForgotPasswordListener(event -> {
+           Notification.show("Noch nicht implementiert!", 3000, Notification.Position.TOP_CENTER).addThemeVariants(NotificationVariant.LUMO_WARNING);
+        });
 
         // Haupt-Container
         Div container = new Div();

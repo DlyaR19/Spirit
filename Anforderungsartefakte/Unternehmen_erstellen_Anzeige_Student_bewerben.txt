@@ -1,0 +1,8 @@
+Zuerst mit Alligator13 (Unternehmen) eingeloggt
+dort eine Stellenanzeige für Anstellungsart: Büro erstellt
+als Alligator14 (Student) eingeloggt,
+Job suchen aufgerufen
+Büro ausgesucht und suche geklickt
+Bei der Firma Alligator13 beworben und eine pdf hochgeladen
+Alligator13 eingeloggt und bewerbung eingesehen, jetzt wurde die pdf auf Bewerbung.pdf umbenannt
+Stellenanzeige gelöscht und die ist bei beiden weg

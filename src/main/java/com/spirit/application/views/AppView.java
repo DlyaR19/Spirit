@@ -54,16 +54,11 @@ import java.util.concurrent.Executors;
 @Route(Globals.Pages.APP)
 public class AppView extends AppLayout {
 
-    @Autowired
-    private NotificationView notificationView;
-
     // SessionService für Benutzersitzungsverwaltung
     private final transient SessionService sessionService;
     private final NotificationService notificationService;
 
     public static Span notificationCount;
-    public NotificationRepository notificationRepository;
-
 
     /**
      * Constructor initializes the view with the provided {@link SessionService}.
@@ -74,8 +69,6 @@ public class AppView extends AppLayout {
         this.sessionService = sessionService;
         this.notificationService = notificationService;
         setUpUI();
-        startNotificationPolling();
-
     }
 
     /**
@@ -312,27 +305,6 @@ public class AppView extends AppLayout {
     @Override
     protected void onAttach(AttachEvent attachEvent) {
         updateNotificationCount();
-    }
-
-
-    /**
-     * Starts a background thread to poll for new notifications every 5 seconds.
-     */
-    private void startNotificationPolling() {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Thread.sleep(5000); // Alle 5 Sekunden prüfen
-                    getUI().ifPresent(ui -> ui.access(() -> {
-                        updateNotificationCount();
-                    }));
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-        });
     }
 }
 
