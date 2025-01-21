@@ -23,7 +23,7 @@ public class NotificationDialog extends Dialog {
         this.notificationService = notificationService;
         this.sessionService = sessionService;
 
-        setHeaderTitle("Notifications");
+        setHeaderTitle("Benachrichtigungen");
         setWidth("400px");
 
         // Layout für Benachrichtigungen initialisieren
@@ -32,8 +32,8 @@ public class NotificationDialog extends Dialog {
         notificationLayout.setPadding(false);
 
         // Schließen-Button einmalig hinzufügen
-        Button closeButton = new Button("close", e -> close());
-        Button markAllAsReadButton = new Button("Mark All as Read", e -> notificationService.markAllAsRead(sessionService.getCurrentUser().getUser().getUserID()));
+        Button closeButton = new Button("Schließen", e -> close());
+        Button markAllAsReadButton = new Button("Alles als gelesen markieren", e -> notificationService.markAllAsRead(sessionService.getCurrentUser().getUser().getUserID()));
         getFooter().add(closeButton, markAllAsReadButton);
 
         // Benachrichtigungen laden
@@ -48,14 +48,14 @@ public class NotificationDialog extends Dialog {
             List<Notification> notifications = notificationService.getUnreadNotifications(currentUser.getUserID());
 
             if (notifications.isEmpty()) {
-                notificationLayout.add(new Span("No New Notifications."));
+                notificationLayout.add(new Span("Keine neue Benachrichtigung."));
             } else {
                 for (Notification notification : notifications) {
                     HorizontalLayout notificationItem = new HorizontalLayout();
                     notificationItem.setAlignItems(FlexComponent.Alignment.CENTER);
 
                     Span message = new Span(notification.getMessage());
-                    Button markAsRead = new Button("mark as Read ", e -> {
+                    Button markAsRead = new Button("Als gelesen markieren", e -> {
                         notificationService.markAsRead(notification);
                         refreshNotifications(); // Benachrichtigungen aktualisieren
                     });
