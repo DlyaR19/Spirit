@@ -33,7 +33,10 @@ public class NotificationDialog extends Dialog {
 
         // Schließen-Button einmalig hinzufügen
         Button closeButton = new Button("Schließen", e -> close());
-        Button markAllAsReadButton = new Button("Alles als gelesen markieren", e -> notificationService.markAllAsRead(sessionService.getCurrentUser().getUser().getUserID()));
+        Button markAllAsReadButton = new Button("Alles als gelesen markieren", e -> {
+            notificationService.markAllAsRead(sessionService.getCurrentUser().getUser().getUserID());
+            close(); // Dialog schließen
+        });
         getFooter().add(closeButton, markAllAsReadButton);
 
         // Benachrichtigungen laden

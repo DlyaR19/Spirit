@@ -42,3 +42,45 @@
 .logout-button span {
     font-weight: 600; /* Fettgedruckter Text */
 }
+
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.notification-bell:hover {
+    background-color: var(--lumo-contrast-5pct);
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--lumo-error-color);
+    color: var(--lumo-error-contrast-color);
+    border-radius: 50%;
+    padding: 2px;
+    min-width: 18px;
+    min-height: 18px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(25%, -25%);
+}
+
+.notification-bell[data-count="0"] .notification-badge {
+    display: none;
+}
+
+.notification-bell .bell-icon {
+    color: var(--lumo-secondary-text-color);
+}
+
+.notification-bell:hover .bell-icon {
+    color: var(--lumo-primary-text-color);
+}

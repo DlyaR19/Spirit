@@ -1,7 +1,6 @@
 package com.spirit.application.views;
 
 import com.spirit.application.entitiy.User;
-import com.spirit.application.repository.NotificationRepository;
 import com.spirit.application.service.NotificationService;
 import com.spirit.application.service.SessionService;
 import com.spirit.application.util.Globals;
@@ -35,10 +34,6 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 
 /**
  * Main view of the application extending {@link AppLayout}. It sets up the UI with a side navigation menu,
@@ -113,20 +108,50 @@ public class AppView extends AppLayout {
         addToDrawer(createDrawerContent(sideMenu));
     }
 
+
+    private Component createNotificationBell() {
+        Div bellContainer = new Div();
+        bellContainer.addClassName("notification-bell");
+
+        Icon bellIcon = VaadinIcon.BELL.create();
+        bellIcon.addClassName("bell-icon");
+        bellIcon.setSize("24px");
+
+        Span badge = new Span("0");
+        badge.addClassName("notification-badge");
+
+        bellContainer.add(bellIcon, badge);
+
+        // Store the badge reference for updates
+        notificationCount = badge;
+
+        bellContainer.addClickListener(e -> {
+            NotificationDialog dialog = new NotificationDialog(notificationService, sessionService);
+            dialog.open();
+            dialog.addOpenedChangeListener(event -> {
+                if (!event.isOpened()) {
+                    updateNotificationCount();
+                }
+            });
+        });
+
+        return bellContainer;
+    }
+
     /**
      * Creates the header content, including a toggle button and title, and a logout button.
      * @return the header component
      */
     private Component createHeaderContent() {
 
-        H1 viewTitle;
         HorizontalLayout layout = new HorizontalLayout();
         layout.setId("header");
         layout.setWidthFull();
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
+        layout.setSpacing(true);
 
         layout.add(new DrawerToggle());
-        viewTitle = new H1();
+        H1 viewTitle = new H1();
         viewTitle.setWidthFull();
         layout.add(viewTitle);
 
@@ -134,31 +159,14 @@ public class AppView extends AppLayout {
         topRightLayout.setWidthFull();
         topRightLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
         topRightLayout.setAlignItems(FlexComponent.Alignment.CENTER);
+        topRightLayout.setSpacing(true);
 
-        Icon bellIcon = VaadinIcon.BELL.create();
-        bellIcon.setSize("24px");
-        bellIcon.getStyle().set("color", "blue");
-        bellIcon.addClickListener(e -> {
-            NotificationDialog dialog = new NotificationDialog(notificationService, sessionService);
-            dialog.open();
-            dialog.addOpenedChangeListener(event -> {
-                if (!event.isOpened()) {
-                    updateNotificationCount(); // Zähler aktualisieren, wenn der Dialog geschlossen wird
-                }
-            });
-        });
-
-
-        notificationCount = new Span("0");
-        notificationCount.addClassName("notification-count");
-        notificationCount.getStyle().set("font-weight", "bold").set("font-size", "1.2em");
-        topRightLayout.add(notificationCount);
-
+        Component bell = createNotificationBell();
 
         MenuBar menuBar = new MenuBar();
         menuBar.addClassName("logout-button");
         menuBar.addItem(createLogoutButton(), e -> logoutUser());
-        topRightLayout.add(bellIcon, menuBar);
+        topRightLayout.add(bell, menuBar);
 
         layout.add(topRightLayout);
         return layout;
@@ -272,13 +280,6 @@ public class AppView extends AppLayout {
         return footer;
     }
 
-
-
-    public static void addNotificationCountBadge(Span count) {
-        notificationCount = count;
-    }
-
-
     /**
      * Updates the notification count in the header.
      */
@@ -288,12 +289,9 @@ public class AppView extends AppLayout {
             long unreadCount = notificationService.countUnreadNotifications(currentUser);
             notificationCount.setText(String.valueOf(unreadCount));
 
-            // Stil anpassen, wenn es ungelesene Nachrichten gibt
-            if (unreadCount > 0) {
-                notificationCount.addClassName("has-notifications");
-            } else {
-                notificationCount.removeClassName("has-notifications");
-            }
+            notificationCount.getParent().ifPresent(parent -> {
+                parent.getElement().setAttribute("data-count", String.valueOf(unreadCount));
+            });
         }
     }
 
