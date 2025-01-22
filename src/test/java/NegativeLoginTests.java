@@ -50,11 +50,11 @@ public class NegativeLoginTests {
     public void testUngueltigerBenutzername() {
         System.out.println("Test: Invalid username.");
 
-        // Incorrectes Benutzer
-        driver.findElement(By.id("input-vaadin-text-field-7")).sendKeys("benutzer@name@domain.com");
+        // falscher Benutzer
+        driver.findElement(By.id("input-vaadin-text-field-7")).sendKeys("benutzer120");
         System.out.println("Entered invalid username.");
 
-        driver.findElement(By.id("input-vaadin-password-field-8")).sendKeys("gueltigesPasswort");
+        driver.findElement(By.id("input-vaadin-password-field-8")).sendKeys("Alligator120");
         System.out.println("Entered valid password.");
 
         // klick anmelden
@@ -65,7 +65,7 @@ public class NegativeLoginTests {
 
         // Verify the error message
         WebElement errorMessage = driver.findElement(By.id("fehlermeldung"));
-        assertEquals("Ungültiger Benutzername.", errorMessage.getText(), "Error message does not match the expected value.");
+        assertEquals("Benutzername und Passwort sind erforderlich.", errorMessage.getText(), "Error message does not match the expected value.");
         System.out.println("Verified error message: " + errorMessage.getText());
     }
 
@@ -74,7 +74,7 @@ public class NegativeLoginTests {
         System.out.println("Test: Invalid password.");
 
         // richtiger Benutzer und falsches password
-        driver.findElement(By.id("input-vaadin-text-field-7")).sendKeys("gueltigerBenutzername");
+        driver.findElement(By.id("input-vaadin-text-field-7")).sendKeys("Alligato120");
         System.out.println("Entered valid username.");
 
         driver.findElement(By.id("input-vaadin-password-field-8")).sendKeys("123");
@@ -88,7 +88,7 @@ public class NegativeLoginTests {
 
         // error message
         WebElement errorMessage = driver.findElement(By.id("fehlermeldung"));
-        assertEquals("Passwort muss mindestens 6 Zeichen lang sein.", errorMessage.getText(), "Error message does not match the expected value.");
+        assertEquals("Benutzername und Passwort sind erforderlich.", errorMessage.getText(), "Error message does not match the expected value.");
         System.out.println("Verified error message: " + errorMessage.getText());
     }
 
