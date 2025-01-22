@@ -1,0 +1,214 @@
+{
+  "id": "e312cc05-d663-4ccb-9d97-786ad41fd822",
+  "version": "2.0",
+  "name": "BewerbenUndLöschen",
+  "url": "http://localhost:8080",
+  "tests": [{
+    "id": "1e4750d5-b26d-49d9-83aa-c8110344b3a7",
+    "name": "Untitled",
+    "commands": [{
+      "id": "d2960efe-ebfa-42f3-b1a2-1b4040264d24",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9c4c2eb7-2397-4cb1-ae4f-1ed2a3bc17d3",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1900x1020",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5ab1a2a6-4077-477a-95c3-a2a9dbaa8e4c",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-6",
+      "targets": [
+        ["id=input-vaadin-text-field-6", "id"],
+        ["css=#input-vaadin-text-field-6", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-6']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c7b8ca84-f008-480e-8972-35c735ad9d68",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-6",
+      "targets": [
+        ["id=input-vaadin-text-field-6", "id"],
+        ["css=#input-vaadin-text-field-6", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-6']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "177b5d32-6cfb-48bb-83f1-d24b161774e4",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-6",
+      "targets": [
+        ["id=input-vaadin-text-field-6", "id"],
+        ["css=#input-vaadin-text-field-6", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-6']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "787732f0-8658-4efa-8d34-1522f315fb29",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=input-vaadin-text-field-6",
+      "targets": [
+        ["id=input-vaadin-text-field-6", "id"],
+        ["css=#input-vaadin-text-field-6", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-6']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d1ba93b-3243-4182-8a37-b5bcfa46433d",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-password-field-7",
+      "targets": [
+        ["id=input-vaadin-password-field-7", "id"],
+        ["css=#input-vaadin-password-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-password-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-password-field[@id='vaadinLoginPassword']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-password-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fb6ef1ef-0173-4771-bdd5-5486c47dcfb6",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-button:nth-child(2)",
+      "targets": [
+        ["css=vaadin-button:nth-child(2)", "css:finder"],
+        ["xpath=//vaadin-login-form-wrapper[@id='vaadinLoginFormWrapper']/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Anmelden')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b252d85b-7483-4e38-807d-ac8be20676a7",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Job suchen",
+      "targets": [
+        ["linkText=Job suchen", "linkText"],
+        ["css=vaadin-tab:nth-child(2) .menu-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Job suchen')]", "xpath:link"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/vaadin-tabs/vaadin-tab[2]/vaadin-horizontal-layout/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'student/suche')]", "xpath:href"],
+        ["xpath=//vaadin-tab[2]/vaadin-horizontal-layout/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Job suchen')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "0e791e33-92d6-421a-bae5-c7a35134eab6",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-vertical-layout:nth-child(1) > vaadin-horizontal-layout > vaadin-button",
+      "targets": [
+        ["css=vaadin-vertical-layout:nth-child(1) > vaadin-horizontal-layout > vaadin-button", "css:finder"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout[2]/vaadin-vertical-layout/vaadin-vertical-layout/vaadin-horizontal-layout[3]/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-horizontal-layout[3]/vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Mehr erfahren')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "29d957db-6353-4342-911f-f1b300a7c337",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-horizontal-layout:nth-child(7) > vaadin-button:nth-child(1)",
+      "targets": [
+        ["css=vaadin-horizontal-layout:nth-child(7) > vaadin-button:nth-child(1)", "css:finder"],
+        ["xpath=//vaadin-dialog-overlay[@id='overlay']/vaadin-vertical-layout/vaadin-horizontal-layout[2]/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-horizontal-layout[2]/vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Jetzt bewerben')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "91174a2d-e670-4b1c-9985-4c9668cfb8a3",
+      "comment": "",
+      "command": "click",
+      "target": "css=#overlay > vaadin-vertical-layout > vaadin-button",
+      "targets": [
+        ["css=#overlay > vaadin-vertical-layout > vaadin-button", "css:finder"],
+        ["xpath=//vaadin-dialog-overlay[@id='overlay']/vaadin-vertical-layout/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-dialog-overlay/vaadin-vertical-layout/vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Bewerben')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "d41947dc-9d18-40a9-98bc-65bbeb40d75e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Meine Bewerbungen",
+      "targets": [
+        ["linkText=Meine Bewerbungen", "linkText"],
+        ["css=vaadin-tab:nth-child(3) .menu-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Meine Bewerbungen')]", "xpath:link"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/vaadin-tabs/vaadin-tab[3]/vaadin-horizontal-layout/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, 'student/meine-bewerbungen')]", "xpath:href"],
+        ["xpath=//vaadin-tab[3]/vaadin-horizontal-layout/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Meine Bewerbungen')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "9e12d00e-631f-4208-b9fa-9dfbbc435d7c",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-button",
+      "targets": [
+        ["css=vaadin-button", "css:finder"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout[2]/vaadin-vertical-layout/vaadin-vertical-layout/vaadin-horizontal-layout[3]/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'zurückziehen')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "34f3877c-e40a-4c56-96f6-ce9cfca08721",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-horizontal-layout:nth-child(2) > vaadin-button:nth-child(1)",
+      "targets": [
+        ["css=vaadin-horizontal-layout:nth-child(2) > vaadin-button:nth-child(1)", "css:finder"],
+        ["xpath=//vaadin-dialog-overlay[@id='overlay']/vaadin-vertical-layout/vaadin-horizontal-layout/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-dialog-overlay/vaadin-vertical-layout/vaadin-horizontal-layout/vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Ja')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "e14c65de-81bc-4c76-8c23-3c0efee6d834",
+      "comment": "",
+      "command": "click",
+      "target": "css=span:nth-child(2)",
+      "targets": [
+        ["css=span:nth-child(2)", "css:finder"],
+        ["xpath=//vaadin-horizontal-layout[@id='header']/vaadin-horizontal-layout/vaadin-menu-bar/vaadin-menu-bar-button/vaadin-menu-bar-item/vaadin-horizontal-layout/span", "xpath:idRelative"],
+        ["xpath=//span", "xpath:position"],
+        ["xpath=//span[contains(.,'Abmelden')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "0206c757-3cc5-4fd6-bcfd-6502e9f7e8ac",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["1e4750d5-b26d-49d9-83aa-c8110344b3a7"]
+  }],
+  "urls": ["http://localhost:8080/"],
+  "plugins": []
+}
