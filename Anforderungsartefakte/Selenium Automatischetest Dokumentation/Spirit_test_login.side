@@ -1,0 +1,163 @@
+{
+  "id": "ddca2d16-b714-4bbc-a227-470e9c226be0",
+  "version": "2.0",
+  "name": "Spirit_test",
+  "url": "http://localhost:8080",
+  "tests": [{
+    "id": "0d07ca82-07cd-4590-ac01-58a38a39eec3",
+    "name": "Untitled",
+    "commands": [{
+      "id": "83698b95-edf9-4693-9589-f5114fe2d43c",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5fa3afe4-585d-402a-8592-1f3a5ae79e39",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1900x1020",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "793f1d51-faf1-4077-addf-b3beea5fe395",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-7",
+      "targets": [
+        ["id=input-vaadin-text-field-7", "id"],
+        ["css=#input-vaadin-text-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "95b160ea-84f5-4d44-a42d-a1c254e10853",
+      "comment": "",
+      "command": "click",
+      "target": "id=vaadinLoginFormWrapper",
+      "targets": [
+        ["id=vaadinLoginFormWrapper", "id"],
+        ["css=#vaadinLoginFormWrapper", "css:finder"],
+        ["xpath=//vaadin-login-form-wrapper[@id='vaadinLoginFormWrapper']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/vaadin-login-form/vaadin-login-form-wrapper", "xpath:idRelative"],
+        ["xpath=//vaadin-login-form-wrapper", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cbbd0e61-cedc-4cfb-bb22-b72d0ab88a55",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-7",
+      "targets": [
+        ["id=input-vaadin-text-field-7", "id"],
+        ["css=#input-vaadin-text-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "968b2deb-e3ab-4e00-a39e-34ae59a322dd",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-button:nth-child(2)",
+      "targets": [
+        ["css=vaadin-button:nth-child(2)", "css:finder"],
+        ["xpath=//vaadin-login-form-wrapper[@id='vaadinLoginFormWrapper']/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Anmelden')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "224cfca7-6c9b-4e11-98ba-4b854b879222",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-7",
+      "targets": [
+        ["id=input-vaadin-text-field-7", "id"],
+        ["css=#input-vaadin-text-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "962a3181-113e-40f6-a061-e706d312d9be",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-7",
+      "targets": [
+        ["id=input-vaadin-text-field-7", "id"],
+        ["css=#input-vaadin-text-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8640670f-a42c-440e-aef9-4a6269a18fcc",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-7",
+      "targets": [
+        ["id=input-vaadin-text-field-7", "id"],
+        ["css=#input-vaadin-text-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a4ca4711-dab5-492f-89d1-4a2e076fcbf1",
+      "comment": "",
+      "command": "doubleClick",
+      "target": "id=input-vaadin-text-field-7",
+      "targets": [
+        ["id=input-vaadin-text-field-7", "id"],
+        ["css=#input-vaadin-text-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "00e09f4b-640a-4887-9e76-e452a49c4eea",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-password-field-8",
+      "targets": [
+        ["id=input-vaadin-password-field-8", "id"],
+        ["css=#input-vaadin-password-field-8", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-password-field-8']", "xpath:attributes"],
+        ["xpath=//vaadin-password-field[@id='vaadinLoginPassword']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-password-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d765f66d-5c75-4b5b-b0d1-6d8b0051d808",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-button:nth-child(2)",
+      "targets": [
+        ["css=vaadin-button:nth-child(2)", "css:finder"],
+        ["xpath=//vaadin-login-form-wrapper[@id='vaadinLoginFormWrapper']/vaadin-button", "xpath:idRelative"],
+        ["xpath=//vaadin-button", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Anmelden')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "a6cda917-3fee-4ee8-9f4d-7e10a57148b0",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["0d07ca82-07cd-4590-ac01-58a38a39eec3"]
+  }],
+  "urls": ["http://localhost:8080/"],
+  "plugins": []
+}
