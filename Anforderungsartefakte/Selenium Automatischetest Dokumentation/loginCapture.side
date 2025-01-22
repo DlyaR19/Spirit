@@ -1,0 +1,222 @@
+{
+  "id": "5c3216ac-8777-4d3d-ada9-b527ccd584be",
+  "version": "2.0",
+  "name": "gdsffsdfs",
+  "url": "http://localhost:8080",
+  "tests": [{
+    "id": "945794c7-f88d-4b31-a45c-4be3c5a4269e",
+    "name": "Untitled",
+    "commands": [{
+      "id": "d7e9963b-a7d0-4abe-8cf4-be9ea28e1b4d",
+      "comment": "",
+      "command": "open",
+      "target": "/login",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "553cf263-4abd-43ee-91ef-eef5e4a7d3e8",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1900x1020",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "04f58dc6-9d71-4a61-a209-c830b6e7893a",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-7",
+      "targets": [
+        ["id=input-vaadin-text-field-7", "id"],
+        ["css=#input-vaadin-text-field-7", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-7']", "xpath:attributes"],
+        ["xpath=//vaadin-text-field[@id='vaadinLoginUsername']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1aa35125-8ee7-4730-9da0-115205fc18a7",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-password-field-8",
+      "targets": [
+        ["id=input-vaadin-password-field-8", "id"],
+        ["css=#input-vaadin-password-field-8", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-password-field-8']", "xpath:attributes"],
+        ["xpath=//vaadin-password-field[@id='vaadinLoginPassword']/input", "xpath:idRelative"],
+        ["xpath=//vaadin-password-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "185a01c7-2cdb-4d5e-ba39-5a96f2f40ef3",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-vertical-layout:nth-child(6)",
+      "targets": [
+        ["css=vaadin-vertical-layout:nth-child(6)", "css:finder"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout", "xpath:idRelative"],
+        ["xpath=//vaadin-vertical-layout", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4a6b4723-ce7a-4c8d-ab1a-26fcace83897",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-side-nav-item:nth-child(3)",
+      "targets": [
+        ["css=vaadin-side-nav-item:nth-child(3)", "css:finder"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-scroller/vaadin-side-nav/vaadin-side-nav-item[3]", "xpath:idRelative"],
+        ["xpath=//vaadin-side-nav-item[3]", "xpath:position"],
+        ["xpath=//vaadin-side-nav-item[contains(.,'Registrierung')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "68737645-826a-4d95-a76b-14d1cf94155f",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-41",
+      "targets": [
+        ["id=input-vaadin-text-field-41", "id"],
+        ["css=#input-vaadin-text-field-41", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-41']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-text-field/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "98050654-4488-4fc3-b76d-7b7fcae1b68b",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-42",
+      "targets": [
+        ["id=input-vaadin-text-field-42", "id"],
+        ["css=#input-vaadin-text-field-42", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-42']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-text-field[2]/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f4f6f1f1-22be-4678-ac8d-313b09165a8e",
+      "comment": "",
+      "command": "click",
+      "target": "id=search-input-vaadin-date-picker-43",
+      "targets": [
+        ["id=search-input-vaadin-date-picker-43", "id"],
+        ["css=#search-input-vaadin-date-picker-43", "css:finder"],
+        ["xpath=//input[@id='search-input-vaadin-date-picker-43']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-date-picker/input", "xpath:idRelative"],
+        ["xpath=//vaadin-date-picker/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b90a7fb3-87ae-47d0-9351-7972e9d289ab",
+      "comment": "",
+      "command": "click",
+      "target": "css=div:nth-child(4) > vaadin-month-calendar",
+      "targets": [
+        ["css=div:nth-child(4) > vaadin-month-calendar", "css:finder"],
+        ["xpath=//vaadin-date-picker-overlay[@id='overlay']/vaadin-date-picker-overlay-content/vaadin-date-picker-month-scroller/div[4]/vaadin-month-calendar", "xpath:idRelative"],
+        ["xpath=//div[4]/vaadin-month-calendar", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f587bf61-6b53-4940-aa99-160152b746b2",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-44",
+      "targets": [
+        ["id=input-vaadin-text-field-44", "id"],
+        ["css=#input-vaadin-text-field-44", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-44']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-text-field[3]/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field[3]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d237baf-355a-4ad6-8b2d-1a294bf72ecf",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-text-field-45",
+      "targets": [
+        ["id=input-vaadin-text-field-45", "id"],
+        ["css=#input-vaadin-text-field-45", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-text-field-45']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-text-field[4]/input", "xpath:idRelative"],
+        ["xpath=//vaadin-text-field[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8fa5a998-f683-472c-87c4-3c23b0446a6e",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-email-field-46",
+      "targets": [
+        ["id=input-vaadin-email-field-46", "id"],
+        ["css=#input-vaadin-email-field-46", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-email-field-46']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-email-field/input", "xpath:idRelative"],
+        ["xpath=//vaadin-email-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c73eb884-f1df-4e72-ab92-0d049477f2bc",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-password-field-47",
+      "targets": [
+        ["id=input-vaadin-password-field-47", "id"],
+        ["css=#input-vaadin-password-field-47", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-password-field-47']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-password-field/input", "xpath:idRelative"],
+        ["xpath=//vaadin-password-field/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ef6ac993-9930-4cea-9647-ceb57203b314",
+      "comment": "",
+      "command": "click",
+      "target": "id=input-vaadin-password-field-48",
+      "targets": [
+        ["id=input-vaadin-password-field-48", "id"],
+        ["css=#input-vaadin-password-field-48", "css:finder"],
+        ["xpath=//input[@id='input-vaadin-password-field-48']", "xpath:attributes"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-password-field[2]/input", "xpath:idRelative"],
+        ["xpath=//vaadin-password-field[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b9237594-c44a-45e5-bd6b-f5e3f87a2d25",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-vertical-layout:nth-child(6)",
+      "targets": [
+        ["css=vaadin-vertical-layout:nth-child(6)", "css:finder"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout", "xpath:idRelative"],
+        ["xpath=//vaadin-vertical-layout", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1f548c8c-ecdc-4d8d-8fc5-f89382fc5e41",
+      "comment": "",
+      "command": "click",
+      "target": "css=vaadin-button:nth-child(12)",
+      "targets": [
+        ["css=vaadin-button:nth-child(12)", "css:finder"],
+        ["xpath=//flow-container-root-2521314[@id='ROOT-2521314']/vaadin-app-layout/vaadin-vertical-layout/div/vaadin-vertical-layout/div/vaadin-form-layout/vaadin-button[2]", "xpath:idRelative"],
+        ["xpath=//vaadin-button[2]", "xpath:position"],
+        ["xpath=//vaadin-button[contains(.,'Registrieren')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "76087395-f19a-48e2-963b-a094269a1941",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["945794c7-f88d-4b31-a45c-4be3c5a4269e"]
+  }],
+  "urls": ["http://localhost:8080/"],
+  "plugins": []
+}
