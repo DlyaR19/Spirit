@@ -3,6 +3,7 @@ package com.spirit.application.views.login;
 import com.spirit.application.dto.UserDTO;
 import com.spirit.application.service.LoginService;
 import com.spirit.application.util.Globals;
+import com.spirit.application.views.MainLayout;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
@@ -24,7 +25,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
  */
 @CssImport("./themes/spirit/views/LoginView.css")
 @PageTitle("Login")
-@Route(Globals.Pages.LOGIN)
+@Route(value = Globals.Pages.LOGIN, layout = MainLayout.class)
 @Menu(order = 1)
 @AnonymousAllowed
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
